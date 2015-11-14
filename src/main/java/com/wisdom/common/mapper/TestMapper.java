@@ -1,12 +1,11 @@
 package com.wisdom.common.mapper;
 
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
-import com.wisdom.common.model.Test;
- 
-//userMapper只能传入一个参数,多个的话需要注解
-public interface TestMapper {
+import org.apache.ibatis.annotations.Select;
 
- 
-    List<Test> getAllTests();
-}
+import com.wisdom.common.model.Test;
+
+public interface TestMapper {
+  @Select("SELECT * FROM test WHERE id = #{testId}")
+  Test getUser(@Param("testId") Integer testId);
+} 

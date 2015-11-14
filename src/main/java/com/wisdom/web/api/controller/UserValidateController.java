@@ -31,13 +31,16 @@ import com.wisdom.common.mapper.TestMapper;
 
 @Controller
 public class UserValidateController {
-    @Autowired
-    private TestMapper testmapper;
+	private TestMapper testMapper;
+
+
     
 	private static final Logger logger = LoggerFactory
 			.getLogger(UserValidateController.class);
 	
-	
+	  public void setTestMapper(TestMapper testMapper) {
+		    this.testMapper = testMapper;
+		  }
 	@RequestMapping("/test")
 	@ResponseBody
 	public Map<String, String> getAllRecommender() {
@@ -46,8 +49,8 @@ public class UserValidateController {
 		retMap.put("message", "ok");
 		logger.debug("finish getAllRecommender");
 		
-		List<Test> result = testmapper.getAllTests();
-		retMap.put("data", result.toString());
+		Test result = testMapper.getUser(1);
+		retMap.put("data", result.getName());
         
 
 

@@ -115,14 +115,18 @@
     <!-- (this dependency is defined somewhere else) -->  
     	<property name="dataSource" ref="dataSource"/>  
  	 </bean> 
-<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
   <property name="dataSource" ref="dataSource" />
 </bean>
+
 <bean id="testMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
   <property name="mapperInterface" value="com.wisdom.common.mapper.TestMapper" />
   <property name="sqlSessionFactory" ref="sqlSessionFactory" />
 </bean>
- 	 
+ 	 <bean id="userValidateController" class="com.wisdom.web.api.controller.UserValidateController">
+  <property name="testMapper" ref="testMapper" />
+</bean>
  	 <tx:annotation-driven transaction-manager="txManager"></tx:annotation-driven>
 
 
