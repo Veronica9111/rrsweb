@@ -9,12 +9,14 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 
     <typeAlias alias="User" type ="com.wisdom.common.model.User" />
     <typeAlias alias="Permission" type="com.wisdom.common.model.Permission" />
+        <typeAlias alias="Invoice" type="com.wisdom.common.model.Invoice" />
 
   </typeAliases>
   <mappers>
 
     <mapper resource="com/wisdom/common/mapper/UserMapper.xml"/>
     <mapper resource="com/wisdom/common/mapper/PermissionMapper.xml" />
+    <mapper resource="com/wisdom/common/mapper/InvoiceMapper.xml" />
   </mappers>
 
 </configuration>
