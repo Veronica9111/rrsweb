@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="com.wisdom.common.mapper.PermissionMapper">
+<cache />
+<resultMap type="com.wisdom.common.model.Permission" id="Permission">  
+<result property="id" column="id"/>  
+<result property="name" column="name"/>  
+<result property="invoke_name" column="invoke_name"/>  
+</resultMap>
+ <insert id="addPermission" parameterType="String">
+insert into permission(name,invoke_name)
+values(#{name},#{invoke_name})
+</insert>
+</mapper>
