@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wisdom.user.service.IUserService;
 import com.wisdom.common.model.Test;
 
 
@@ -32,6 +33,9 @@ import com.wisdom.common.mapper.TestMapper;
 @Controller
 public class UserValidateController {
 	private TestMapper testMapper;
+	
+	@Autowired
+	private IUserService userService;
 
 
     
@@ -47,19 +51,27 @@ public class UserValidateController {
 		logger.debug("enter getAllRecommender");
 		Map<String, String> retMap = new HashMap<>();
 		retMap.put("message", "ok");
-		logger.debug("finish getAllRecommender");
-		
+		logger.debug("finish getAllRecommender");	
 		Test result = testMapper.getUser(1);
 		retMap.put("data", result.getName());
-        
-
-
-
-	    
-
 		return retMap;
-	    
-		
+	}
+	
+	
+	@RequestMapping("/login")
+	@ResponseBody
+	public Map<String, String> login(HttpServletRequest request){
+		logger.debug("enter Login");
+		Map<String, String> retMap = new HashMap<>();
+		String uid = request.getParameter("id");
+		String password = request.getParameter("password");
+		if(userService.checkUserValidate(uid, password)){
+			retMap.put("status", "ok");
+		}
+		else {
+			retMap.put("status", "nok");
+		}
+		return retMap;
 		
 	}
 	
