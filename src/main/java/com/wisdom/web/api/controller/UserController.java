@@ -31,7 +31,7 @@ import com.wisdom.common.model.Test;
 import com.wisdom.common.mapper.TestMapper;
 
 @Controller
-public class UserValidateController {
+public class UserController {
 	private TestMapper testMapper;
 	
 	@Autowired
@@ -40,7 +40,7 @@ public class UserValidateController {
 
     
 	private static final Logger logger = LoggerFactory
-			.getLogger(UserValidateController.class);
+			.getLogger(UserController.class);
 	
 	  public void setTestMapper(TestMapper testMapper) {
 		    this.testMapper = testMapper;
@@ -72,7 +72,22 @@ public class UserValidateController {
 			retMap.put("status", "nok");
 		}
 		return retMap;
-		
+	}
+	
+	@RequestMapping("/user/addUser")
+	@ResponseBody
+	public Map<String, String> addUser(HttpServletRequest request){
+		logger.debug("enter addUser");
+		Map<String, String> retMap = new HashMap<>();
+		String name = request.getParameter("name");
+		String company = request.getParameter("company");
+		if(userService.addUser(name, company)){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
 	}
 	
 }

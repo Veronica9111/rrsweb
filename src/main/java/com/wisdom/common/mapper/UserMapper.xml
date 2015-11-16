@@ -23,4 +23,8 @@
  	FROM user
  	WHERE mail = #{mail}
  </select>
+ <insert id="addUser" parameterType="String">
+insert into user(name,password,company,active)
+values(#{name},#{password},#{company},#{active})
+</insert>
 </mapper>

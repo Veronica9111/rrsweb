@@ -133,7 +133,7 @@
   <property name="mapperInterface" value="com.wisdom.common.mapper.UserMapper" />
   <property name="sqlSessionFactory" ref="sqlSessionFactory" />
 </bean>
-	<bean id="userValidateController" class="com.wisdom.web.api.controller.UserValidateController">
+	<bean id="userController" class="com.wisdom.web.api.controller.UserController">
   		<property name="testMapper" ref="testMapper" />
 
 	</bean>

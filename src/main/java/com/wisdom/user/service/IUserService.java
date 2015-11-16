@@ -4,7 +4,7 @@ public interface IUserService {
 
 	public Boolean checkUserValidate(String id, String password);
 	
-	public Boolean addUser(String name, String email, String company);
+	public Boolean addUser(String name, String company);
 	
 	
 }

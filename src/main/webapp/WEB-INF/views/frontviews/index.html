@@ -155,7 +155,12 @@ writing-mode: lr-tb;
 			var email = $("#inputEmail").val();
 			var pwd = $("#inputPassword").val();
 			$.post('/login', {"id":email, "password":pwd},function(data){
-				console.log(data);
+				if(data.status == 'ok'){
+					window.location.href="/views/webviews/user/manage.html";
+				}
+				else{
+					alert("password error!");
+				}
 				
 			});
 		});    

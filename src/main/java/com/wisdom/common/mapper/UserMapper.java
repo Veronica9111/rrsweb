@@ -12,4 +12,6 @@ public interface UserMapper {
   
   User getUserByMail(String mail);
   
+  void addUser(@Param("name")String name, @Param("password")String password, @Param("company")String company, @Param("active")Integer active);
+  
 } 

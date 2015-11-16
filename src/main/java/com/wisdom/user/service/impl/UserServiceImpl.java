@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wisdom.user.service.IUserService;
-import com.wisdom.web.api.controller.UserValidateController;
+import com.wisdom.web.api.controller.UserController;
 import com.wisdom.common.mapper.TestMapper;
 import com.wisdom.common.mapper.UserMapper;
 import com.wisdom.common.model.User;
@@ -25,7 +25,7 @@ public class UserServiceImpl implements IUserService{
 
     
 	private static final Logger logger = LoggerFactory
-			.getLogger(UserValidateController.class);
+			.getLogger(UserServiceImpl.class);
 	
 	public void setUserMapper(UserMapper userMapper) {
 		    this.userMapper = userMapper;
@@ -65,9 +65,22 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	@Override
-	public Boolean addUser(String name, String email, String company) {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean addUser(String name, String company) {
+		String cryptedPassword = null;
+		try {
+			cryptedPassword = GenerateMD5.generateMD5("123456");
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Integer active = 0;
+		try {
+			userMapper.addUser(name, cryptedPassword, company,active);
+		}
+		catch(Exception e){
+			return false;
+		}
+		return true;
 	}
 
 }
