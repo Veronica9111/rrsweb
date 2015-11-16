@@ -2,14 +2,14 @@ package com.wisdom.common.model;
 
 import java.sql.Timestamp;
 
-public class Invoice {
+public class Invoice implements java.io.Serializable{
 
 	private static final long serialVersionUID = 1L;
     private String id;
     private Integer uid;
     private String name;
-    private Timestamp createdTime;
-    private Timestamp modifiedTime;
+    private Timestamp created_time;
+    private Timestamp modified_time;
     private Integer priority;
     private String path;
     private String company;
@@ -25,7 +25,7 @@ public class Invoice {
     public Invoice(String id, Timestamp createdTime, String path, String company, String document) {
         super();
         this.id = id;
-        this.createdTime = createdTime;
+        this.created_time = createdTime;
         this.path = path;
         this.company = company;
         this.document = document;
@@ -58,19 +58,19 @@ public class Invoice {
     }
     
     public Timestamp getCreatedTime(){
-    	return createdTime;
+    	return created_time;
     }
     
-    public void setCreatedTime(Timestamp createdTime){
-    	this.createdTime = createdTime;
+    public void setCreatedTime(Timestamp created_time){
+    	this.created_time = created_time;
     }
   
     public Timestamp getModifiedTime(){
-    	return modifiedTime;
+    	return modified_time;
     }
     
-    public void setModifiedTime(Timestamp modifiedTime){
-    	this.modifiedTime = modifiedTime;
+    public void setModifiedTime(Timestamp modified_time){
+    	this.modified_time = modified_time;
     }
  
     public Integer getPriority(){
@@ -120,8 +120,5 @@ public class Invoice {
     public void setStatus(String status){
     	this.status = status;
     }
-    @Override
-    public String toString() {
-        return "Permission [id=" + id + ", name=" + name + "]";
-    }
+
 }
