@@ -113,6 +113,7 @@
     	<context:component-scan base-package="com.wisdom.user.service" />
     	<context:component-scan base-package="com.wisdom.permission.service" />
     	<context:component-scan base-package="com.wisdom.invoice.service" />
+    	<context:component-scan base-package="com.wisdom.role.service" />
     <!-- 事务管理 -->
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
     <!-- (this dependency is defined somewhere else) -->  
@@ -145,6 +146,11 @@
   <property name="sqlSessionFactory" ref="sqlSessionFactory" />
 </bean>
 
+<bean id="roleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+  <property name="mapperInterface" value="com.wisdom.common.mapper.RoleMapper" />
+  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+
 	<bean id="userController" class="com.wisdom.web.api.controller.UserController">
   		<property name="testMapper" ref="testMapper" />
 
@@ -161,6 +167,10 @@
 	
 	<bean id="invoiceServiceImpl" class="com.wisdom.invoice.service.impl.InvoiceServiceImpl">
 		<property name="invoiceMapper" ref="invoiceMapper" />
+	</bean>	
+	
+	<bean id="roleServiceImpl" class="com.wisdom.role.service.impl.RoleServiceImpl">
+		<property name="roleMapper" ref="roleMapper" />
 	</bean>	
 	
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
