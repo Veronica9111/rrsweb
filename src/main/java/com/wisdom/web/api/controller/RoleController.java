@@ -43,5 +43,57 @@ public class RoleController {
 		}
 		return retMap;
 	}
+	
+	@RequestMapping("/role/getAllRoles")
+	@ResponseBody
+	public Map<String, String>getAllRoles(HttpServletRequest request){
+		Map<String,String>retMap = new HashMap<>();
+		List<String>roles = roleService.getAllRoles();
+		retMap.put("data", roles.toString());
+		return retMap;
+	}
+	
+	@RequestMapping("/role/deleteRole")
+	@ResponseBody
+	public Map<String,String> deleteRole(HttpServletRequest request){
+		String roleName = request.getParameter("name");
+		Map<String, String>retMap = new HashMap<>();
+		if(roleService.deleteRoleByName(roleName)){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
+	}
+	
+	@RequestMapping("/role/updateRole")
+	@ResponseBody
+	public Map<String, String>updateRole(HttpServletRequest request){
+		String oldRoleName = request.getParameter("oldName");
+		String newRoleName = request.getParameter("newName");
+		Map<String, String>retMap = new HashMap<>();
+		if(roleService.updateRole(oldRoleName, newRoleName)){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
+	}
+	
+	@RequestMapping("/role/addPermissionToRole")
+	@ResponseBody
+	public Map<String, String>addPermissionToRole(HttpServletRequest request){
+		Map<String, String>retMap = new HashMap<>();
+		return retMap;
+	}
+	
+	@RequestMapping("/role/removePermissionT=FromRole")
+	@ResponseBody
+	public Map<String, String>removePermissionFromRole(HttpServletRequest request){
+		Map<String, String>retMap = new HashMap<>();
+		return retMap;
+	}
 }
 

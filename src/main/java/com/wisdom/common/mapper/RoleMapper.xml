@@ -7,8 +7,34 @@
 <result property="id" column="id"/>  
 <result property="name" column="name"/>    
 </resultMap>
+
  <insert id="addRole" parameterType="String">
 insert into role(name)
 values(#{name})
 </insert>
+
+<select id="getAllRoles" resultType="Role">
+select * from role
+</select>
+
+ <delete id="deleteRoleByName" parameterType="String">
+delete from role where name=#{name}
+</delete>
+
+<select id="getRoleByName" parameterType="String" resultType="Role">
+select * from role where name=#{name}
+</select>
+
+<update id="updateRole" parameterType="String">
+update role set name=#{name} where id=#{id}
+</update>
+
+<insert id="addPermissionToRole" parameterType="String">
+insert into role_permission(permission_id, role_id)
+values(#{permission_id}, #{role_id})
+</insert>
+
+<delete id="removePermissionFromRole" parameterType="String">
+delete from role_permission where permission_id=#{permission_id} and role_id=#{role_id}
+</delete>
 </mapper>
