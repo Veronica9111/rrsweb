@@ -188,6 +188,8 @@ body {
 				<input id='name' type='textfield' placeholder='姓名'></input>
 				<input id='company' type='textfield' placeholder='公司'></input>
 				<input type='button' id='add-user' value='添加'></input>
+				<input id='uid' type='textfield' placeholder='用户ID'></input>
+				<input type='button' id='delete-user' value='删除'></input>
 			</div>
 
           <h2 class="sub-header">Section title</h2>
@@ -338,9 +340,14 @@ body {
     			console.log(data);
     			
     		})
-    		
-    		
     	});
+    	
+    	$("#delete-user").click(function(){
+    		var uid = $("#uid");
+    		$.post('/user/deleteUser', {'uid':uid.val()}, function(data){
+    			console.log(data);
+    		})
+    	})
     </script>
   </body>
 </html>

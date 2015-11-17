@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     <typeAlias alias="Permission" type="com.wisdom.common.model.Permission" />
         <typeAlias alias="Invoice" type="com.wisdom.common.model.Invoice" />
         <typeAlias alias="Role" type="com.wisdom.common.model.Role" />
+        <typeAlias alias="UserRole" type="com.wisdom.common.model.UserRole" />
 
   </typeAliases>
   <mappers>

@@ -3,6 +3,7 @@ package com.wisdom.user.service.impl;
 
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import com.wisdom.web.api.controller.UserController;
 import com.wisdom.common.mapper.TestMapper;
 import com.wisdom.common.mapper.UserMapper;
 import com.wisdom.common.model.User;
+import com.wisdom.common.model.UserRole;
 import com.wisdom.utils.GenerateMD5;
 
 @Service("userService")
@@ -81,6 +83,23 @@ public class UserServiceImpl implements IUserService{
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public Boolean deleteUser(Integer id) {
+		try{
+			userMapper.deleteUserById(id);
+		}catch(Exception e){
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public List<UserRole> getAllUsersWithRoles() {
+		
+		List<UserRole> result = userMapper.getAllUsersWithRoles();
+		return result;
 	}
 
 }

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wisdom.user.service.IUserService;
+import com.wisdom.utils.SessionConstant;
 import com.wisdom.common.model.Test;
 
 
@@ -90,4 +91,80 @@ public class UserController {
 		return retMap;
 	}
 	
+	@RequestMapping("/user/deleteUser")
+	@ResponseBody
+	public Map<String, String>deleteUser(HttpServletRequest request){
+		//Integer uid = Integer.parseInt((String) request.getSession().getAttribute(SessionConstant.SESSION_USER_ID));
+		//TODO Permission check
+		Integer deleteUID = Integer.parseInt(request.getParameter("uid"));
+		Map<String, String> retMap = new HashMap<>();
+		if(userService.deleteUser(deleteUID)){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
+	}
+	
+	@RequestMapping("/user/getAllUsers")
+	@ResponseBody
+	public Map<String, String> getAllUsers(HttpServletRequest request){
+		userService.getAllUsersWithRoles();
+		return null;
+	}
+	
+	@RequestMapping("/user/getUsersByCompany")
+	@ResponseBody
+	public Map<String, String> getUsersByCompany(HttpServletRequest request){
+		return null;
+	}
+	
+	@RequestMapping("user/getUsersByStatus")
+	@ResponseBody
+	public Map<String, String>getUsersByStatus(HttpServletRequest request){
+		return null;
+	}
+	
+	@RequestMapping("/user/addRoleToUser")
+	@ResponseBody
+	public Map<String, String>addRoleToUser(HttpServletRequest request){
+		return null;
+	}
+	
+	@RequestMapping("/user/RemoveRoleFromUser")
+	@ResponseBody
+	public Map<String, String>removeRoleFromUser(HttpServletRequest request){
+		return null;
+	}
+	
+	@RequestMapping("/user/getUsersByRole")
+	@ResponseBody
+	public Map<String, String>getUsersByRole(HttpServletRequest request){
+		return null;
+	}
+	
+	@RequestMapping("/user/updateUser")
+	@ResponseBody
+	public Map<String, String>updateUser(HttpServletRequest request){
+		return null;
+	}
+	
+	@RequestMapping("/user/updateUserPassword")
+	@ResponseBody
+	public Map<String, String>updateUserPassword(HttpServletRequest request){
+		return null;
+	}
+	
+	@RequestMapping("/user/activateUser")
+	@ResponseBody
+	public Map<String, String>activateUser(HttpServletRequest request){
+		return null;
+	}
+	
+	@RequestMapping("/user/deactivateUser")
+	@ResponseBody
+	public Map<String, String>deactivateUser(HttpServletRequest request){
+		return null;
+	}
 }
