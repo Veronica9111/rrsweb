@@ -12,4 +12,19 @@
 insert into permission(name,invoke_name)
 values(#{name},#{invoke_name})
 </insert>
+<delete id="deletePermission" parameterType="String">    
+     delete from  permission where name=#{name}
+</delete>  
+  <update id="updatePermission" parameterType="String">    
+       UPDATE Permission   
+            SET id = #{id},     
+                invoke_name=#{invoke_name},
+         WHERE name = #{name};  
+    </update> 
+    <select id="selectAllPermission" parameterType="String" resultType="Permission">  
+        select * from Permission 
+    </select>  
+     <select id="selectPermissionByName" parameterType="String" resultType="Permission">  
+        select * from Permission where name=#{name}
+    </select>  
 </mapper>
