@@ -188,6 +188,7 @@ body {
 				<input id='name' type='textfield' placeholder='权限名'></input>
 				<input id='invoke-name' type='textfield' placeholder='权限英文名'></input>
 				<input type='button' id='add-user' value='添加'></input>
+				<input type='button' id='search-permission' value='查询'></input>
 			</div>
 
           <h2 class="sub-header">Section title</h2>
@@ -338,8 +339,13 @@ body {
     			console.log(data);
     			
     		})
-    		
-    		
+    	});
+    	$("#search-permission").click(function(){
+    		var name = $("#name");
+    		var invokeName = $("#invoke-name");
+    		$.post('/permission/getPermissionByRole', {'name':name.val()}, function(data){
+    			console.log(data);
+    		})
     	});
     </script>
   </body>

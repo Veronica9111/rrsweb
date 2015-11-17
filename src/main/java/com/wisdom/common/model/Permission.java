@@ -1,6 +1,6 @@
 package com.wisdom.common.model;
 
-public class Permission {
+public class Permission implements java.io.Serializable{
     private static final long serialVersionUID = 1L;
     private Integer id;
     private String name;
@@ -48,6 +48,6 @@ public class Permission {
  
     @Override
     public String toString() {
-        return "Permission [id=" + id + ", name=" + name + "]";
+        return " id=" + id + ", name=" + name + "";
     }
 }

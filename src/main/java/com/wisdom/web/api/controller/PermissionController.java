@@ -1,6 +1,8 @@
 package com.wisdom.web.api.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wisdom.common.model.Permission;
 import com.wisdom.permission.service.IPermissionService;
 
 @Controller
@@ -28,9 +31,11 @@ public class PermissionController {
 	public Map<String, String> addPermission(HttpServletRequest request){
 		logger.debug("enter addPermission");
 		Map<String, String> retMap = new HashMap<>();
-		String name = request.getParameter("name");
-		String invoke_name = request.getParameter("invoke_name");	
-		if (permissionService.addPermission(name, invoke_name)){
+		Permission permission=new Permission();
+		permission.setId(Integer.parseInt(request.getParameter("id")));
+		permission.setInvokeName(request.getParameter(request.getParameter("invoke_name")));
+		permission.setName(request.getParameter("name"));
+		if (permissionService.addPermission(permission)){
 			retMap.put("status", "ok");
 		}
 		else{
@@ -38,4 +43,85 @@ public class PermissionController {
 		}
 		return retMap;
 	}
+	@RequestMapping("/permission/deletePermission")
+	@ResponseBody
+	public Map<String, String> deletePermission(HttpServletRequest request){
+		logger.debug("enter addPermission");
+		Map<String, String> retMap = new HashMap<>();
+		Permission permission=new Permission();
+		permission.setId(Integer.parseInt(request.getParameter("id")));
+		permission.setInvokeName(request.getParameter(request.getParameter("invoke_name")));
+		permission.setName(request.getParameter("name"));
+		if (permissionService.deletePermission(permission)){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
+	}
+	@RequestMapping("/permission/getAllPermission")
+	@ResponseBody
+	public Map<String, String> getAllPermission(HttpServletRequest request){
+		logger.debug("enter addPermission");
+		Map<String, String> retMap = new HashMap<>();
+		List<Map<String,String>> list=new ArrayList<>();
+		Permission permission=new Permission();
+		list=permissionService.getAllPermission();
+		Map<String, String> mMap=new HashMap<>();
+		for(int i=0;i<list.size();i++){
+			System.out.println(list.get(i));
+			mMap=list.get(i);
+		}
+		if (mMap!=null){
+			mMap.put("status", "ok");
+		}
+		else{
+			mMap.put("status", "nok");
+		}
+		return mMap;
+	}
+	@RequestMapping("/permission/getPermissionByName")
+	@ResponseBody
+	public Map<String, String> getPermissionByName(HttpServletRequest request){
+		logger.debug("enter addPermission");
+		Map<String, String> retMap = new HashMap<>();
+		List<Map<String,String>> list=new ArrayList<>();
+		String name=request.getParameter("name");
+		list=permissionService.getPermissionByName(name);
+		Map<String, String> mMap=new HashMap<>();
+		for(int i=0;i<list.size();i++){
+			System.out.println(list.get(i));
+			mMap=list.get(i);
+		}
+		if (mMap!=null){
+			mMap.put("status", "ok");
+		}
+		else{
+			mMap.put("status", "nok");
+		}
+		return mMap;
+	}
+	@RequestMapping("/permission/getPermissionByRole")
+	@ResponseBody
+	public Map<String, String> getPermissionByRole(HttpServletRequest request){
+		logger.debug("enter addPermission");
+		Map<String, String> retMap = new HashMap<>();
+		List<Map<String,String>> list=new ArrayList<>();
+		String name=request.getParameter("name");
+		list=permissionService.getPermissionByRole(name);
+		Map<String, String> mMap=new HashMap<>();
+		for(int i=0;i<list.size();i++){
+			System.out.println(list.get(i));
+			mMap=list.get(i);
+		}
+		if (mMap!=null){
+			mMap.put("status", "ok");
+		}
+		else{
+			mMap.put("status", "nok");
+		}
+		return mMap;
+	}
+
 }

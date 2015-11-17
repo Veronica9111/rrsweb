@@ -21,10 +21,13 @@ values(#{name},#{invoke_name})
                 invoke_name=#{invoke_name},
          WHERE name = #{name};  
     </update> 
-    <select id="selectAllPermission" parameterType="String" resultType="Permission">  
-        select * from Permission 
+    <select id="getAllPermission" parameterType="String" resultType="Permission">  
+        select * from permission 
     </select>  
-     <select id="selectPermissionByName" parameterType="String" resultType="Permission">  
-        select * from Permission where name=#{name}
+     <select id="getPermissionByName" parameterType="String" resultType="Permission">  
+        select * from permission where name=#{name}
+    </select>  
+    <select id="getPermissionByRole" parameterType="String" resultType="Permission">  
+        select * from role r left join role_permission  c on r.id=c.role_id left join permission p on c.permission_id=p.id where r.name=#{name}
     </select>  
 </mapper>
