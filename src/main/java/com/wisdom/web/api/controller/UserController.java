@@ -25,6 +25,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wisdom.user.service.IUserService;
 import com.wisdom.utils.SessionConstant;
+
+import net.sf.json.JSONArray;
+
 import com.wisdom.common.model.Test;
 
 
@@ -110,8 +113,11 @@ public class UserController {
 	@RequestMapping("/user/getAllUsers")
 	@ResponseBody
 	public Map<String, String> getAllUsers(HttpServletRequest request){
-		userService.getAllUsersWithRoles();
-		return null;
+		List<Map<String, String>> users = userService.getAllUsers();
+		Map<String, String>retMap = new HashMap<>();
+		String data = JSONArray.fromObject(users).toString();
+		retMap.put("data", data);
+		return retMap;
 	}
 	
 	@RequestMapping("/user/getUsersByCompany")

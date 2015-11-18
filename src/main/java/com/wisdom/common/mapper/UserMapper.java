@@ -21,4 +21,6 @@ public interface UserMapper {
   
   List<UserRole> getAllUsersWithRoles();
   
+  List<User> getAllUsers();
+  
 } 

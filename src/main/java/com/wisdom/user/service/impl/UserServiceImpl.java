@@ -3,7 +3,10 @@ package com.wisdom.user.service.impl;
 
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,6 +103,22 @@ public class UserServiceImpl implements IUserService{
 		
 		List<UserRole> result = userMapper.getAllUsersWithRoles();
 		return result;
+	}
+
+	@Override
+	public List< Map<String, String>> getAllUsers() {
+		List<User> users = userMapper.getAllUsers();
+		List<Map<String, String>> retList = new ArrayList<>();
+		for(User user:users){
+			Map<String, String> tmp = new HashMap<>();
+			tmp.put("id", Integer.toString(user.getId()));
+			tmp.put("name", user.getName());
+			tmp.put("mail", user.getMail());
+			tmp.put("active", Boolean.toString(user.getActive()));
+			tmp.put("company", user.getCompany());
+			retList.add(tmp);
+		}
+		return retList;
 	}
 
 }

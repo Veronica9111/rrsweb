@@ -52,4 +52,8 @@ delete from user where id=#{id}
 	from user u left join user_role ur on u.id = ur.user_id 
 	left join role r on ur.role_id = r.id
 </select>
+
+<select id="getAllUsers" resultType="User">
+select * from user
+</select>
 </mapper>
