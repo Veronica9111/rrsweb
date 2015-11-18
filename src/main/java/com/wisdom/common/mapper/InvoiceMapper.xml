@@ -21,4 +21,27 @@
       *
     FROM invoice
   </select>
+  
+  <insert id="addInvoice" parameterType="String">
+  insert into invoice (id, name, created_time, priority, path, company, exported, uid,document, status)
+  values(#{id}, #{name},#{created_time}, 10, #{path}, #{company}, 0, null, null, "UNRECOGNIZED")
+  </insert>
+  <select id="getInvoicesByCompany" parameterType="String" resultType="Invoice">
+  select * from invoice where company=#{company}
+  </select>
+  <select id="getInvoicesByStatus" parameterType="String" resultType="Invoice">
+  select * from invoice where status=#{status}
+  </select>
+  <select id="getUnexportedInvoices" resultType="Invoice">
+  select * from invoice where exported = 0
+  </select>
+  <update id="setInvoiceExported" parameterType="String">
+  update invoice set exported=1 where id=#{id}
+  </update>
+  <update id="updateInvoiceStatus" parameterType="String">
+  update invoice set status=#{status} where id=#{id}
+  </update>
+  <update id="updateInvoiceOwner" parameterType="Integer" >
+  update invoice set uid=#{uid} where id=#{id}
+  </update>
 </mapper>

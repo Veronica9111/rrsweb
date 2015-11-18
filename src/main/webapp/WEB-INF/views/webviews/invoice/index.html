@@ -1,0 +1,75 @@
+<html>
+	<head>
+		    <script src="/js/webjs/jquery-1.11.3.js"></script>
+	</head>
+	<body>
+		<div>
+			<input id="name" type="textfield" placeholder="发票名称"/>
+			<input id="path" type="textfield" placeholder="路径"/>
+			<input id="add-invoice" type="button" value="添加"/>
+		</div>
+		<div>
+			<input id="company-name" type="textfield" placeholder="公司名称"/>
+			<input id="query" type="button" value="查询"/>
+		</div>
+		<div>
+			<input id="status" type="textfield" placeholder="状态"/>
+			<input id="query2" type="button" value="查询状态"/>
+		</div>
+		<div>
+			<input id="status2" type="textfield" placeholder="要改变的状态"/>
+			<input id="update" type="button" value="修改"/>
+		</div>
+		<div>
+			<input id="update2" type="button" value="改变用户"/>
+		</div>
+	</body>
+	<script>
+	var invoices = ['id1','id2'];
+	console.log(invoices);
+	$.post("/invoice/setInvoicesExported", {'invoices':"id1,id2"}, function(data){
+		console.log(data);
+	});
+	
+	$("#add-invoice").on("click", function(){
+		var name = $("#name");
+		var path = $("#path");
+		$.post('/invoice/addInvoice', {'name':name.val(), 'path':path.val()}, function(data){
+			console.log(data);
+		});
+	});
+	
+	$("#query").on("click", function(){
+		var company = $("#company-name");
+		$.post('/invoice/getInvoicesByCompany', {'company':company.val()}, function(data){
+			console.log(data);	
+			console.log($.parseJSON(data.data));
+		});
+	})
+	
+	$("#query2").on("click", function(){
+		var status = $("#status");
+		$.post('/invoice/getInvoicesByStatus', {'status': status.val()}, function(data){
+			console.log(data);
+		});
+		
+	});
+	
+	$("#update").on("click", function(){
+		var status2 = $("#status2");
+		var id = 'id1';
+		$.post('/invoice/updateInvoiceStatus', {'id':id, 'status':status2.val()}, function(data){
+			console.log(data);
+		});
+	});
+	
+	$("#update2").on("click", function(){
+		var id = 'id2';
+		var uid = '1';
+		$.post("/invoice/updateInvoiceOwner", {'id':id, 'uid':uid}, function(data){
+			console.log(data);
+		})
+	});
+	</script>
+
+</html>
