@@ -30,11 +30,14 @@ update role set name=#{name} where id=#{id}
 </update>
 
 <insert id="addPermissionToRole" parameterType="String">
-insert into role_permission(permission_id, role_id)
-values(#{permission_id}, #{role_id})
+insert into role_permission(role_id, permission_id)
+values((SELECT id FROM permission WHERE name=#{r_name}),(SELECT id FROM role WHERE name=#{p_name}))
 </insert>
 
 <delete id="removePermissionFromRole" parameterType="String">
-delete from role_permission where permission_id=#{permission_id} and role_id=#{role_id}
+delete from role_permission where permission_id=(SELECT id FROM permission WHERE name=#{r_name}) and role_id=(SELECT id FROM role WHERE name=#{p_name})
 </delete>
+<insert id="addRolePermission" parameterType="String">
+INSERT INTO role_permission(role_id,permission_id)VALUES( (SELECT id FROM role WHERE name=#{r_name} ),( SELECT id FROM permission WHERE name=#{p_name}))
+</insert>
 </mapper>

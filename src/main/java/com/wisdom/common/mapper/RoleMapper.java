@@ -18,7 +18,9 @@ public interface RoleMapper {
 	
 	void updateRole(@Param("id")Integer id, @Param("name")String name);
 	
-	void addPermissionToRole(@Param("permission_id")Integer permissionId, @Param("role_id")Integer roleId);
+	void addPermissionToRole(@Param("r_nam")String role_name, @Param("p_name")String permission_name);
 	
-	void removePermissionFromRole(@Param("permission_id")Integer permissionId, @Param("role_id")Integer roleId);	
+	void removePermissionFromRole(@Param("r_nam")String role_name, @Param("p_name")String permission_name);	
+	
+	void addRolePermission(@Param("r_name")String roleName,@Param("p_name")String permissionName);
 }

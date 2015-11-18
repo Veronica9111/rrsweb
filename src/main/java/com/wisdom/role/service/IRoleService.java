@@ -17,4 +17,6 @@ public interface IRoleService {
 	Boolean addPermissionToRole(String roleName, List<String>permissionNames);
 	
 	Boolean removePermissionFromRole(String roleName, List<String>permissionNames);
+	
+	boolean addRolePermission(String roleName,List<String>permissionNames);
 }

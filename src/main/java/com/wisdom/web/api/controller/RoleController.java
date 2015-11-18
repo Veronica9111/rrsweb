@@ -1,6 +1,7 @@
 package com.wisdom.web.api.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,14 +86,58 @@ public class RoleController {
 	@RequestMapping("/role/addPermissionToRole")
 	@ResponseBody
 	public Map<String, String>addPermissionToRole(HttpServletRequest request){
+		boolean boo=false;
 		Map<String, String>retMap = new HashMap<>();
+		String rName=request.getParameter("role_name");
+		String pList=request.getParameter("p_list");
+		String[]pName=pList.split(";");
+		List list=Arrays.asList(pName);
+		boo=roleService.addPermissionToRole(rName, list);
+		if(boo==true){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
 		return retMap;
 	}
 	
-	@RequestMapping("/role/removePermissionT=FromRole")
+	@RequestMapping("/role/removePermissionFromRole")
 	@ResponseBody
 	public Map<String, String>removePermissionFromRole(HttpServletRequest request){
 		Map<String, String>retMap = new HashMap<>();
+		boolean boo=false;
+		String rName=request.getParameter("role_name");
+		String pList=request.getParameter("p_list");
+		String[]pName=pList.split(";");
+		List list=Arrays.asList(pName);
+		boo=roleService.removePermissionFromRole(rName, list);
+		if(boo==true){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		
+		return retMap;
+	}
+	@RequestMapping("/role/addRolePermission")
+	@ResponseBody
+	public Map<String, String>addRolePermission(HttpServletRequest request){
+		Map<String, String>retMap = new HashMap<>();
+		boolean boo=false;
+		String rName=request.getParameter("role_name");
+		String pList=request.getParameter("p_list");
+		String[]pName=pList.split(";");
+		List list=Arrays.asList(pName);
+		boo=roleService.addRolePermission(rName, list);
+		if(boo==true){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		
 		return retMap;
 	}
 }
