@@ -225,4 +225,16 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		return true;
 	}
 
+	@Override
+	public Boolean addModifyInvoiceRecord(Integer uid, String invoiceId, String action) {
+		java.util.Date date= new java.util.Date();
+		Timestamp now = new Timestamp(date.getTime());
+		try{
+			invoiceMapper.addModifyInvoiceRecord(uid, invoiceId, now, action);
+		}catch(Exception e){
+			return false;
+		}
+		return true;
+	}
+
 }

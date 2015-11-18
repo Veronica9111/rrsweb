@@ -142,11 +142,28 @@ public class InvoiceController {
 		}
 		return retMap;		
 	}
-	
+	//TODO
 	@RequestMapping("/invoice/updateInvoicePriority")
 	@ResponseBody
 	public Map<String, String>updateInvoicePriority(HttpServletRequest request){
 		Map<String, String> retMap = new HashMap<>();
+		return retMap;
+	}
+	
+	@RequestMapping("/invoice/updateInvoiceStatusWithUser")
+	@ResponseBody
+	public Map<String, String>updateInvoiceStatusWithUser(HttpServletRequest request){
+		Map<String, String>retMap = new HashMap<>();
+		String invoice = request.getParameter("id");
+		//TODO hard coded
+		Integer uid = 1;
+		String action = request.getParameter("action");
+		
+		if(invoiceService.addModifyInvoiceRecord(uid, invoice, action)){
+			retMap.put("status", "ok");
+		}else{
+			retMap.put("status", "nok");
+		}
 		return retMap;
 	}
 }

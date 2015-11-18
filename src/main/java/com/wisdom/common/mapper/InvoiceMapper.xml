@@ -44,4 +44,7 @@
   <update id="updateInvoiceOwner" parameterType="Integer" >
   update invoice set uid=#{uid} where id=#{id}
   </update>
+  <insert id="addModifyInvoiceRecord" parameterType="String">
+  insert into record (uid, invoice_id, action, created_time) values(#{uid}, #{invoice_id}, #{action}, #{created_time})
+  </insert>
 </mapper>
