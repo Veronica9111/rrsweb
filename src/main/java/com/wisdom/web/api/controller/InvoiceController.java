@@ -155,7 +155,7 @@ public class InvoiceController {
 	public Map<String, String>updateInvoiceStatusWithUser(HttpServletRequest request){
 		Map<String, String>retMap = new HashMap<>();
 		String invoice = request.getParameter("id");
-		//TODO hard coded
+		//TODO get uid from session
 		Integer uid = 1;
 		String action = request.getParameter("action");
 		
@@ -164,6 +164,33 @@ public class InvoiceController {
 		}else{
 			retMap.put("status", "nok");
 		}
+		return retMap;
+	}
+	
+	@RequestMapping("/invoice/getInvoiceForUser")
+	@ResponseBody
+	public Map<String, String>getInvoiceForUserByStatus(HttpServletRequest request){
+		Map<String, String>retMap = new HashMap<>();
+		//TODO get uid from session
+		Integer uid = 1;
+		String status = request.getParameter("status");
+		Map<String, String> invoice = invoiceService.getInvoiceForUserByStatus(uid, status);
+		String data = JSONArray.fromObject(invoice).toString();
+		retMap.put("data", data);
+		return retMap;
+		
+	}
+	
+	@RequestMapping("/invoice/updateInvoiceContent")
+	@ResponseBody
+	public Map<String, String>updateInvoiceContent(HttpServletRequest request){
+		Map<String, String> retMap = new HashMap<>();
+		String data = request.getParameter("data");
+		String FA = request.getParameter("FA");
+		String id = request.getParameter("id");
+		logger.info("Need to write to xml");
+		logger.info(data);
+		retMap.put("status", "ok");
 		return retMap;
 	}
 }

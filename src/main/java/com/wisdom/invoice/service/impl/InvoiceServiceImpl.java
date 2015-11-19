@@ -237,4 +237,48 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		return true;
 	}
 
+	
+	@Override
+	public Map<String, String> getInvoiceForUserByStatus(Integer uid, String status) {
+		Invoice invoice = invoiceMapper.getInvoiceForUserByStatus(uid, status);
+		Map<String, String> temp = new HashMap<>();
+		String modified_time;
+		String path;
+		String userid;
+		if (invoice == null){
+			return null;
+		}else{
+			temp.put("id", invoice.getId());
+			temp.put("name", invoice.getName());
+			temp.put("created_time", invoice.getCreatedTime().toString());
+			if (invoice.getModifiedTime() == null){
+				modified_time = "null";
+			}
+			else{
+				modified_time = invoice.getModifiedTime().toString();
+			}
+			temp.put("modified_time", modified_time);
+			temp.put("priority", invoice.getPriority().toString());
+			if (invoice.getPath()== null){
+				path = "null";
+			}
+			else{
+				path = invoice.getPath().toString();
+			}			
+			temp.put("path", invoice.getPath());
+			temp.put("company", invoice.getCompany());
+			temp.put("exported", invoice.getExported().toString());
+			if(invoice.getUID() == null){
+				userid = "null";
+			}
+			else{
+				userid = invoice.getUID().toString();
+			}
+			temp.put("uid", userid);
+			temp.put("document", invoice.getDocument());
+			temp.put("status", invoice.getStatus());
+		}
+		return temp;
+	}
+
 }

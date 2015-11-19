@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wisdom.role.service.IRoleService;
 
+import net.sf.json.JSONArray;
+
 
 
 @Controller
@@ -49,8 +51,9 @@ public class RoleController {
 	@ResponseBody
 	public Map<String, String>getAllRoles(HttpServletRequest request){
 		Map<String,String>retMap = new HashMap<>();
-		List<String>roles = roleService.getAllRoles();
-		retMap.put("data", roles.toString());
+		Map<String,String>roles = roleService.getAllRoles();
+		String data = JSONArray.fromObject(roles).toString();
+		retMap.put("data", data);
 		return retMap;
 	}
 	

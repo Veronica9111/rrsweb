@@ -8,7 +8,7 @@ public interface IUserService {
 
 	public Boolean checkUserValidate(String id, String password);
 	
-	public Boolean addUser(String name, String company);
+	public Boolean addUser(String name, String company, String roleName);
 	
 	public Boolean deleteUser(Integer deleteUID);
 	
@@ -20,7 +20,7 @@ public interface IUserService {
 
 	public List<Map<String, String>> getUsersByActive(String active);
 
-	public boolean addRoleToUser(Integer uId, String pName);
+	public boolean addRoleToUser(Integer uId, String rName);
 
 	public boolean removeRoleFromUser(Integer uId, String pName);
 
@@ -33,4 +33,6 @@ public interface IUserService {
 	public boolean activateUser(Integer id);
 
 	public boolean deactivateUser(Integer id);
+	
+	public List<List<String>> getAllUsersWithWorkRecords();
 }

@@ -83,7 +83,8 @@ public class UserController {
 		Map<String, String> retMap = new HashMap<>();
 		String name = request.getParameter("name");
 		String company = request.getParameter("company");
-		if(userService.addUser(name, company)){
+		String roleName = request.getParameter("role");
+		if(userService.addUser(name, company, roleName)){
 			retMap.put("status", "ok");
 		}
 		else{
@@ -263,5 +264,15 @@ public class UserController {
 	@ResponseBody
 	public Map<String, String>deactivateUser(HttpServletRequest request){
 		return null;
+	}
+	
+	@RequestMapping("/user/getAllUsersWithWorkRecords")
+	@ResponseBody
+	public Map<String, String> getAllUsersWithWorkRecords(HttpServletRequest request){
+		Map<String, String> retMap = new HashMap<>();
+		List<List<String>> records = userService.getAllUsersWithWorkRecords();
+		String data = JSONArray.fromObject(records).toString();
+		retMap.put("data", data);
+		return retMap;
 	}
 }

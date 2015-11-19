@@ -23,4 +23,6 @@ public interface IInvoiceService {
 	public Boolean updateInvoiceOwner(String id, Integer uid);
 	
 	public Boolean addModifyInvoiceRecord(Integer uid, String invoiceId, String action);
+	
+	public Map<String, String> getInvoiceForUserByStatus(Integer uid, String status);
 }

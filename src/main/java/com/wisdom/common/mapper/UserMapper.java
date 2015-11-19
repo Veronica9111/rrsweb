@@ -3,6 +3,7 @@ package com.wisdom.common.mapper;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import com.wisdom.common.model.User;
+import com.wisdom.common.model.UserRecord;
 import com.wisdom.common.model.UserRole;
 
 public interface UserMapper {
@@ -12,7 +13,7 @@ public interface UserMapper {
   
   User getUserByMail(String mail);
   
-  void addUser(@Param("name")String name, @Param("password")String password, @Param("company")String company, @Param("active")Integer active);
+  User addUser(User user);
 
   void deleteUserById(@Param("id")Integer id);
   
@@ -28,7 +29,7 @@ public interface UserMapper {
   
   List<User> getUsersByActive(@Param("active")String active);
   
-  boolean addRoleToUser(@Param("uid")Integer uid,@Param("pname")String pName);
+  boolean addRoleToUser(@Param("uid")Integer uid,@Param("rname")String rName);
   
   boolean removeRoleFromUser(@Param("uid")Integer uid,@Param("pname")String pName);
   
@@ -39,4 +40,6 @@ public interface UserMapper {
   boolean updateUserPassword(@Param("uid")Integer uid,@Param("newPassword")String newPassword);
   
   boolean activateUpdate(@Param("uid")Integer uid,@Param("num")Integer num);
+  
+  List<UserRecord> getAllUsersWithWorkRecords();
 } 

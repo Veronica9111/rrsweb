@@ -66,7 +66,7 @@ public class User implements Serializable {
 	   return company;
    }
    
-   public void setCompany(){
+   public void setCompany(String company){
 	   this.company = company;
    }
    

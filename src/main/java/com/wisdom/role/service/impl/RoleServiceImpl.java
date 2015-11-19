@@ -2,7 +2,9 @@ package com.wisdom.role.service.impl;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,12 +51,12 @@ public class RoleServiceImpl implements IRoleService{
 	}
 
 	@Override
-	public List<String> getAllRoles() {
+	public Map<String, String> getAllRoles() {
 		List<Role> roles = new ArrayList<>();
 		roles = roleMapper.getAllRoles();
-		List<String> result = new ArrayList<>();
+		Map<String,String> result = new HashMap<>();
 		for(Role role: roles){
-			result.add(role.getName());
+			result.put(role.getId().toString(), role.getName());
 		}
 		return result;
 	}

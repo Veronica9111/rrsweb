@@ -3,6 +3,8 @@ package com.wisdom.user.service.impl;
 
 
 import java.security.NoSuchAlgorithmException;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +20,7 @@ import com.wisdom.web.api.controller.UserController;
 import com.wisdom.common.mapper.TestMapper;
 import com.wisdom.common.mapper.UserMapper;
 import com.wisdom.common.model.User;
+import com.wisdom.common.model.UserRecord;
 import com.wisdom.common.model.UserRole;
 import com.wisdom.utils.GenerateMD5;
 
@@ -70,7 +73,7 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	@Override
-	public Boolean addUser(String name, String company) {
+	public Boolean addUser(String name, String company, String roleName) {
 		String cryptedPassword = null;
 		try {
 			cryptedPassword = GenerateMD5.generateMD5("123456");
@@ -80,7 +83,12 @@ public class UserServiceImpl implements IUserService{
 		}
 		Integer active = 0;
 		try {
-			userMapper.addUser(name, cryptedPassword, company,active);
+			User user = new User();
+			user.setCompany(company);
+			user.setName(name);
+			userMapper.addUser(user);
+			Integer id = user.getId();
+			userMapper.addRoleToUser(id, roleName);
 		}
 		catch(Exception e){
 			return false;
@@ -154,9 +162,9 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	@Override
-	public boolean addRoleToUser(Integer uId, String pName) {
+	public boolean addRoleToUser(Integer uId, String rName) {
 		try{
-			userMapper.addRoleToUser(uId, pName);
+			userMapper.addRoleToUser(uId, rName);
 		}catch(Exception e){
 			return false;
 		}
@@ -233,6 +241,23 @@ public class UserServiceImpl implements IUserService{
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public List<List<String>> getAllUsersWithWorkRecords() {
+		List<List<String>> retList = new ArrayList<>();
+		List<UserRecord> result = userMapper.getAllUsersWithWorkRecords();
+		for(UserRecord record:result){
+			List<String> tempList = new ArrayList<>();
+			tempList.add(record.getId().toString());
+			tempList.add(record.getName());
+			tempList.add(record.getCompany());
+			tempList.add(record.getRecognize().toString());
+			tempList.add(record.getInspect().toString());
+			tempList.add("<a  class='edit'>编辑</a>&nbsp;|<a href='javascript:;' class='sc' onclick='deleteRow(this)'>删除</a>");
+			retList.add(tempList);
+		}
+		return retList;
 	}
 
 }

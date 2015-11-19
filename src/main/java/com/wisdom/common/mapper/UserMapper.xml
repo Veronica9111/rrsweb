@@ -19,11 +19,18 @@
 <collection property="roles" ofType="Role" resultMap="RoleResult">
 </collection>   	
 </resultMap>
-
 <resultMap type="Role" id="RoleResult">
     <id property='id' column='rid'/>
     <result property='name' column='rname'/>
 </resultMap>
+<resultMap type="com.wisdom.common.model.UserRecord" id="UserRecord">
+<result property="id" column="id"/>
+<result property="name" column="name"/>
+<result property="inspect" column="inspect"/>
+<result property="recognize" column="recognize"/>
+<result property="company" column="company"/>
+</resultMap>
+
   <select id="getUserById" resultType="User">
     SELECT
       *
@@ -35,9 +42,12 @@
  	FROM user
  	WHERE mail = #{mail}
  </select>
- <insert id="addUser" parameterType="String">
+ <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 insert into user(name,password,company,active)
 values(#{name},#{password},#{company},#{active})
+<selectKey keyProperty="id" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID();
+        </selectKey>
 </insert>
 <delete id="deleteUserById" parameterType="Integer">
 delete from user where id=#{id}
@@ -63,8 +73,8 @@ select * from user where company=#{company}
 <select id="getUsersByActive" resultType="User">
 select * from user where company=#{active}
 </select>
-<insert id="addRolePermission" parameterType="String">
-INSERT INTO user_role(user_id,role_id)VALUES( (uid),( select role_id from role_permission where permission_id=(SELECT id FROM permission WHERE name=#{pname}) ))
+<insert id="addRoleToUser" parameterType="String">
+INSERT INTO user_role(user_id,role_id)VALUES( (uid),( select role_id from role where name=#{rname}) ))
 </insert>
 <delete id="removeRoleFromUser" parameterType="Integer">
 delete from user_role where user_id=#{uid} and role_id={ select role_id from role_permission where permission_id=(SELECT id FROM permission WHERE name=#{pname}) }
@@ -75,12 +85,17 @@ select * from user where id={select user_id from where role_id=(select role_id f
 <update id="booleanUserOldPassword"  parameterType="String">
 select password from user where id=#{uid}
 </update>
-<update id="updateUser"  parameterType="Integer">
+<update id="updateUserPassword"  parameterType="Integer">
 update user set password = #{password} where id = #{uid}  
 </update>
 
 <update id="activateUpdate"  parameterType="Integer">
 update user set active =#{num} where id = #{uid}  
 </update>
+
+<select id="getAllUsersWithWorkRecords" resultType="UserRecord">
+SELECT u.id,u.name, sum(case when action = "check" then 1 else 0 end) as inspect,
+sum(case when action="recognize" then 1 else 0 end) as recognize, u.company as company FROM record r left join user u on r.uid = u.id group by  r.action
+</select>
 
 </mapper>
