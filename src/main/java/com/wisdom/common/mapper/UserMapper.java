@@ -13,7 +13,7 @@ public interface UserMapper {
   
   User getUserByMail(String mail);
   
-  User addUser(User user);
+  Integer addUser(User user);
 
   void deleteUserById(@Param("id")Integer id);
   
@@ -29,7 +29,7 @@ public interface UserMapper {
   
   List<User> getUsersByActive(@Param("active")String active);
   
-  boolean addRoleToUser(@Param("uid")Integer uid,@Param("rname")String rName);
+  Integer addRoleToUser(@Param("uid")Integer uid,@Param("rname")String rName);
   
   boolean removeRoleFromUser(@Param("uid")Integer uid,@Param("pname")String pName);
   

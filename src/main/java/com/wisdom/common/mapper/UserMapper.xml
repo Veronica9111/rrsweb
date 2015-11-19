@@ -74,7 +74,7 @@ select * from user where company=#{company}
 select * from user where company=#{active}
 </select>
 <insert id="addRoleToUser" parameterType="String">
-INSERT INTO user_role(user_id,role_id)VALUES( (uid),( select role_id from role where name=#{rname}) ))
+INSERT INTO user_role(user_id,role_id) values( #{uid}, (select id from role where name=#{rname}))
 </insert>
 <delete id="removeRoleFromUser" parameterType="Integer">
 delete from user_role where user_id=#{uid} and role_id={ select role_id from role_permission where permission_id=(SELECT id FROM permission WHERE name=#{pname}) }

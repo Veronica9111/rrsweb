@@ -86,7 +86,8 @@ public class UserServiceImpl implements IUserService{
 			User user = new User();
 			user.setCompany(company);
 			user.setName(name);
-			userMapper.addUser(user);
+			user.setPassword(cryptedPassword);
+			Integer idtemp = userMapper.addUser(user);
 			Integer id = user.getId();
 			userMapper.addRoleToUser(id, roleName);
 		}
