@@ -24,14 +24,12 @@
     <id property='id' column='rid'/>
     <result property='name' column='rname'/>
 </resultMap>
-
   <select id="getUserById" resultType="User">
     SELECT
       *
     FROM user
     WHERE id = #{uid}
   </select>
- 
  <select id="getUserByMail" resultType="User">
  	SELECT *
  	FROM user
@@ -56,4 +54,33 @@ delete from user where id=#{id}
 <select id="getAllUsers" resultType="User">
 select * from user
 </select>
+<update id="updateUser"  parameterType="Integer">
+update user set name = #{name},   email = #{email} ,   company = #{company} where id = #{id}  
+</update>
+<select id="getUsersByCompany" resultType="User">
+select * from user where company=#{company}
+</select>
+<select id="getUsersByActive" resultType="User">
+select * from user where company=#{active}
+</select>
+<insert id="addRolePermission" parameterType="String">
+INSERT INTO user_role(user_id,role_id)VALUES( (uid),( select role_id from role_permission where permission_id=(SELECT id FROM permission WHERE name=#{pname}) ))
+</insert>
+<delete id="removeRoleFromUser" parameterType="Integer">
+delete from user_role where user_id=#{uid} and role_id={ select role_id from role_permission where permission_id=(SELECT id FROM permission WHERE name=#{pname}) }
+</delete>
+<select id="getUsersByPname" resultType="User">
+select * from user where id={select user_id from where role_id=(select role_id from where permission_id=(select id from permission where name=#{pname}))}
+</select>
+<update id="booleanUserOldPassword"  parameterType="String">
+select password from user where id=#{uid}
+</update>
+<update id="updateUser"  parameterType="Integer">
+update user set password = #{password} where id = #{uid}  
+</update>
+
+<update id="activateUpdate"  parameterType="Integer">
+update user set active =#{num} where id = #{uid}  
+</update>
+
 </mapper>

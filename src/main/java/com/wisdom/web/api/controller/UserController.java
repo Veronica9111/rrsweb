@@ -29,9 +29,7 @@ import com.wisdom.utils.SessionConstant;
 import net.sf.json.JSONArray;
 
 import com.wisdom.common.model.Test;
-
-
-
+import com.wisdom.common.model.User;
 import com.wisdom.common.mapper.TestMapper;
 
 @Controller
@@ -123,51 +121,144 @@ public class UserController {
 	@RequestMapping("/user/getUsersByCompany")
 	@ResponseBody
 	public Map<String, String> getUsersByCompany(HttpServletRequest request){
-		return null;
+		String company=request.getParameter("company");
+		List<Map<String, String>>uList=userService.getUsersByCompany(company);
+		Map<String, String>retMap = new HashMap<>();
+		for(int i=0;i<uList.size();i++){
+			System.out.println(uList.get(i));
+			retMap=uList.get(i);
+		}
+		if (retMap!=null){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
 	}
 	
-	@RequestMapping("user/getUsersByStatus")
+	@RequestMapping("user/getUsersByActive")
 	@ResponseBody
-	public Map<String, String>getUsersByStatus(HttpServletRequest request){
-		return null;
+	public Map<String, String>getUsersByActive(HttpServletRequest request){
+		String active=request.getParameter("active");
+		List<Map<String, String>>uList=userService.getUsersByActive(active);
+		Map<String, String>retMap = new HashMap<>();
+		for(int i=0;i<uList.size();i++){
+			System.out.println(uList.get(i));
+			retMap=uList.get(i);
+		}
+		if (retMap!=null){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
 	}
-	
+	//get Uid Pname
 	@RequestMapping("/user/addRoleToUser")
 	@ResponseBody
 	public Map<String, String>addRoleToUser(HttpServletRequest request){
-		return null;
+		boolean boo=false;
+		Integer uId=Integer.parseInt(request.getParameter("userid"));
+		String pName=request.getParameter("permissionName");
+		Map<String, String>retMap = new HashMap<>();
+		boo=userService.addRoleToUser(uId,pName);
+		if (boo){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
 	}
-	
+	//get Uid Pname
 	@RequestMapping("/user/RemoveRoleFromUser")
 	@ResponseBody
 	public Map<String, String>removeRoleFromUser(HttpServletRequest request){
-		return null;
+		boolean boo=false;
+		Integer uId=Integer.parseInt(request.getParameter("userid"));
+		String pName=request.getParameter("permissionName");
+		Map<String, String>retMap = new HashMap<>();
+		boo=userService.removeRoleFromUser(uId, pName);
+		if (boo){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
 	}
-	
-	@RequestMapping("/user/getUsersByRole")
+	//Pname
+	@RequestMapping("/user/getUsersByPname")
 	@ResponseBody
-	public Map<String, String>getUsersByRole(HttpServletRequest request){
-		return null;
+	public Map<String, String>getUsersByPname(HttpServletRequest request){
+		String pName=request.getParameter("pname");
+		List<Map<String, String>>uList=userService.getUsersByPname(pName);
+		Map<String, String>retMap = new HashMap<>();
+		for(int i=0;i<uList.size();i++){
+			System.out.println(uList.get(i));
+			retMap=uList.get(i);
+		}
+		if (retMap!=null){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
 	}
-	
+	// name email company id
 	@RequestMapping("/user/updateUser")
 	@ResponseBody
 	public Map<String, String>updateUser(HttpServletRequest request){
-		return null;
+		Integer id=Integer.parseInt(request.getParameter("id"));
+		String email=request.getParameter("email");
+		String name=request.getParameter("name");
+		String company=request.getParameter("company");
+		boolean boo=userService.updateUser(id,email,name,company);
+		Map<String, String>retMap = new HashMap<>();
+		if (boo){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
 	}
-	
+	//id oldpassword new password
 	@RequestMapping("/user/updateUserPassword")
 	@ResponseBody
 	public Map<String, String>updateUserPassword(HttpServletRequest request){
-		return null;
+		Integer id=Integer.parseInt(request.getParameter("id"));
+		String oldPassword=request.getParameter("oldPassword");
+		String newPassword=request.getParameter("newPassword");
+		Map<String, String>retMap = new HashMap<>();
+		boolean boo=userService.updateUserPassword(id,oldPassword,newPassword);
+		if (boo){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
 	}
-	
+	//uid 0-->1
 	@RequestMapping("/user/activateUser")
 	@ResponseBody
 	public Map<String, String>activateUser(HttpServletRequest request){
-		return null;
+		Integer id=Integer.parseInt(request.getParameter("id"));
+		Map<String, String>retMap = new HashMap<>();
+		boolean boo=userService.activateUser(id);
+		if (boo){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
 	}
-	
+	//1-->0
 	@RequestMapping("/user/deactivateUser")
 	@ResponseBody
 	public Map<String, String>deactivateUser(HttpServletRequest request){
