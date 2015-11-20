@@ -169,6 +169,7 @@ public class InvoiceController {
 		return retMap;
 	}
 	
+<<<<<<< d175d06beec51b6abc970f5cbda3586a11b7dd79
 	@RequestMapping("/invoice/getInvoiceForUser")
 	@ResponseBody
 	public Map<String, String>getInvoiceForUserByStatus(HttpSession httpSession, HttpServletRequest request){
@@ -194,4 +195,7 @@ public class InvoiceController {
 		retMap.put("status", "ok");
 		return retMap;
 	}
+=======
+	
+>>>>>>> xiaoming add xml
 }

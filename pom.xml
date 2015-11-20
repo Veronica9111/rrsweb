@@ -101,7 +101,12 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${log4j.version}</version>
 		</dependency>
-
+		<dependency>
+	<groupId>jdom</groupId>
+	<artifactId>jdom</artifactId>
+	<version>1.0</version>
+	</dependency>
+		
 		<!-- apache commons -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>

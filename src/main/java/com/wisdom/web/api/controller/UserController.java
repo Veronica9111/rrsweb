@@ -278,7 +278,16 @@ public class UserController {
 	@RequestMapping("/user/deactivateUser")
 	@ResponseBody
 	public Map<String, String>deactivateUser(HttpServletRequest request){
-		return null;
+		Integer id=Integer.parseInt(request.getParameter("id"));
+		Map<String, String>retMap = new HashMap<>();
+		boolean boo=userService.deactivateUser(id);
+		if (boo){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
 	}
 	
 	@RequestMapping("/user/getAllUsersWithWorkRecords")

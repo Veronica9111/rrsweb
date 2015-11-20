@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<information>
+	<data>
+		<supplier>supplier</supplier>
+		<description>des</description>
+		<amount>11</amount>
+	</data>
+	<data>
+		<supplier>supplier</supplier>
+		<description>des2</description>
+		<amount>22</amount>
+	</data>
+	<fa>fa</fa>
+	<id>11</id>
+</information>
