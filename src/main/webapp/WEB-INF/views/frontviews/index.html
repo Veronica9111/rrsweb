@@ -1,169 +1,182 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
-    <title>Signin Template for Bootstrap</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="/css/webcss/bootstrap.css" rel="stylesheet">
-
-
-
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    
-    <style>
-    body {
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #eee;
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>点豆成兵</title>
+<meta name="description" content="简介">
+<meta name="keywords" content="关键字">
+<script src=""></script>
+<style>
+@charset "UTF-8";
+html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, p, blockquote, pre, form, input, textarea, fieldset, table, th, td {
+	margin: 0;
+	padding: 0
 }
-
-.form-signin {
-  max-width: 330px;
-  padding: 15px;
-  margin: 0 auto;
+body, button, input, select, textarea {
+	font: normal 16px/2em "Microsoft YaHei";
 }
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
-  margin-bottom: 10px;
+body {
+	color: #b3b3b3;
+	background-color: #fff;
 }
-.form-signin .checkbox {
-  font-weight: normal;
+ul, ol {
+	list-style: none
 }
-.form-signin .form-control {
-  position: relative;
-  height: auto;
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
-  padding: 10px;
-  font-size: 16px;
+img {
+	border: 0;
+	vertical-align: top;
 }
-.form-signin .form-control:focus {
-  z-index: 2;
+:focus {
+	outline: 0
 }
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+.clear {
+	clear: both;
+	height: 0;
+	font-size: 0;
+	overflow: hidden
 }
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+.clearfix:after {
+	content: "\0020";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden
 }
-
-.btn {
--webkit-appearance: none;
--webkit-user-select: none;
-align-items: flex-start;
-background-color: rgb(51, 122, 183);
-background-image: none;
-border-bottom-color: rgb(46, 109, 164);
-border-bottom-left-radius: 6px;
-border-bottom-right-radius: 6px;
-border-bottom-style: solid;
-border-bottom-width: 1px;
-border-image-outset: 0px;
-border-image-repeat: stretch;
-border-image-slice: 100%;
-border-image-source: none;
-border-image-width: 1;
-border-left-color: rgb(46, 109, 164);
-border-left-style: solid;
-border-left-width: 1px;
-border-right-color: rgb(46, 109, 164);
-border-right-style: solid;
-border-right-width: 1px;
-border-top-color: rgb(46, 109, 164);
-border-top-left-radius: 6px;
-border-top-right-radius: 6px;
-border-top-style: solid;
-border-top-width: 1px;
-box-sizing: border-box;
-color: rgb(255, 255, 255);
-cursor: pointer;
-display: block;
-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-font-size: 18px;
-font-stretch: normal;
-font-style: normal;
-font-variant: normal;
-font-weight: normal;
-height: 46px;
-letter-spacing: normal;
-line-height: 24px;
-margin-bottom: 0px;
-margin-left: 0px;
-margin-right: 0px;
-margin-top: 0px;
-overflow-x: visible;
-overflow-y: visible;
-padding-bottom: 10px;
-padding-left: 16px;
-padding-right: 16px;
-padding-top: 10px;
-text-align: center;
-text-indent: 0px;
-text-rendering: auto;
-text-shadow: none;
-text-transform: none;
-touch-action: manipulation;
-vertical-align: middle;
-white-space: nowrap;
-width: 300px;
-word-spacing: 0px;
-writing-mode: lr-tb;
--webkit-writing-mode: horizontal-tb;
+.clearfix {
+	clear: both;
+	zoom: 1
 }
-    </style>
-  </head>
-
-  <body>
-
-    <div class="container">
-
-      <form class="form-signin">
-        <h2 class="form-signin-heading">发票识别系统</h2>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="员工号或邮箱地址" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="密码" required>
-
-        <input id="submit" class="btn btn-lg btn-primary btn-block" type="button" value="登录"></input>
+.v-a-m {
+	vertical-align: middle
+}
+h1 {
+	font-size: 18px
+}
+h2 {
+	font-size: 16px
+}
+h3 {
+	font-size: 14px
+}
+h4, h5, h6 {
+	font-size: 100%
+}
+a {
+	color: #121111;
+	text-decoration: none
+}
+a:hover {
+	color: #484848;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0
+}
+.container {
+	margin: 0 auto;
+	margin-left: 50px;
+	margin: auto;
+	position: relative;
+}
+.all {
+	width: 100%;
+	height: 100%;
+}
+.bj {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+}
+.login {
+	width: 350px;
+	height: 450px;
+	background: #fff;
+	border: 1px solid #D5D4D4;
+	top: 35%;
+	right: 25%;
+	border-radius: 0.6em;
+	position: absolute;
+}
+.login img {
+	width: 40px;
+	height: 40px;
+}
+.login .us p {
+	padding-top: 30px;
+}
+.us .sub input {
+	width: 250px;
+	height: 45px;
+	background: #006DD4;
+	color: #fff;
+}
+.us a {
+	color: #316BF1;
+	margin-left: 75px;
+}
+.login .form-group input {
+	height: 35px;
+	width: 200px;
+}
+.login .us {
+	margin-top: 20px;
+	margin-left: 50px;
+}
+.tou {
+	width: 100%;
+	height: 50px;
+	background: #525151;
+	border-radius: 0.6em 0.6em 0 0;
+}
+.tou p {
+	line-height: 50px;
+	margin-left: 30px;
+	color: #fff;
+}
+</style>
+</head>
+<body>
+<div class="all">
+  <div class="bj"><img src="/img/webimg/bg.jpg"></div>
+  <div class="login">
+    <ul class="tou">
+      <p>登&nbsp;录</p>
+    </ul>
+    <ul class="us">
+      <form>
+        <p class="form-group"><img src="/img/webimg/user.png">
+          <input id="name" type="text" placeholder="用户名"/>
+        </p>
+        <p class="form-group"><img src="/img/webimg/pw.png">
+          <input id="password" type="password" class="upass" placeholder="密码"/>
+        </p>
+        <p>
+          <input type="checkbox" value="记住密码" style="vertical-align:middle; width:17px; height:17px;">
+          记住密码 <a href="">忘记密码？</a></p>
+        <p class="sub">
+          <input id="login" type="button" value="登录"/>
+        </p>
       </form>
-
-    </div> <!-- /container -->
-
+      <div id="message"></div>
+    </ul>
+  </div>
+</div>
 	<script src="/js/webjs/jquery-1.11.3.js"></script>
-    <script>
-		$("#submit").click(function(){
-			var email = $("#inputEmail").val();
-			var pwd = $("#inputPassword").val();
-			$.post('/login', {"id":email, "password":pwd},function(data){
+<script>
+	$("#login").click(function(){
+		var name = $("#name").val();
+		var password = $("#password").val();
+			$.post("/login",{"id":name, "password":password}, function(data){
 				if(data.status == 'ok'){
-					window.location.href="/views/webviews/user/manage.html";
+					window.location.href="/views/webviews/invoice/recognize.html";
 				}
 				else{
-					alert("password error!");
+					$("#message").html("用户名或密码错误，请重新输入！");
 				}
-				
-			});
-		});    
-    </script>
-  </body>
+		});
+	});
+</script>
+</body>
 </html>

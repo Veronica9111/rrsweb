@@ -7,6 +7,7 @@ public class UserRecord implements java.io.Serializable{
     private Integer inspect;
     private Integer recognize;
     private String company;
+    private String mail;
 
 
  
@@ -51,5 +52,13 @@ public class UserRecord implements java.io.Serializable{
     
     public void setCompany(String company){
     	this.company = company;
+    }
+    
+    public String getMail(){
+    	return mail;
+    }
+    
+    public void setMail(String mail){
+    	this.mail = mail;
     }
 }

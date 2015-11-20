@@ -62,15 +62,30 @@ public class UserController {
 	
 	@RequestMapping("/login")
 	@ResponseBody
-	public Map<String, String> login(HttpServletRequest request){
+	public Map<String, String> login(HttpSession httpSession, HttpServletRequest request){
 		logger.debug("enter Login");
 		Map<String, String> retMap = new HashMap<>();
-		String uid = request.getParameter("id");
+		String id = request.getParameter("id");
 		String password = request.getParameter("password");
-		if(userService.checkUserValidate(uid, password)){
+		Integer uid = userService.checkUserValidate(id, password);
+		if(uid != 0){
 			retMap.put("status", "ok");
+			httpSession.setAttribute(SessionConstant.SESSION_USER_ID, uid);
 		}
 		else {
+			retMap.put("status", "nok");
+		}
+		return retMap;
+	}
+	
+	@RequestMapping("/logout")
+	@ResponseBody
+	public Map<String, String>logout(HttpSession httpSession, HttpServletRequest request){
+		Map<String, String> retMap = new HashMap<>();
+		try {
+			httpSession.removeAttribute(SessionConstant.SESSION_USER_ID);
+			retMap.put("status", "ok");
+		}catch(Exception e){
 			retMap.put("status", "nok");
 		}
 		return retMap;
@@ -212,12 +227,12 @@ public class UserController {
 	// name email company id
 	@RequestMapping("/user/updateUser")
 	@ResponseBody
-	public Map<String, String>updateUser(HttpServletRequest request){
-		Integer id=Integer.parseInt(request.getParameter("id"));
+	public Map<String, String>updateUser(HttpSession httpSession, HttpServletRequest request){
+		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
 		String email=request.getParameter("email");
 		String name=request.getParameter("name");
 		String company=request.getParameter("company");
-		boolean boo=userService.updateUser(id,email,name,company);
+		boolean boo=userService.updateUser(uid,email,name,company);
 		Map<String, String>retMap = new HashMap<>();
 		if (boo){
 			retMap.put("status", "ok");
@@ -230,12 +245,12 @@ public class UserController {
 	//id oldpassword new password
 	@RequestMapping("/user/updateUserPassword")
 	@ResponseBody
-	public Map<String, String>updateUserPassword(HttpServletRequest request){
-		Integer id=Integer.parseInt(request.getParameter("id"));
+	public Map<String, String>updateUserPassword(HttpSession httpSession, HttpServletRequest request){
+		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
 		String oldPassword=request.getParameter("oldPassword");
 		String newPassword=request.getParameter("newPassword");
 		Map<String, String>retMap = new HashMap<>();
-		boolean boo=userService.updateUserPassword(id,oldPassword,newPassword);
+		boolean boo=userService.updateUserPassword(uid,oldPassword,newPassword);
 		if (boo){
 			retMap.put("status", "ok");
 		}
@@ -272,6 +287,17 @@ public class UserController {
 		Map<String, String> retMap = new HashMap<>();
 		List<List<String>> records = userService.getAllUsersWithWorkRecords();
 		String data = JSONArray.fromObject(records).toString();
+		retMap.put("data", data);
+		return retMap;
+	}
+	
+	@RequestMapping("/user/getUserWithWorkRecords")
+	@ResponseBody
+	public Map<String, String> getUserWithWorkRecords(HttpSession httpSession, HttpServletRequest request){
+		Map<String, String> retMap = new HashMap<>();
+		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
+		List<String> record = userService.getUserWithWorkRecords(uid);
+		String data = JSONArray.fromObject(record).toString();
 		retMap.put("data", data);
 		return retMap;
 	}

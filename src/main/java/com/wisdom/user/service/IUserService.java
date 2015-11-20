@@ -6,7 +6,7 @@ import com.wisdom.common.model.UserRole;
 
 public interface IUserService {
 
-	public Boolean checkUserValidate(String id, String password);
+	public Integer checkUserValidate(String id, String password);
 	
 	public Boolean addUser(String name, String company, String roleName);
 	
@@ -35,4 +35,6 @@ public interface IUserService {
 	public boolean deactivateUser(Integer id);
 	
 	public List<List<String>> getAllUsersWithWorkRecords();
+	
+	public List<String> getUserWithWorkRecords(Integer uid);
 }

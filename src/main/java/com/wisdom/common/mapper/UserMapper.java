@@ -21,7 +21,7 @@ public interface UserMapper {
   
   List<User> getAllUsers();
   
-  boolean updateUser(@Param("name")String name, @Param("company")String company, @Param("mail")String mail,@Param("id")Integer id);
+  Integer updateUser(@Param("id")Integer id, @Param("name")String name, @Param("mail")String mail, @Param("company")String company);
 
   List<User> getUserByGroup(@Param("mail")String mail);
   
@@ -35,11 +35,11 @@ public interface UserMapper {
   
   List<User> getUsersByPname(@Param("pname")String pName);
   
-  String booleanUserOldPassword(@Param("uid")Integer uid);
-  
-  boolean updateUserPassword(@Param("uid")Integer uid,@Param("newPassword")String newPassword);
+  Integer updateUserPassword(@Param("id")Integer id, @Param("password")String password);
   
   boolean activateUpdate(@Param("uid")Integer uid,@Param("num")Integer num);
   
   List<UserRecord> getAllUsersWithWorkRecords();
+  
+  UserRecord getUserWithWorkRecord(@Param("uid")Integer uid);
 } 

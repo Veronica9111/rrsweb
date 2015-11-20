@@ -10,7 +10,7 @@ public class User implements Serializable {
    private String mail;
    private String password;
    private String company;
-   private Boolean active;
+   private Integer active;
    
 
 
@@ -19,7 +19,7 @@ public class User implements Serializable {
        super();
    }
 
-   public User(Integer id, String name, String password, String company, Boolean active) {
+   public User(Integer id, String name, String password, String company, Integer active) {
        super();
        this.name = name;
        this.password = password;
@@ -70,11 +70,11 @@ public class User implements Serializable {
 	   this.company = company;
    }
    
-   public Boolean getActive(){
+   public Integer getActive(){
 	   return active;
    }
    
-   public void setActive(){
+   public void setActive(Integer active){
 	   this.active = active;
    }
    

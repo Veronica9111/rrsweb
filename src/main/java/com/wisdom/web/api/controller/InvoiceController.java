@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wisdom.invoice.service.IInvoiceService;
 import com.wisdom.permission.service.IPermissionService;
+import com.wisdom.utils.SessionConstant;
 
 import net.sf.json.JSONArray;
 
@@ -169,10 +171,9 @@ public class InvoiceController {
 	
 	@RequestMapping("/invoice/getInvoiceForUser")
 	@ResponseBody
-	public Map<String, String>getInvoiceForUserByStatus(HttpServletRequest request){
+	public Map<String, String>getInvoiceForUserByStatus(HttpSession httpSession, HttpServletRequest request){
 		Map<String, String>retMap = new HashMap<>();
-		//TODO get uid from session
-		Integer uid = 1;
+		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
 		String status = request.getParameter("status");
 		Map<String, String> invoice = invoiceService.getInvoiceForUserByStatus(uid, status);
 		String data = JSONArray.fromObject(invoice).toString();

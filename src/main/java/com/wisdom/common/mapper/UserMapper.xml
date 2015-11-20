@@ -26,6 +26,7 @@
 <resultMap type="com.wisdom.common.model.UserRecord" id="UserRecord">
 <result property="id" column="id"/>
 <result property="name" column="name"/>
+<result property="mail" column="mail"/>
 <result property="inspect" column="inspect"/>
 <result property="recognize" column="recognize"/>
 <result property="company" column="company"/>
@@ -65,7 +66,7 @@ delete from user where id=#{id}
 select * from user
 </select>
 <update id="updateUser"  parameterType="Integer">
-update user set name = #{name},   email = #{email} ,   company = #{company} where id = #{id}  
+update user set name = #{name}, mail = #{mail} ,company = #{company} where id = #{id}  
 </update>
 <select id="getUsersByCompany" resultType="User">
 select * from user where company=#{company}
@@ -82,11 +83,8 @@ delete from user_role where user_id=#{uid} and role_id={ select role_id from rol
 <select id="getUsersByPname" resultType="User">
 select * from user where id={select user_id from where role_id=(select role_id from where permission_id=(select id from permission where name=#{pname}))}
 </select>
-<update id="booleanUserOldPassword"  parameterType="String">
-select password from user where id=#{uid}
-</update>
-<update id="updateUserPassword"  parameterType="Integer">
-update user set password = #{password} where id = #{uid}  
+<update id="updateUserPassword"  parameterType="String">
+update user set password=#{password} where id=#{id}
 </update>
 
 <update id="activateUpdate"  parameterType="Integer">
@@ -95,7 +93,12 @@ update user set active =#{num} where id = #{uid}
 
 <select id="getAllUsersWithWorkRecords" resultType="UserRecord">
 SELECT u.id,u.name, sum(case when action = "check" then 1 else 0 end) as inspect,
-sum(case when action="recognize" then 1 else 0 end) as recognize, u.company as company FROM record r left join user u on r.uid = u.id group by  r.action
+sum(case when action="recognize" then 1 else 0 end) as recognize, u.mail as mail, u.company as company FROM record r left join user u on r.uid = u.id group by  r.action
+</select>
+
+<select id="getUserWithWorkRecord" resultType="UserRecord" parameterType="Integer">
+SELECT u.id,u.name, sum(case when action = "check" then 1 else 0 end) as inspect,
+sum(case when action="recognize" then 1 else 0 end) as recognize, u.mail as mail, u.company as company FROM record r left join user u on r.uid = u.id where uid=#{uid} group by uid
 </select>
 
 </mapper>

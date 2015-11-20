@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>用户管理</title>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
+<script type="text/javascript" language="javascript" src="http://code.jquery.com/jquery-1.11.3.min.js">
+	</script>
+<link rel="stylesheet" type="text/css" href="https://datatables.net/media/css/site-examples.css?_=5caac04f688d89b2c49bcb280190366b">
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/webcss/global.css"/>
+
+</style>
+</head>
+
+<body>
+<div class="nav">
+  <div class="container"> <img src="images/logo-white1.png">
+    <ul class="nav-header">
+      <li><a href="">发票识别</a></li>
+      <li><a  href="">发票审核</a></li>
+      <li><a href="">发票管理</a></li>
+      <li><a class="fp" href="/views/webviews/user/setting.html">个人设置</a></li>
+      <li><a href="">用户管理</a></li>
+      <li><a id="logout">退出登录</a></li>
+    </ul>
+  </div>
+</div>
+<div class="nav-t">
+ 	<div>
+ 		<input id="name" placeholder="姓名" disabled="disabled"/><br />
+ 		<input id="company" placeholder="公司名" disabled="disabled"/><br />
+ 		<input id="mail" placeholder="邮箱" /><br />
+ 		<input type="button" id="edit" value="修改" />
+ 	</div>
+ 	<div>
+ 		<h2>修改密码</h2>
+ 		<input id="old-password" placeholder="请输入当前密码" type="password"/>
+ 		<input id="new-password" placeholder="请输入新密码" type="password"/>
+ 		<input id="new-password2" placeholder="请再输入一遍" type="password" />
+ 		<input id="update-password" type="button" value="修改密码" />
+ 	</div>
+ 	<table>
+ 		<thead>
+ 			<tr>
+ 				<td>发票识别数</td>
+ 				<td>发票审核数</td>
+ 			</tr>
+ 		</thead>
+ 		<tbody>
+ 			<tr>
+ 				<td id="recognize"></td>
+ 				<td id="inspect"></td>
+ 			</tr>
+ 		</tbody>
+ 	</table>
+</div>
+<div class="mask"></div>
+<div class="footer">
+  <div class="container">
+    <p>沪ICP备15012848号 | COPYRIGHT © 2014-2015, BANGBANGZHANG, ALL RIGHTS RESERVED </p>
+  </div>
+</div>
+</body>
+<script src="jq/jquery-1.11.3.js"></script>
+<script>
+	$.post("/user/getUserWithWorkRecords", {}, function(data){
+		var info = $.parseJSON(data.data)
+		var id = info[0];
+		var name = info[1];
+		var company = info[2];
+		var mail = info[3];
+		var recognize = info[4];
+		var inspect = info[5];
+		$("#name").val(name);
+		$("#company").val(company);
+		$("#mail").val(mail);
+		$("#recognize").html(recognize);
+		$("#inspect").html(inspect);
+	});
+	
+	$("#edit").on("click", function(){
+		console.log("click");
+		var mail = $("#mail").val();
+		var name = $("#name").val();
+		var company = $("#company").val();
+		$.post("/user/updateUser", {"name":name, 'company':company,'email':mail}, function(data){
+			console.log(data);
+		});
+	});
+	$("#update-password").on("click", function(){
+		var password = $("#old-password").val();
+		var newPassword = $("#new-password").val();
+		$.post("/user/updateUserPassword", {"oldPassword": password, "newPassword": newPassword}, function(data){
+			console.log(data);
+		})
+		
+	})
+	
+</script>
+
+</html>

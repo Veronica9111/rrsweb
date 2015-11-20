@@ -40,7 +40,7 @@ public class UserServiceImpl implements IUserService{
 	}
 	
 	@Override
-	public Boolean checkUserValidate(String id, String password) {
+	public Integer checkUserValidate(String id, String password) {
 		// TODO Auto-generated method stub
 		//String cryptedPassword = DigestUtils.md5(password).toString();
 		String cryptedPassword = null;
@@ -54,7 +54,7 @@ public class UserServiceImpl implements IUserService{
 		User user = userMapper.getUserByMail(id);
 		if(user != null){
 			if (user.getPassword().equals(cryptedPassword)){
-				return true;
+				return user.getId();
 			}
 		}
 		else {
@@ -63,13 +63,13 @@ public class UserServiceImpl implements IUserService{
 			}
 			catch(NumberFormatException e){
 				logger.debug("The input user id is neither correct mail nor id");
-				return false;
+				return 0;
 			}
-			if (user.getPassword().equals(cryptedPassword)){
-				return true;
+			if (user != null && user.getPassword().equals(cryptedPassword)){
+				return user.getId();
 			}
 		}
-		return false;
+		return 0;
 	}
 
 	@Override
@@ -123,7 +123,7 @@ public class UserServiceImpl implements IUserService{
 			tmp.put("id", Integer.toString(user.getId()));
 			tmp.put("name", user.getName());
 			tmp.put("mail", user.getMail());
-			tmp.put("active", Boolean.toString(user.getActive()));
+			tmp.put("active", user.getActive().toString());
 			tmp.put("company", user.getCompany());
 			retList.add(tmp);
 		}
@@ -139,7 +139,7 @@ public class UserServiceImpl implements IUserService{
 			tmp.put("id", Integer.toString(u.getId()));
 			tmp.put("name", u.getName());
 			tmp.put("mail", u.getMail());
-			tmp.put("active", Boolean.toString(u.getActive()));
+			tmp.put("active", u.getActive().toString());
 			tmp.put("company", u.getCompany());
 			retList.add(tmp);
 		}
@@ -155,7 +155,7 @@ public class UserServiceImpl implements IUserService{
 			tmp.put("id", Integer.toString(u.getId()));
 			tmp.put("name", u.getName());
 			tmp.put("mail", u.getMail());
-			tmp.put("active", Boolean.toString(u.getActive()));
+			tmp.put("active", u.getActive().toString());
 			tmp.put("company", u.getCompany());
 			retList.add(tmp);
 		}
@@ -191,7 +191,7 @@ public class UserServiceImpl implements IUserService{
 			tmp.put("id", Integer.toString(u.getId()));
 			tmp.put("name", u.getName());
 			tmp.put("mail", u.getMail());
-			tmp.put("active", Boolean.toString(u.getActive()));
+			tmp.put("active", u.getActive().toString());
 			tmp.put("company", u.getCompany());
 			retList.add(tmp);
 		}
@@ -201,7 +201,7 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	public boolean updateUser(Integer id, String email, String name, String company) {
 		try{
-			userMapper.updateUser(name, email, company, id);
+			userMapper.updateUser(id, name, email, company);
 		}catch(Exception e){
 			return false;
 		}
@@ -211,17 +211,19 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public boolean updateUserPassword(Integer id, String oldPassword, String newPassword) {
-		String oldPass=userMapper.booleanUserOldPassword(id);
-		if(oldPassword==oldPass){
+		Integer uid = checkUserValidate(id.toString(), oldPassword);
+		if (id.equals(checkUserValidate(id.toString(), oldPassword))){
+			
 			try{
-				userMapper.updateUserPassword(id, newPassword);
+				String cryptedPassword = GenerateMD5.generateMD5(newPassword);
+				userMapper.updateUserPassword(id, cryptedPassword);
+				return true;
 			}catch(Exception e){
 				return false;
 			}
-			return true;
-		}else{
-			return false;
+			
 		}
+		return false;
 	}
 
 	@Override
@@ -258,6 +260,19 @@ public class UserServiceImpl implements IUserService{
 			tempList.add("<a  class='edit'>编辑</a>&nbsp;|<a href='javascript:;' class='sc' onclick='deleteRow(this)'>删除</a>");
 			retList.add(tempList);
 		}
+		return retList;
+	}
+
+	@Override
+	public List<String> getUserWithWorkRecords(Integer uid) {
+		List<String> retList = new ArrayList<>();
+		UserRecord record = userMapper.getUserWithWorkRecord(uid);
+		retList.add(record.getId().toString());
+		retList.add(record.getName());
+		retList.add(record.getCompany());
+		retList.add(record.getMail());
+		retList.add(record.getRecognize().toString());
+		retList.add(record.getInspect().toString());
 		return retList;
 	}
 
