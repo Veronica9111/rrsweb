@@ -1,0 +1,451 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>发票管理</title>
+<meta name="description" content="简介">
+<meta name="keywords" content="关键字">
+<link rel="stylesheet" type="text/css" href="/css/webcss/jquery-ui.css" />
+
+	<link rel="stylesheet" href="/css/webcss/jquery-ui.theme.css"/>
+	
+<style>
+@charset "UTF-8";
+
+html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, p,
+	blockquote, pre, form, input, textarea, fieldset, table, th, td {
+	margin: 0;
+	padding: 0
+}
+
+body, button, input, select, textarea {
+	font: normal 16px/2em "Microsoft YaHei";
+}
+
+body {
+	color: #b3b3b3;
+	background-color: #fff;
+}
+
+ul, ol {
+	list-style: none
+}
+
+img {
+	border: 0;
+	vertical-align: top;
+}
+
+:focus {
+	outline: 0
+}
+
+.clear {
+	clear: both;
+	height: 0;
+	font-size: 0;
+	overflow: hidden
+}
+
+.clearfix:after {
+	content: "\0020";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden
+}
+
+.clearfix {
+	clear: both;
+	zoom: 1
+}
+
+.v-a-m {
+	vertical-align: middle
+}
+
+h1 {
+	font-size: 18px
+}
+
+h2 {
+	font-size: 16px
+}
+
+h3 {
+	font-size: 14px
+}
+
+h4, h5, h6 {
+	font-size: 100%
+}
+
+a {
+	color: #121111;
+	text-decoration: none
+}
+
+a:hover {
+	color: #484848;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0
+}
+
+.container {
+	width: 85%;
+	margin: 0 auto;
+}
+
+.nav {
+	width: 100%;
+	height: 80px;
+	line-height: 80px;
+	margin-left: 50px;
+	margin: auto;
+	position: relative;
+	background: #098B8B
+}
+
+.nav img {
+	margin-top: 18px;
+}
+
+.nav ul {
+	float: right;
+}
+
+.nav ul li {
+	float: left;
+	position: relative;
+}
+
+.nav li a {
+	font-size: 24px;
+	padding-left: 25px;
+	color: #fff;
+}
+
+.nav li a:hover {
+	color: #E3E0E0;
+}
+
+.nav .fp {
+	display: block;
+	color: #E3E0E0;
+	width: 120px;
+	height: 80px;
+	text-align: center;
+	background-color: #1F595A;
+	margin-left: 25px;
+	padding: 0px;
+}
+
+.nav-t {
+	width: 85%;
+	height: 835px;
+	position: relative;
+	margin: 0 auto;
+}
+
+.nav-t li a {
+	color: #0a2fd6;
+	font-size: 20px;
+	margin-left: 15px;
+}
+
+.nav-t .bs a {
+	color: #000000;
+}
+
+.nav-t .nav-l {
+	float: left;
+	border-bottom: 1px dashed #9B9595;
+}
+
+.nav-t .nav-l li {
+	float: left;
+}
+
+.nav-t .nav-r {
+	float: right;
+	border-bottom: 1px dashed #9B9595;
+}
+
+.nav-t .nav-r li {
+	float: left;
+}
+
+.ui-tabs-nav{
+	width: 100%;
+}
+
+.footer {
+	display: block;
+	width: 100%;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	color: #EDEDED;
+	background: #098B8B;
+	overflow: hidden;
+}
+
+.content {
+	margin-top: 5em;
+	margin-left: 5%;
+	overflow: auto;
+}
+
+
+
+.invoice-img {
+	width: 150px;
+	height: 150px;
+	margin: 0.5em;
+}
+
+.invoice {
+	float: left;
+}
+
+.action{
+	    width: 65vw;
+    float: left;
+}
+
+#delete-unrecognized{
+	cursor:pointer;
+}
+
+#unrecognized {
+		border: 0px;
+}
+
+.ui-tabs-anchor{
+	padding:1em;
+}
+</style>
+</head>
+
+<body>
+	<div class="nav">
+		<div class="container">
+			<img src="images/logo-white1.png">
+			<ul class="nav-header">
+				<li><a href="">发票识别</a></li>
+				<li><a href="">发票审核</a></li>
+				<li><a class="fp" href="">发票管理</a></li>
+				<li><a href="">用户管理</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="nav-t">
+
+		<div class="container" id="container">
+			<ul class="nav-l">
+				<li><a href="#unrecognized">未识别</a></li>
+				<li><a href="#unchecked">未审核</a></li>
+				<li><a href="#checked">已识别</a></li>
+			</ul>
+
+			<div id="unrecognized" class="content">
+				<div class="action">
+				<ul class="nav-r">
+					<li class="bs"><a href=""> <input type="checkbox"
+							name="zone_checkbox" value="zone_checkbox"
+							id="check-all-unrecognized">全选</input>
+					</a></li>
+					<li id="dispatch-unrecognized" class="fen"><a href="javascript:;">分发任务</a></li>
+					<li><a class="fl delete" id="delete-unrecognized" >删除</a></li>
+				</ul>
+				</div>
+				<div class="invoice">
+					<img class="invoice-img" src="/img/webimg/example.png" /> <input
+						type="checkbox" class="unrecognized-checkbox" id="check1" />
+				</div>
+				<div class="invoice">
+					<img class="invoice-img" src="/img/webimg/example.png" /> <input
+						type="checkbox" class="unrecognized-checkbox" id="check1" />
+				</div>
+				<div class="invoice">
+					<img class="invoice-img" src="/img/webimg/example.png" /> <input
+						type="checkbox" class="unrecognized-checkbox" id="check1" />
+				</div>
+				<div class="invoice">
+					<img class="invoice-img" src="/img/webimg/example.png" /> <input
+						type="checkbox" class="unrecognized-checkbox" id="check1" />
+				</div>
+				<div class="invoice">
+					<img class="invoice-img" src="/img/webimg/example.png" /> <input
+						type="checkbox" class="unrecognized-checkbox" id="check1" />
+				</div>
+				<div class="invoice">
+					<img class="invoice-img" src="/img/webimg/example.png" /> <input
+						type="checkbox" class="unrecognized-checkbox" id="check1" />
+				</div>
+				<div class="invoice">
+					<img class="invoice-img" src="/img/webimg/example.png" /> <input
+						type="checkbox" class="unrecognized-checkbox" id="check1" />
+				</div>
+				<div class="invoice">
+					<img class="invoice-img" src="/img/webimg/example.png" /> <input
+						type="checkbox" class="unrecognized-checkbox" id="check1" />
+				</div>
+				<div class="invoice">
+					<img class="invoice-img" src="/img/webimg/example.png" /> <input
+						type="checkbox" class="unrecognized-checkbox" id="check1" />
+				</div>
+				<div class="invoice">
+					<img class="invoice-img" src="/img/webimg/example.png" /> <input
+						type="checkbox" class="unrecognized-checkbox" id="check1" />
+				</div>
+				<div class="invoice">
+					<img class="invoice-img" src="/img/webimg/example.png" /> <input
+						type="checkbox" class="unrecognized-checkbox" id="check1" />
+				</div>
+				<div class="invoice">
+					<img class="invoice-img" src="/img/webimg/example.png" /> <input
+						type="checkbox" class="unrecognized-checkbox" id="check1" />
+				</div>
+
+			</div>
+			<div id="unchecked" class="content">
+				<ul class="tp-t">
+					<li><a href=""> <input type="checkbox" name="checkbox"
+							id="checkbox" class="aa" value="1"
+							style="vertical-align: middle;"> 1
+					</a></li>
+				</ul>
+			</div>
+			<div id="checked" class="content">
+				<ul class="tp-t">
+					<li><a href=""> <input type="checkbox" name="checkbox"
+							id="checkbox" class="aa" value="1"
+							style="vertical-align: middle;"> 1
+					</a></li>
+					<li><a href=""> <input type="checkbox" name="checkbox"
+							id="checkbox" class="aa" value="1"
+							style="vertical-align: middle;"> 2
+					</a></li>
+
+				</ul>
+			</div>
+		</div>
+
+		<div id="dispatcher" style="display:none;" >
+			<ul>
+				<li><input type="checkbox" value=""> &nbsp;小张</li>
+				<li><input type="checkbox" value=""> &nbsp;小丽</li>
+				<li><input type="checkbox" value=""> &nbsp;小张</li>
+				<li><input type="checkbox" value=""> &nbsp;小丽</li>
+				<li><input type="checkbox" value=""> &nbsp;小张</li>
+				<li><input type="checkbox" value=""> &nbsp;小丽</li>
+
+			</ul>
+		</div>
+
+		<div class="mask"></div>
+		<div class="footer">
+			<div class="container">
+				<p>沪ICP备15012848号 | COPYRIGHT © 2014-2015, BANGBANGZHANG, ALL
+					RIGHTS RESERVED</p>
+			</div>
+		</div>
+</body>
+<script src="/js/webjs/jquery-1.11.3.js"></script>
+<script src="/js/webjs/jquery-ui.js"></script>
+<script>
+	$("#container").tabs();
+/*	$(function() {
+		$(".fen").click(function() {
+			var doH = $(document).height();
+			var doW = $(document).width();
+			$(".mask").css({
+				"width" : doW,
+				"height" : doH
+			});
+			$(".yh").show();
+			$(".mask").show();
+		});
+	});*/
+	
+	$("#dispatch-unrecognized").on("click", function(){
+		$("#dispatcher").dialog({
+		      height:440,
+		      modal: true,
+		      buttons: {
+		        "分发": function() {
+		          $( this ).dialog( "close" );
+		        },
+		        "取消": function() {
+		          $( this ).dialog( "close" );
+		        }
+		      }
+		});
+		
+	});
+	
+	$("#check-all-unrecognized").change(function(){
+		if($(this).prop("checked")){
+			$(".unrecognized-checkbox").each(function(){
+				$(this).prop("checked", true);
+			});
+			
+		}else{
+			$(".unrecognized-checkbox").each(function(){
+				$(this).prop("checked", false);
+			});
+		}
+		
+	});
+	
+	$("#delete-unrecognized").on("click", function(){
+		$(".unrecognized-checkbox:checked").each(function(){
+			$(this).parent().remove();
+		});
+		
+	});
+</script>
+<script language="JavaScript">
+	function getByClass(cla, obj) {
+		var obj = obj || document, arr = [];
+
+		if (document.getElementsByClassName) {
+			return document.getElementsByClassName(cla);
+		} else {
+			var all = obj.getElementsByTagName('*');
+
+			for (var i = 0, len = all.length; i < len; i++) {
+				if (all[i].className.match(cla) != null)
+					arr.push(all[i]);
+			}
+
+			return arr;
+		}
+	}
+	function checkAll(cla, obj) {
+		var checkboxs = getByClass(cla);
+		var len = checkboxs.length;
+		for (i = 0; i < len; i++) {
+			checkboxs[i].checked = obj.checked;
+		}
+	}
+</script>
+<script>
+	$(function() {
+		$("#delete").bind("click", allDelete);
+		function allDelete() {
+			$(".tp-t :checkbox:checked").each(function(index, element) {//循环没一个勾选checked input元素
+				var row = $(this).parent().parent();
+				row.remove();
+			});
+			calAll();
+		}
+
+	})
+</script>
+</html>
