@@ -42,4 +42,5 @@ public interface UserMapper {
   List<UserRecord> getAllUsersWithWorkRecords();
   
   UserRecord getUserWithWorkRecord(@Param("uid")Integer uid);
+  
 } 

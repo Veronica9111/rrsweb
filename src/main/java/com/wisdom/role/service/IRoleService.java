@@ -3,7 +3,10 @@ package com.wisdom.role.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.wisdom.common.model.Role;
+import com.wisdom.common.model.UserRole;
 
 public interface IRoleService {
 
@@ -20,4 +23,6 @@ public interface IRoleService {
 	Boolean removePermissionFromRole(String roleName, List<String>permissionNames);
 	
 	boolean addRolePermission(String roleName,List<String>permissionNames);
+	
+	 List<String> getUserRoles(Integer uid);
 }

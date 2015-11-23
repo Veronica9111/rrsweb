@@ -369,15 +369,6 @@ table {
 .tj-l li {
 	width: 100%;
 }
-.tj-l li span {
-	display: inline-block;
-	font-size: 20px;
-	margin-top: 20px;
-	padding-top: 10px;
-	color: #000;
-	width: 100px;
-	text-align: right;
-}
 .tj h4 {
 	color: #787878;
 	font-size: 32px;
@@ -417,15 +408,7 @@ table {
 }
 .tj-l li {
 	width: 100%;
-}
-.tj-l li span {
-	display: inline-block;
-	font-size: 20px;
-	margin-top: 20px;
-	padding-top: 10px;
-	color: #000;
-	width: 100px;
-	text-align: right;
+	margin:0.5em;
 }
 .tian h4 {
 	color: #787878;

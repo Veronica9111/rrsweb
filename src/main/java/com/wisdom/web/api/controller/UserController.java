@@ -30,6 +30,7 @@ import net.sf.json.JSONArray;
 
 import com.wisdom.common.model.Test;
 import com.wisdom.common.model.User;
+import com.wisdom.role.service.IRoleService;
 import com.wisdom.common.mapper.TestMapper;
 
 @Controller
@@ -38,7 +39,8 @@ public class UserController {
 	
 	@Autowired
 	private IUserService userService;
-
+	@Autowired
+	private IRoleService roleService;
 
     
 	private static final Logger logger = LoggerFactory
@@ -311,6 +313,17 @@ public class UserController {
 		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
 		List<String> record = userService.getUserWithWorkRecords(uid);
 		String data = JSONArray.fromObject(record).toString();
+		retMap.put("data", data);
+		return retMap;
+	}
+	
+	@RequestMapping("/user/getUserRoles")
+	@ResponseBody	
+	public Map<String, String>getUserRoles(HttpServletRequest request){
+		Map<String, String> retMap = new HashMap<>();
+		Integer uid = Integer.parseInt(request.getParameter("id"));
+		List<String> roles = roleService.getUserRoles(uid);
+		String data = JSONArray.fromObject(roles).toString();
 		retMap.put("data", data);
 		return retMap;
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.wisdom.common.model.Role;
+import com.wisdom.common.model.UserRole;
 
 public interface RoleMapper {
 
@@ -23,4 +24,6 @@ public interface RoleMapper {
 	void removePermissionFromRole(@Param("r_nam")String role_name, @Param("p_name")String permission_name);	
 	
 	void addRolePermission(@Param("r_name")String roleName,@Param("p_name")String permissionName);
+	
+	  List<Role> getUserRoles(@Param("uid")Integer uid);
 }

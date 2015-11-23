@@ -61,7 +61,6 @@ delete from user where id=#{id}
 	from user u left join user_role ur on u.id = ur.user_id 
 	left join role r on ur.role_id = r.id
 </select>
-
 <select id="getAllUsers" resultType="User">
 select * from user
 </select>
@@ -93,7 +92,7 @@ update user set active =#{num} where id = #{uid}
 
 <select id="getAllUsersWithWorkRecords" resultType="UserRecord">
 SELECT u.id,u.name, sum(case when action = "check" then 1 else 0 end) as inspect,
-sum(case when action="recognize" then 1 else 0 end) as recognize, u.mail as mail, u.company as company FROM record r left join user u on r.uid = u.id group by  r.action
+sum(case when action="recognize" then 1 else 0 end) as recognize, u.mail as mail, u.company as company FROM record r right join user u on r.uid = u.id group by  u.id
 </select>
 
 <select id="getUserWithWorkRecord" resultType="UserRecord" parameterType="Integer">

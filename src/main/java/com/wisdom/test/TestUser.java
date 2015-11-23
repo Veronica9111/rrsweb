@@ -96,7 +96,6 @@ public class TestUser extends TestCase {
 		Map<String, String> expectedMap = new HashMap<>();
 		expectedMap.put("status", "ok");
 		String expected = JSONArray.fromObject(expectedMap).toString();
-		System.out.println(result);
 		Assert.assertThat(expected, CoreMatchers.containsString(result));
 		response.close();
 	}
@@ -182,9 +181,21 @@ public class TestUser extends TestCase {
 		Map<String, String> expectedMap = new HashMap<>();
 		expectedMap.put("status", "nok");
 		String expected = JSONArray.fromObject(expectedMap).toString();
-		System.out.println("hello");
-		System.out.println(result);
 		Assert.assertThat(expected, CoreMatchers.containsString(result));
 		response.close();
+	}
+	
+	@Test
+	public void testGetAllUsers() throws ClientProtocolException, IOException{
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		String responseString = "";
+		String line = "";
+		HttpGet request = new HttpGet("http://localhost:8080/user/getAllUsersWithWorkRecords");
+		HttpResponse response = httpclient.execute(request);
+		String result = handleResponse(response);
+		System.out.println(result);
+		Assert.assertNotNull(result);
+		String expected = "毛毛兔";
+		Assert.assertThat(result, CoreMatchers.containsString(expected));
 	}
 }

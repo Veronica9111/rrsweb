@@ -3,14 +3,17 @@
 <head>
 <meta charset="utf-8">
 <title>用户管理</title>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
-<script type="text/javascript" language="javascript" src="http://code.jquery.com/jquery-1.11.3.min.js">
+<link rel="stylesheet" type="text/css" href="/css/webcss/jquery.dataTables.min.css">
+<script type="text/javascript" language="javascript" src="/js/webjs/jquery-1.11.3.js">
 	</script>
-<link rel="stylesheet" type="text/css" href="https://datatables.net/media/css/site-examples.css?_=5caac04f688d89b2c49bcb280190366b">
-<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/webcss/example.css">
+<script type="text/javascript" language="javascript" src="/js/webjs/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/webcss/global.css"/>
-
-</style>
+<link rel="stylesheet" type="text/css" href="/css/webcss/jquery-ui.css" />
+<link rel="stylesheet" href="/css/webcss/jquery-ui.theme.css"/>
+<script src="/js/webjs/jquery-ui.js"></script>
+<script src="/js/webjs/sol.js"></script>
+<link href="/css/webcss/searchableOptionList.css" rel="stylesheet">
 </head>
 
 <body>
@@ -27,7 +30,10 @@
 <div class="nav-t">
   <div class="container">
     <ul class="nav-l">
-      <li><a href="javascript:;" class="bj">添加用户</a></li>
+
+      <li><a class="bj2" id="add-user-btn">添加用户</a></li>
+      <li><a class="bj2" id="edit-user-btn">编辑用户</a></li>
+      <li><a class="bj2" id="delete-user-btn">删除用户</a></li>
     </ul>
     <ul class="table-l">
       <table id="example" class="display" cellspacing="0" width="100%">
@@ -37,29 +43,9 @@
     </ul>
   </div>
 </div>
-<div class="tj">
-  <h4>添加用户</h4>
-  <ul class="tj-l">
-    <li><span>用户名</span>
-      <input type="text"  value="张丽">
-    </li>
-    <li><span>公司名称</span>
-      <input type="text" value="上海元升财务咨询">
-    </li>
-    <li><span>用户类型</span>
-            <select class="roles" tabindex="" >
-      		</select>
-    </li>
-  <p><a href="">
-      <input type="button" value="修改">
-      </a></p>
-    <p><a href="">
-      <input type="button" value="取消">
-      </a></p>
-  </ul>
-</div>
-<div class="tian">
-  <h4>添加用户</h4>
+
+
+<div id="add-user-dialog">
   <ul class="tj-l">
     <li><span>用户名</span>
       <input id="name" type="text"  value="">
@@ -68,51 +54,32 @@
       <input id="company" type="text" value="">
     </li>
     <li><span>用户类型</span>
-      <select id="add-role" class="roles" tabindex="" >
+      <select id="add-role" tabindex="" name="htmltest" multiple="multiple">
       </select>
     </li>
-  <p>
-      <input id="add-user" type="button" value="添加">
-   </p>
-    <p><a href="">
-      <input type="button" value="取消">
-      </a></p>
   </ul>
 </div>
-<div class="mask"></div>
+<div id="edit-user-dialog">
+  <ul class="tj-l">
+    <li><span>用户名</span>
+      <input id="edit-name" type="text"  value="">
+    </li>
+    <li><span>公司名称</span>
+      <input id="edit-company" type="text" value="">
+    </li>
+    <li><span>用户类型</span>
+      <select id="edit-role" tabindex="" name="htmltest" multiple="multiple">
+      </select>
+    </li>
+  </ul>
+</div>
+
 <div class="footer">
   <div class="container">
     <p>沪ICP备15012848号 | COPYRIGHT © 2014-2015, BANGBANGZHANG, ALL RIGHTS RESERVED </p>
   </div>
 </div>
 </body>
-<script src="jq/jquery-1.11.3.js"></script>
-<script>
-$(function(){
-$(".bj").click(function(){	
-	var brsW=$(window).width();
-	var brsH=$(window).height();
-	var curW=$(".tian").width();
-	var curH=$(".tian").height();
-	var left=(brsW-curW)/2;
-	var top=(brsH-curH)/2;
-	var doH=$(document).height();
-	var doW=$(document).width();
-	$(".mask").css({"width":doW,"height":doH});
-	$(".tian").css({"left":left,"top":top});
-	$(".tian").show();
-	$(".mask").show();
-})
-/*var sclL=$(window).scrollLeft();
-	var sclT=$(window).scrollTop();*/
-	
-})
-
-</script>
-<script>
-
-
-</script>
 <script>
 function deleteRow(elem) {
     var tableObj = document.getElementById("example");
@@ -126,21 +93,119 @@ function deleteRow(elem) {
 	
 	$(document).ready(function() {
 		var dataSet = [];
+		var roles = [];
 		$.post('/user/getAllUsersWithWorkRecords', {},function(data){
-			var dataSet  = $.parseJSON(data.data);
-		    var table = $('#example').DataTable({"sDom": '<"top" f>rt<"bottom" p><"clear">',
-		    	data: dataSet,	
-		    	columns: [
-		    	          	{title: "员工号"},
-		    	            { title: "姓名" },
-		    	            { title: "公司" },
-		    	            { title: "识别数" },
-		    	            { title: "审核数." },
-		    	            { title: "" },
+			 dataSet  = $.parseJSON(data.data);
+			    var table = $('#example').DataTable({"sDom": '<"top" f>rt<"bottom" p><"clear">',
+			    	data: dataSet,	
+			    	columns: [
+			    	          	{title: "员工号"},
+			    	            { title: "姓名" },
+			    	            { title: "公司" },
+			    	            { title: "识别数" },
+			    	            { title: "审核数." },
 
-		    	        ]
-		    });
-		    
+			    	        ]
+			    });
+
+			    $('#example tbody').on( 'click', 'tr', function () {
+			        if ( $(this).hasClass('selected') ) {
+			            $(this).removeClass('selected');
+			        }
+			        else {
+			            table.$('tr.selected').removeClass('selected');
+			            $(this).addClass('selected');
+			        }
+			    } );
+			    
+			    
+			    $("#edit-user-btn").on("click", function(){
+			    	console.log(table.row('.selected').data());
+			    	var id = table.row('.selected').data()[0];
+			    	var name = table.row('.selected').data()[1];
+			    	var company = table.row('.selected').data()[2];
+			    	$("#edit-name").val(name);
+			    	$("#edit-company").val(company);
+
+					  $.post("/user/getUserRoles", {"id":id}, function(data){
+						  var options = $.parseJSON(data.data);
+					    	$(".sol-container").each(function(){
+					    		$(this).remove();
+					    	});
+					    	//$("#edit-role").empty();
+					    	$("#edit-role").val('').trigger('chosen:updated');
+					    	$('#edit-role').css("display","inline-block");	
+					    	$("#edit-role").attr("name", "htmltest");
+					    	console.log($("#edit-role"));
+					    	$.each(roles, function(key, value){
+
+					    		if($.inArray(value, options) !== -1){
+
+					    		     $('#edit-role')
+				    	        	  .append($('<option selected="selected">', { key: value })
+				    	          	  .text(value)); 
+					    		}else{
+				    			
+					    		     $('#edit-role')
+				    	        	  .append($('<option>', { key: value })
+				    	          	  .text(value)); 
+					    		}
+					    		
+					    	});
+				    		$('#edit-role').searchableOptionList({
+				    			texts : {
+				    				searchplaceholder: '点击此处查询用户角色',
+				    				  selectAll: '全选',
+				    				  selectNone: '取消全选',
+
+				    				}
+				    		});
+				    		$("#edit-role").trigger("chosen:updated");
+				    	});
+			    	console.log("hello");
+			    	$("#edit-user-dialog").dialog({
+			    		height:480,
+			    		  width:640,
+			    		  title:"编辑用户",
+			    		  buttons: [
+			    		            {
+			    		              text: "编辑用户",
+			    		              icons: {
+			    		                primary: "ui-icon-heart"
+			    		              },
+			    		              click: function() {
+			    		    		    	var name = $("#edit-name");
+			    		    		    	var company = $("#edit-company");
+			    		    		    	var role = $('#add-role').find(":selected").text();
+			    		    		    	
+			    		    		    	$.post('/user/addUser',{'name':name.val(), 'company':company.val(),'role':role},function(data){
+			    		    		    		console.log(data);
+			    		    		    	});
+			    		    		    	console.log(role);
+			    		                $( this ).dialog( "close" );
+			    		              }
+			    		         
+			    		              // Uncommenting the following line would hide the text,
+			    		              // resulting in the label being used as a tooltip
+			    		              //showText: false
+			    		            },{
+			    		            	text: "取消",
+				    		              icons: {
+				    		                primary: "ui-icon-heart"
+				    		              },
+				    		              click: function() {
+				    		                $( this ).dialog( "close" );
+				    		              }
+			    		            }
+			    		          ]
+			    		        });
+			    		
+			    	});
+			    
+		});
+
+
+
 		    $.post("/role/getAllRoles",{},function(data){
 		    	console.log(data);
 		    	var options = $.parseJSON(data.data);
@@ -148,51 +213,78 @@ function deleteRow(elem) {
 		    	$.each(options[0], function( key, value) { 
 		    		console.log(key);
 		    		console.log(value);
-		    	     $('.roles')
+		    		roles.push(value);
+		    	     $('#add-role')
 		    	          .append($('<option>', { key: value })
 		    	          .text(value)); 
 
+
+
 		    	});
+	    		$('#add-role').searchableOptionList({
+	    			texts : {
+	    				searchplaceholder: '点击此处查询用户角色',
+	    				  selectAll: '全选',
+	    				  selectNone: '取消全选',
+
+	    				}
+	    		});
 		    });
 
-		    $("#add-user").on("click", function(){
-		    	var name = $("#name");
-		    	var company = $("#company");
-		    	var role = $('#add-role').find(":selected").text();
+
+
+		    
+		    
+		    $("#add-user-btn").on("click", function(){
+		    	$("#add-user-dialog").dialog({
+		    		  height:480,
+		    		  width:640,
+		    		  title:"添加用户",
+		    		  buttons: [
+		    		            {
+		    		              text: "添加用户",
+		    		              icons: {
+		    		                primary: "ui-icon-heart"
+		    		              },
+		    		              click: function() {
+		    		    		    	var name = $("#name");
+		    		    		    	var company = $("#company");
+		    		    		    	var role = $('#add-role').find(":selected").text();
+		    		    		    	console.log(role);
+		    		    		    	
+		    		    		    	$.post('/user/addUser',{'name':name.val(), 'company':company.val(),'role':role},function(data){
+		    		    		    		console.log(data);
+		    		    		    	});
+		    		    		    	console.log(role);
+		    		                $( this ).dialog( "close" );
+		    		              }
+		    		         
+		    		              // Uncommenting the following line would hide the text,
+		    		              // resulting in the label being used as a tooltip
+		    		              //showText: false
+		    		            },{
+		    		            	text: "取消",
+			    		              icons: {
+			    		                primary: "ui-icon-heart"
+			    		              },
+			    		              click: function() {
+			    		                $( this ).dialog( "close" );
+			    		              }
+		    		            }
+		    		          ]
+		    		        });
 		    	
-		    	$.post('/user/addUser',{'name':name.val(), 'company':company.val(),'role':role},function(data){
-		    		console.log(data);
-		    	});
-		    	console.log(role);
 		    });
-			$(".edit").click(function(){	
-				console.log("click edit");
-				var brsW=$(window).width();
-				var brsH=$(window).height();
-				var curW=$(".tj").width();
-				var curH=$(".tj").height();
-				var left=(brsW-curW)/2;
-				var top=(brsH-curH)/2;
-				var doH=$(document).height();
-				var doW=$(document).width();
-				$(".mask").css({"width":doW,"height":doH});
-				$(".tj").css({"left":left,"top":top});
-				$(".tj").show();
-				$(".mask").show();
-			});
-		});
+		    
+	//	});//get all post ends
 
 
+	    $('#example tbody tr').on('click', 'td', function () {
+	        var data = table.row( this ).data();
+	        alert( 'You clicked on '+data[0]+'\'s row' );
+	    } );
 
-    $('#example tbody').on( 'click', 'tr', function () {
-        if ( $(this).hasClass('selected') ) {
-            $(this).removeClass('selected');
-        }
-        else {
-            table.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-        }
-    } );
+
  
     $('#button').click( function () {
         table.row('.selected').remove().draw( false );

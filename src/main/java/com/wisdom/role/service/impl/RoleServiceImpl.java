@@ -126,6 +126,21 @@ public class RoleServiceImpl implements IRoleService{
 			return true;
 		}
 	}
+
+	@Override
+	public List<String> getUserRoles(Integer uid) {
+		List<Role> roles = roleMapper.getUserRoles(uid);
+		List<String> retList = new ArrayList();
+		if(roles == null){
+			return retList;
+		}
+		for(Role role: roles){
+			if(role != null){
+				retList.add(role.getName());
+			}
+		}
+		return retList;
+	}
 	
 	 
 	

@@ -19,6 +19,7 @@ import com.wisdom.user.service.IUserService;
 import com.wisdom.web.api.controller.UserController;
 import com.wisdom.common.mapper.TestMapper;
 import com.wisdom.common.mapper.UserMapper;
+import com.wisdom.common.model.Role;
 import com.wisdom.common.model.User;
 import com.wisdom.common.model.UserRecord;
 import com.wisdom.common.model.UserRole;
@@ -257,7 +258,6 @@ public class UserServiceImpl implements IUserService{
 			tempList.add(record.getCompany());
 			tempList.add(record.getRecognize().toString());
 			tempList.add(record.getInspect().toString());
-			tempList.add("<a  class='edit'>编辑</a>&nbsp;|<a href='javascript:;' class='sc' onclick='deleteRow(this)'>删除</a>");
 			retList.add(tempList);
 		}
 		return retList;
@@ -275,5 +275,7 @@ public class UserServiceImpl implements IUserService{
 		retList.add(record.getInspect().toString());
 		return retList;
 	}
+
+
 
 }

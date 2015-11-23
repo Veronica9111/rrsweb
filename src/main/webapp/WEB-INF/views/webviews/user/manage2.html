@@ -348,6 +348,10 @@ body {
     			console.log(data);
     		})
     	})
+    	var id = 1;
+    			  $.post("/user/getUserRoles", {"id":id}, function(data){
+		    		console.log(data);
+		    	});
     </script>
   </body>
 </html>
