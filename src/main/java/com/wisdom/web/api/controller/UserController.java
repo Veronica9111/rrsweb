@@ -67,6 +67,10 @@ public class UserController {
 		Map<String, String> retMap = new HashMap<>();
 		String id = request.getParameter("id");
 		String password = request.getParameter("password");
+		if (id==null || id.equals("")||password == null || password.equals("")){
+			retMap.put("status", "nok");
+			return retMap;
+		}
 		Integer uid = userService.checkUserValidate(id, password);
 		if(uid != 0){
 			retMap.put("status", "ok");
