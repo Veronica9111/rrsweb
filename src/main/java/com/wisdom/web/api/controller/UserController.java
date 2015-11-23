@@ -104,8 +104,9 @@ public class UserController {
 		Map<String, String> retMap = new HashMap<>();
 		String name = request.getParameter("name");
 		String company = request.getParameter("company");
-		String roleName = request.getParameter("role");
-		if(userService.addUser(name, company, roleName)){
+		String rolesStr = request.getParameter("role");
+		String[] roles = rolesStr.split(",");
+		if(userService.addUser(name, company, roles)){
 			retMap.put("status", "ok");
 		}
 		else{

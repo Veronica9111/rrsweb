@@ -254,13 +254,16 @@ function deleteRow(elem) {
 		    		              click: function() {
 		    		    		    	var name = $("#name");
 		    		    		    	var company = $("#company");
-		    		    		    	var role = $('#add-role').find(":selected").text();
-		    		    		    	console.log(role);
-		    		    		    	
-		    		    		    	$.post('/user/addUser',{'name':name.val(), 'company':company.val(),'role':role},function(data){
+		    		    		    	var roles = $('#add-role').find(":selected");
+		    		    		    	var rolesList = [];
+		    		    		    	roles.each(function(){
+		    		    		    		rolesList.push($(this)[0].innerHTML);
+		    		    		    	});
+		    		    		    	var roleStr = rolesList.join(",")
+		    		    		    	console.log(roleStr);
+		    		    		    	$.post('/user/addUser',{'name':name.val(), 'company':company.val(),'role':roleStr},function(data){
 		    		    		    		console.log(data);
 		    		    		    	});
-		    		    		    	console.log(role);
 		    		                $( this ).dialog( "close" );
 		    		              }
 		    		         

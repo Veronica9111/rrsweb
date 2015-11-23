@@ -74,7 +74,7 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	@Override
-	public Boolean addUser(String name, String company, String roleName) {
+	public Boolean addUser(String name, String company, String[] roles) {
 		String cryptedPassword = null;
 		try {
 			cryptedPassword = GenerateMD5.generateMD5("123456");
@@ -90,7 +90,9 @@ public class UserServiceImpl implements IUserService{
 			user.setPassword(cryptedPassword);
 			Integer idtemp = userMapper.addUser(user);
 			Integer id = user.getId();
-			userMapper.addRoleToUser(id, roleName);
+			for(String roleName: roles){
+				userMapper.addRoleToUser(id, roleName);
+			}
 		}
 		catch(Exception e){
 			return false;

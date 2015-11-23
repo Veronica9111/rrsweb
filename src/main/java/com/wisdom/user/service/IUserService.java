@@ -8,7 +8,7 @@ public interface IUserService {
 
 	public Integer checkUserValidate(String id, String password);
 	
-	public Boolean addUser(String name, String company, String roleName);
+	public Boolean addUser(String name, String company, String[] roles);
 	
 	public Boolean deleteUser(Integer deleteUID);
 	
