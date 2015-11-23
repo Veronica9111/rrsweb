@@ -12,8 +12,8 @@
 <link rel="stylesheet" type="text/css" href="/css/webcss/jquery-ui.css" />
 <link rel="stylesheet" href="/css/webcss/jquery-ui.theme.css"/>
 <script src="/js/webjs/jquery-ui.js"></script>
-<script src="/js/webjs/sol.js"></script>
-<link href="/css/webcss/searchableOptionList.css" rel="stylesheet">
+<script src="/js/webjs/select2.full.js"></script>
+<link href="/css/webcss/select2.css" rel="stylesheet">
 </head>
 
 <body>
@@ -204,31 +204,35 @@ function deleteRow(elem) {
 			    
 		});
 
-
+    	var optionData = [];
 
 		    $.post("/role/getAllRoles",{},function(data){
 		    	console.log(data);
+
 		    	var options = $.parseJSON(data.data);
 
 		    	$.each(options[0], function( key, value) { 
 		    		console.log(key);
 		    		console.log(value);
 		    		roles.push(value);
-		    	     $('#add-role')
-		    	          .append($('<option>', { key: value })
-		    	          .text(value)); 
+		    		optionData.push({"id":key, "text":value});
+		    	  //   $('#add-role')
+		    	    //      .append($('<option>', { key: value })
+		    	      //    .text(value)); 
 
 
 
 		    	});
-	    		$('#add-role').searchableOptionList({
+		    	console.log(optionData);
+
+	    		/*$('#add-role').searchableOptionList({
 	    			texts : {
 	    				searchplaceholder: '点击此处查询用户角色',
 	    				  selectAll: '全选',
 	    				  selectNone: '取消全选',
 
 	    				}
-	    		});
+	    		});*/
 		    });
 
 
@@ -236,6 +240,7 @@ function deleteRow(elem) {
 		    
 		    
 		    $("#add-user-btn").on("click", function(){
+		    	$("#add-role").select2({data:optionData});
 		    	$("#add-user-dialog").dialog({
 		    		  height:480,
 		    		  width:640,
