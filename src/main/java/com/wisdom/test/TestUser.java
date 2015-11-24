@@ -66,8 +66,6 @@ public class TestUser extends TestCase {
 	@Test
 	public void testOpenPage() throws IOException{
 		DefaultHttpClient client = new DefaultHttpClient();
-		String responseString = "";
-		String line = "";
 		HttpGet request = new HttpGet("http://localhost:8080/views/frontviews/index.html");
 		HttpResponse response = client.execute(request);
 		String result = handleResponse(response);

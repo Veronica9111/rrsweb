@@ -34,19 +34,27 @@ public class PermissionServiceImpl implements IPermissionService{
 	 */
 	@Override
 	public boolean addPermission(Permission permission) {
-		boolean boo=false;
-		boo=permissionMapper.addPermission(permission.getName(),permission.getInvokeName(),permission.getId());
-		return boo;
+		try {
+			permissionMapper.addPermission(permission);
+		}catch(Exception e){
+			logger.error(e.getMessage());
+			return false;
+		}
+		return true;
 	}
 /*
  * Delete
  *  * @see com.wisdom.permission.service.IPermissionService#deletePermission(com.wisdom.common.model.Permission)
  */
 	@Override
-	public boolean deletePermission(Permission permission) {
-		boolean bool=false;
-		bool=permissionMapper.deletePermission(permission.getName());
-		return bool;
+	public boolean deletePermission(String name) {
+		try{
+			permissionMapper.deletePermission(name);
+		}catch(Exception e){
+			logger.error(e.getMessage());
+			return false;
+		}
+		return true;
 	}
 
 	/*

@@ -11,7 +11,7 @@ public interface IPermissionService {
 	//Add
 		public boolean addPermission(Permission permission);
 		//Delete
-		public boolean deletePermission(Permission permission);
+		public boolean deletePermission(String name);
 		//Select All
 		public List<Map<String,String>> getAllPermission();
 		//Select By name

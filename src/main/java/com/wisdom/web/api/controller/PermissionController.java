@@ -32,8 +32,7 @@ public class PermissionController {
 		logger.debug("enter addPermission");
 		Map<String, String> retMap = new HashMap<>();
 		Permission permission=new Permission();
-		permission.setId(Integer.parseInt(request.getParameter("id")));
-		permission.setInvokeName(request.getParameter(request.getParameter("invoke_name")));
+		permission.setInvokeName(request.getParameter("invoke_name"));
 		permission.setName(request.getParameter("name"));
 		if (permissionService.addPermission(permission)){
 			retMap.put("status", "ok");
@@ -48,11 +47,8 @@ public class PermissionController {
 	public Map<String, String> deletePermission(HttpServletRequest request){
 		logger.debug("enter addPermission");
 		Map<String, String> retMap = new HashMap<>();
-		Permission permission=new Permission();
-		permission.setId(Integer.parseInt(request.getParameter("id")));
-		permission.setInvokeName(request.getParameter(request.getParameter("invoke_name")));
-		permission.setName(request.getParameter("name"));
-		if (permissionService.deletePermission(permission)){
+		String name = request.getParameter("name");
+		if (permissionService.deletePermission(name)){
 			retMap.put("status", "ok");
 		}
 		else{
