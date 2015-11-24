@@ -1,5 +1,6 @@
 package com.wisdom.web.api.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wisdom.common.utils.ReadingXML;
 import com.wisdom.invoice.service.IInvoiceService;
 import com.wisdom.permission.service.IPermissionService;
 import com.wisdom.utils.SessionConstant;
@@ -63,6 +65,23 @@ public class InvoiceController {
 		return retMap;
 	}
 	
+	@RequestMapping("/invoice/sendJson")
+	@ResponseBody
+	public Map<String, String> sendJson(HttpServletRequest request){
+		Map<String, String>retMap = new HashMap<>();
+		String id = request.getParameter("id");
+		String path = request.getSession().getServletContext()
+				.getRealPath("/WEB-INF").substring(0)+File.separator+id+".xml";
+		String json=invoiceService.readingeXML(path);
+		if(json!=null){
+			retMap.put("data", json);
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
+	}
 	@RequestMapping("/invoice/updateInvoice")
 	@ResponseBody
 	public Map<String, String> updateInvoice(HttpServletRequest request){

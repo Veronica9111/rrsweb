@@ -17,6 +17,7 @@ import com.wisdom.common.mapper.InvoiceMapper;
 import com.wisdom.common.mapper.PermissionMapper;
 import com.wisdom.common.model.Invoice;
 import com.wisdom.invoice.service.IInvoiceService;
+import com.wisdom.common.utils.ReadingXML;
 import com.wisdom.common.utils.WriteXML;
 
 @Service("invoiceService")
@@ -292,6 +293,12 @@ public class InvoiceServiceImpl implements IInvoiceService {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String readingeXML(String path) {
+		ReadingXML rx=new ReadingXML();
+		return rx.read(path) ;
 	}
 
 }
