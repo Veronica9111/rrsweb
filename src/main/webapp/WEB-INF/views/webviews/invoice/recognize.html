@@ -114,7 +114,7 @@
         		if($("#fa").prop("checked")){
         			FA = "yes";
         		}
-        		$.post('/invoice/updateInvoiceContent', {"data": JSON.stringify(resultList), 'FA':FA}, function(data){
+        		$.post('/invoice/updateInvoiceContent', {"data": JSON.stringify(resultList), 'FA':FA, "id":id}, function(data){
         			if(data.status == 'ok'){
         				alert("切换到下一张");
         			}

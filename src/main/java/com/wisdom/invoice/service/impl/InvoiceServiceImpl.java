@@ -1,6 +1,7 @@
 package com.wisdom.invoice.service.impl;
 
 import java.sql.Timestamp;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import com.wisdom.common.mapper.InvoiceMapper;
 import com.wisdom.common.mapper.PermissionMapper;
 import com.wisdom.common.model.Invoice;
 import com.wisdom.invoice.service.IInvoiceService;
+import com.wisdom.common.utils.WriteXML;
 
 @Service("invoiceService")
 public class InvoiceServiceImpl implements IInvoiceService {
@@ -279,6 +281,17 @@ public class InvoiceServiceImpl implements IInvoiceService {
 			temp.put("status", invoice.getStatus());
 		}
 		return temp;
+	}
+
+	@Override
+	public Boolean updateInvoiceContent(String path, String data, String FA, String id) {
+		try{
+			WriteXML.WriteXML(path, data, FA, id);
+		}catch(Exception e){
+			logger.error(e.toString());
+			return false;
+		}
+		return true;
 	}
 
 }

@@ -189,9 +189,13 @@ public class InvoiceController {
 		String data = request.getParameter("data");
 		String FA = request.getParameter("FA");
 		String id = request.getParameter("id");
-		logger.info("Need to write to xml");
-		logger.info(data);
-		retMap.put("status", "ok");
+		String realPath = request.getSession().getServletContext()
+				.getRealPath("/WEB-INF").substring(0);
+		if(invoiceService.updateInvoiceContent(realPath, data, FA, id)){
+			retMap.put("status", "ok");
+		}else{
+			retMap.put("status", "nok");
+		}
 		return retMap;
 	}
 }

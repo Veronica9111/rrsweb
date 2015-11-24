@@ -15,12 +15,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisdom.common.model.Model;
 public class WriteXML {
-	public static void WriteXML(String date,String fa,String id){
+	public static void WriteXML(String path, String data,String fa,String id){
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Model model=new Model();
 		try {
-			List<Model>list= (List) mapper.readValue(date, new TypeReference<List<Model>>() {});
+			List<Model>list= (List) mapper.readValue(data, new TypeReference<List<Model>>() {});
 			for(int i=0; i<list.size();i++){
 				System.out.println(list.get(i).getAmount() +list.get(i).getDescription()+list.get(i).getSupplier());
 			}
@@ -43,9 +43,14 @@ public class WriteXML {
 			  ele.addContent(new Element("id").setText(id));
 			 
 			  XMLOutputter XMLOut = new XMLOutputter();  
-			//将生成的xml文档Doc输出到c盘的test.xml文档中
-			   XMLOut.output(Doc, new FileOutputStream(System.getProperty("user.dir")+File.separator+"src"
-						+File.separator+"main"+File.separator+"webapp"+File.separator+"WEB-INF"+File.separator+"files"+File.separator+"test.xml"));
+			
+			  String realPath = path +File.separator+ id + ".xml";
+			  System.out.println(realPath);
+			  File invoiceXML = new File(realPath);
+			  if(!invoiceXML.exists()) {
+			      invoiceXML.createNewFile();
+			  } 
+			   XMLOut.output(Doc, new FileOutputStream(invoiceXML, false));
 			  
 		} catch (JsonParseException e) {
 			e.printStackTrace();
@@ -57,11 +62,11 @@ public class WriteXML {
 		
 	}
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		System.out.println(System.getProperty("user.dir")+File.separator+"src"
 				+File.separator+"main"+File.separator+"webapp"+File.separator+"WEB-INF"+File.separator+"files");
-		String date="[{\"supplier\":\"supplier\",\"description\":\"des\",\"amount\":\"11\"},{\"supplier\":\"supplier\",\"description\":\"des2\",\"amount\":\"22\"}]";
-		WriteXML(date, "fa", "11");
-	}
+		String data="[{\"supplier\":\"supplier\",\"description\":\"des\",\"amount\":\"11\"},{\"supplier\":\"supplier\",\"description\":\"des2\",\"amount\":\"22\"}]";
+		WriteXML(data, "fa", "11");
+	}*/
 
 }
