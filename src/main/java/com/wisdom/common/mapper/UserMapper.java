@@ -37,7 +37,7 @@ public interface UserMapper {
   
   Integer updateUserPassword(@Param("id")Integer id, @Param("password")String password);
   
-  boolean activateUpdate(@Param("uid")Integer uid,@Param("num")Integer num);
+  Integer updateUserActiveStatus(@Param("uid")Integer uid,@Param("status")Integer status);
   
   List<UserRecord> getAllUsersWithWorkRecords();
   

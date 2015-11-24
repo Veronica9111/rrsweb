@@ -106,8 +106,11 @@ public class UserController {
 		String company = request.getParameter("company");
 		String rolesStr = request.getParameter("role");
 		String[] roles = rolesStr.split(",");
-		if(userService.addUser(name, company, roles)){
+		Integer uid = userService.addUser(name, company, roles);
+		if( uid != -1){
 			retMap.put("status", "ok");
+			retMap.put("uid", uid.toString());
+			
 		}
 		else{
 			retMap.put("status", "nok");
@@ -145,18 +148,10 @@ public class UserController {
 	@ResponseBody
 	public Map<String, String> getUsersByCompany(HttpServletRequest request){
 		String company=request.getParameter("company");
+		Map<String, String> retMap = new HashMap<>();
 		List<Map<String, String>>uList=userService.getUsersByCompany(company);
-		Map<String, String>retMap = new HashMap<>();
-		for(int i=0;i<uList.size();i++){
-			System.out.println(uList.get(i));
-			retMap=uList.get(i);
-		}
-		if (retMap!=null){
-			retMap.put("status", "ok");
-		}
-		else{
-			retMap.put("status", "nok");
-		}
+		String data = JSONArray.fromObject(uList).toString();
+		retMap.put("data", data);
 		return retMap;
 	}
 	
@@ -166,18 +161,11 @@ public class UserController {
 		String active=request.getParameter("active");
 		List<Map<String, String>>uList=userService.getUsersByActive(active);
 		Map<String, String>retMap = new HashMap<>();
-		for(int i=0;i<uList.size();i++){
-			System.out.println(uList.get(i));
-			retMap=uList.get(i);
-		}
-		if (retMap!=null){
-			retMap.put("status", "ok");
-		}
-		else{
-			retMap.put("status", "nok");
-		}
+		String data = JSONArray.fromObject(uList).toString();
+		retMap.put("data", data);
 		return retMap;
 	}
+	/*
 	//get Uid Pname
 	@RequestMapping("/user/addRoleToUser")
 	@ResponseBody
@@ -212,6 +200,7 @@ public class UserController {
 		}
 		return retMap;
 	}
+	
 	//Pname
 	@RequestMapping("/user/getUsersByPname")
 	@ResponseBody
@@ -230,7 +219,8 @@ public class UserController {
 			retMap.put("status", "nok");
 		}
 		return retMap;
-	}
+	}*/
+	
 	// name email company id
 	@RequestMapping("/user/updateUser")
 	@ResponseBody
@@ -326,6 +316,17 @@ public class UserController {
 		List<String> roles = roleService.getUserRoles(uid);
 		String data = JSONArray.fromObject(roles).toString();
 		retMap.put("data", data);
+		return retMap;
+	}
+	
+	@RequestMapping("/user/getUserById")
+	@ResponseBody
+	public Map<String, Map<String, String>>getUserById(HttpServletRequest request){
+		Map<String, Map<String, String>> retMap = new HashMap<>();
+		Integer uid = Integer.parseInt(request.getParameter("id"));
+		Map<String, String> result = userService.getUserById(uid);
+		String data = JSONArray.fromObject(result).toString();
+		retMap.put("data", result);
 		return retMap;
 	}
 }

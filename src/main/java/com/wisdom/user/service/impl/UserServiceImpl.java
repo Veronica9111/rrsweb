@@ -74,8 +74,9 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	@Override
-	public Boolean addUser(String name, String company, String[] roles) {
+	public Integer addUser(String name, String company, String[] roles) {
 		String cryptedPassword = null;
+		Integer id = null;
 		try {
 			cryptedPassword = GenerateMD5.generateMD5("123456");
 		} catch (NoSuchAlgorithmException e) {
@@ -88,16 +89,17 @@ public class UserServiceImpl implements IUserService{
 			user.setCompany(company);
 			user.setName(name);
 			user.setPassword(cryptedPassword);
+			user.setActive(0);
 			Integer idtemp = userMapper.addUser(user);
-			Integer id = user.getId();
+			id = user.getId();
 			for(String roleName: roles){
 				userMapper.addRoleToUser(id, roleName);
 			}
 		}
 		catch(Exception e){
-			return false;
+			return -1;
 		}
-		return true;
+		return id;
 	}
 
 	@Override
@@ -232,7 +234,7 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	public boolean activateUser(Integer id) {
 		try{
-			userMapper.activateUpdate(id, 1);
+			userMapper.updateUserActiveStatus(id, 1);
 		}catch(Exception e){
 			return false;
 		}
@@ -242,7 +244,7 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	public boolean deactivateUser(Integer id) {
 		try{
-			userMapper.activateUpdate(id, 0);
+			userMapper.updateUserActiveStatus(id, 0);
 		}catch(Exception e){
 			return false;
 		}
@@ -276,6 +278,20 @@ public class UserServiceImpl implements IUserService{
 		retList.add(record.getRecognize().toString());
 		retList.add(record.getInspect().toString());
 		return retList;
+	}
+
+	@Override
+	public Map<String, String> getUserById(Integer uid) {
+		Map<String, String> retMap = new HashMap<>();
+		User user = userMapper.getUserById(uid);
+		if(user != null){
+			retMap.put("id", user.getId().toString());
+			retMap.put("name", user.getName());
+			retMap.put("mail", user.getMail());
+			retMap.put("company", user.getCompany());
+			retMap.put("active", user.getActive().toString());
+		}
+		return retMap;
 	}
 
 

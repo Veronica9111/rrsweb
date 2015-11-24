@@ -71,7 +71,7 @@ update user set name = #{name}, mail = #{mail} ,company = #{company} where id = 
 select * from user where company=#{company}
 </select>
 <select id="getUsersByActive" resultType="User">
-select * from user where company=#{active}
+select * from user where active=#{active}
 </select>
 <insert id="addRoleToUser" parameterType="String">
 INSERT INTO user_role(user_id,role_id) values( #{uid}, (select id from role where name=#{rname}))
@@ -86,8 +86,8 @@ select * from user where id={select user_id from where role_id=(select role_id f
 update user set password=#{password} where id=#{id}
 </update>
 
-<update id="activateUpdate"  parameterType="Integer">
-update user set active =#{num} where id = #{uid}  
+<update id="updateUserActiveStatus"  parameterType="Integer">
+update user set active =#{status} where id = #{uid}  
 </update>
 
 <select id="getAllUsersWithWorkRecords" resultType="UserRecord">
