@@ -9,6 +9,7 @@
 <link rel="stylesheet" type="text/css" href="/css/webcss/jquery-ui.css" />
 
 	<link rel="stylesheet" href="/css/webcss/jquery-ui.theme.css"/>
+	<link rel="stylesheet" href="/css/webcss/tooltipster.css" />
 	
 <style>
 @charset "UTF-8";
@@ -263,7 +264,7 @@ table {
 					<li><a class="fl delete" id="delete-unrecognized" >删除</a></li>
 				</ul>
 				</div>
-				<div class="invoice">
+				<div class="tooltip invoice" title="&lt;img src=&quot;/img/webimg/example.png&quot; /&gt;">
 					<img class="invoice-img" src="/img/webimg/example.png" /> <input
 						type="checkbox" class="unrecognized-checkbox" id="check1" />
 				</div>
@@ -358,6 +359,7 @@ table {
 </body>
 <script src="/js/webjs/jquery-1.11.3.js"></script>
 <script src="/js/webjs/jquery-ui.js"></script>
+<script src="/js/webjs/jquery.tooltipster.js"></script>
 <script>
 	$("#container").tabs();
 /*	$(function() {
@@ -434,6 +436,10 @@ table {
 			checkboxs[i].checked = obj.checked;
 		}
 	}
+	
+	$('.tooltip').tooltipster({
+		contentAsHTML: true
+    });
 </script>
 <script>
 	$(function() {
