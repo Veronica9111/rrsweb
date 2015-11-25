@@ -34,4 +34,12 @@ values(#{name},#{invoke_name})
         select p.id as id, p.name as name, p.invoke_name as invoke_name from role r left join role_permission  c on r.id=c.role_id left join permission p on c.permission_id=p.id 
         where r.name=#{name}
     </select>
+    <select id="getPermissionsByUser" parameterType="Integer" resultType="Permission">
+    	select p.id as id, p.name as name, p.invoke_name as invoke_name
+    	from user u left join user_role ur on u.id = ur.user_id
+    	right join role r on ur.role_id = r.id
+    	right join role_permission rp on r.id = rp.role_id
+    	right join permission p on rp.permission_id = p.id
+    	where u.id=#{uid}
+    </select>
 </mapper>

@@ -21,4 +21,6 @@ public interface PermissionMapper {
 	List<Permission>getPermissionByRole(@Param("name")String name);
 	
 	Integer deletePermissionFromRoles(@Param("permission_id")Integer permission_id);
+	
+	List<Permission>getPermissionsByUser(@Param("uid")Integer uid);
 }

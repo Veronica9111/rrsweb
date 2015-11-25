@@ -295,11 +295,18 @@ public class UserController {
 	
 	@RequestMapping("/user/getAllUsersWithWorkRecords")
 	@ResponseBody
-	public Map<String, String> getAllUsersWithWorkRecords(HttpServletRequest request){
+	public Map<String, String> getAllUsersWithWorkRecords(HttpSession httpSession, HttpServletRequest request){
+		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
 		Map<String, String> retMap = new HashMap<>();
+		Boolean result = userService.isUserValidForPermission(uid, "manage all users");
+		if(!result){
+			retMap.put("status", "nok");
+			return retMap;
+		}
 		List<List<String>> records = userService.getAllUsersWithWorkRecords();
 		String data = JSONArray.fromObject(records).toString();
 		retMap.put("data", data);
+		retMap.put("status", "ok");
 		return retMap;
 	}
 	

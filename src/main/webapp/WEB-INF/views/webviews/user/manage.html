@@ -92,9 +92,22 @@ function deleteRow(elem) {
 
 	
 	$(document).ready(function() {
+		var invalid = false;
 		var dataSet = [];
 		var roles = [];
 		$.post('/user/getAllUsersWithWorkRecords', {},function(data){
+			if (data.status == "nok"){
+
+
+				if(!invalid){
+					alert("您的访问超时，请重新登录！");		
+					invalid = true;
+				//	window.location.href="/views/frontviews/index.html";
+				}
+
+				return;
+			}
+			console.log(data);
 			 dataSet  = $.parseJSON(data.data);
 			    var table = $('#example').DataTable({"sDom": '<"top" f>rt<"bottom" p><"clear">',
 			    	data: dataSet,	
@@ -120,7 +133,6 @@ function deleteRow(elem) {
 			    
 			    
 			    $("#edit-user-btn").on("click", function(){
-			    	console.log(table.row('.selected').data());
 			    	var id = table.row('.selected').data()[0];
 			    	var name = table.row('.selected').data()[1];
 			    	var company = table.row('.selected').data()[2];
@@ -207,22 +219,25 @@ function deleteRow(elem) {
     	var optionData = [];
 
 		    $.post("/role/getAllRoles",{},function(data){
-		    	console.log(data);
+		    	if(data.status.message=="nok"){
+					if(!invalid){
+						alert("您的访问超时，请重新登录！");		
+						invalid = true;
+					//	window.location.href="/views/frontviews/index.html";
+					}
 
-		    	var options = $.parseJSON(data.data);
-
-		    	$.each(options[0], function( key, value) { 
-		    		console.log(key);
-		    		console.log(value);
-		    		roles.push(value);
-		    		optionData.push({"id":key, "text":value});
+		    	}
+		    	for(var key in data.data){
+	
+		    		roles.push(data.data[key]);
+		    		optionData.push({"id":key, "text":data.data[key]});
 		    	  //   $('#add-role')
 		    	    //      .append($('<option>', { key: value })
 		    	      //    .text(value)); 
 
 
 
-		    	});
+		    	}
 		    	console.log(optionData);
 
 	    		/*$('#add-role').searchableOptionList({

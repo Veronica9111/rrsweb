@@ -17,8 +17,10 @@ import org.springframework.stereotype.Service;
 
 import com.wisdom.user.service.IUserService;
 import com.wisdom.web.api.controller.UserController;
+import com.wisdom.common.mapper.PermissionMapper;
 import com.wisdom.common.mapper.TestMapper;
 import com.wisdom.common.mapper.UserMapper;
+import com.wisdom.common.model.Permission;
 import com.wisdom.common.model.Role;
 import com.wisdom.common.model.User;
 import com.wisdom.common.model.UserRecord;
@@ -30,6 +32,9 @@ public class UserServiceImpl implements IUserService{
 
 	  @Autowired
 	  private UserMapper userMapper;
+	  
+	  @Autowired
+	  private PermissionMapper permissionMapper;
 
 
     
@@ -292,6 +297,22 @@ public class UserServiceImpl implements IUserService{
 			retMap.put("active", user.getActive().toString());
 		}
 		return retMap;
+	}
+
+	@Override
+	public Boolean isUserValidForPermission(Integer uid, String permissionInvokeName) {
+		List<Permission> permissions = permissionMapper.getPermissionsByUser(uid);
+		List<Object> check = new ArrayList<>();
+		check.add(null);
+		if (permissions.equals(check)){
+			return false;
+		}
+		for(Permission permission: permissions){
+			if(permission.getInvokeName().equals(permissionInvokeName)){
+				return true;
+			}
+		}
+		return false;
 	}
 
 

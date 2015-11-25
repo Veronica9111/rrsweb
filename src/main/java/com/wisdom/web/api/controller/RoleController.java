@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wisdom.role.service.IRoleService;
+import com.wisdom.user.service.IUserService;
+import com.wisdom.utils.SessionConstant;
 
 import net.sf.json.JSONArray;
 
@@ -25,6 +28,8 @@ import net.sf.json.JSONArray;
 public class RoleController {
 
 	@Autowired IRoleService roleService;
+	
+	@Autowired IUserService userService;
 	
 	private static final Logger logger = LoggerFactory
 			.getLogger(RoleController.class);
@@ -49,9 +54,19 @@ public class RoleController {
 	
 	@RequestMapping("/role/getAllRoles")
 	@ResponseBody
-	public Map<String, Map<String, String>>getAllRoles(HttpServletRequest request){
-		Map<String,Map<String, String>>retMap = new HashMap<>();
+	public Map<String, Map<String, String>>getAllRoles(HttpSession httpSession, HttpServletRequest request){
+		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
+		Map<String, Map<String,String>> retMap = new HashMap<>();
+		Boolean result = userService.isUserValidForPermission(uid, "visit page");
+		Map<String, String>tmp = new HashMap<>();
+		if(!result){
+			tmp.put("message", "nok");
+			retMap.put("status", tmp);
+			return retMap;
+		}
 		Map<String,String>roles = roleService.getAllRoles();
+		tmp.put("message", "ok");
+		retMap.put("status", tmp);
 		retMap.put("data", roles);
 		return retMap;
 	}
