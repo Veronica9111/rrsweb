@@ -42,6 +42,7 @@ public class PermissionController {
 		}
 		return retMap;
 	}
+	
 	@RequestMapping("/permission/deletePermission")
 	@ResponseBody
 	public Map<String, String> deletePermission(HttpServletRequest request){
@@ -79,28 +80,18 @@ public class PermissionController {
 	}
 	@RequestMapping("/permission/getPermissionByName")
 	@ResponseBody
-	public Map<String, String> getPermissionByName(HttpServletRequest request){
+	public Map<String, Map<String, String>> getPermissionByName(HttpServletRequest request){
 		logger.debug("enter addPermission");
-		Map<String, String> retMap = new HashMap<>();
-		List<Map<String,String>> list=new ArrayList<>();
+		Map<String, Map<String, String>> retMap = new HashMap<>();
 		String name=request.getParameter("name");
-		list=permissionService.getPermissionByName(name);
-		Map<String, String> mMap=new HashMap<>();
-		for(int i=0;i<list.size();i++){
-			System.out.println(list.get(i));
-			mMap=list.get(i);
-		}
-		if (mMap!=null){
-			mMap.put("status", "ok");
-		}
-		else{
-			mMap.put("status", "nok");
-		}
-		return mMap;
+		Map<String, String>permission = permissionService.getPermissionByName(name);
+		retMap.put("data", permission);
+		return retMap;
 	}
-	@RequestMapping("/permission/getPermissionByRole")
+	
+	@RequestMapping("/permission/getPermissionsByRole")
 	@ResponseBody
-	public Map<String, String> getPermissionByRole(HttpServletRequest request){
+	public Map<String, String> getPermissionsByRole(HttpServletRequest request){
 		logger.debug("enter addPermission");
 		Map<String, String> retMap = new HashMap<>();
 		List<Map<String,String>> list=new ArrayList<>();

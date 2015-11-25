@@ -14,7 +14,10 @@ values(#{name},#{invoke_name})
 </insert>
 <delete id="deletePermission" parameterType="String">    
      delete from  permission where name=#{name}
-</delete>  
+</delete>
+<delete id="deletePermissionFromRoles" parameterType="Integer">
+	delete from role_permission where permission_id=#{permission_id}
+</delete>
   <update id="updatePermission" parameterType="String">    
        UPDATE Permission   
             SET id = #{id},     
@@ -30,5 +33,5 @@ values(#{name},#{invoke_name})
     <select id="getPermissionByRole" parameterType="String" resultType="Permission">  
         select p.id as id, p.name as name, p.invoke_name as invoke_name from role r left join role_permission  c on r.id=c.role_id left join permission p on c.permission_id=p.id 
         where r.name=#{name}
-    </select>  
+    </select>
 </mapper>

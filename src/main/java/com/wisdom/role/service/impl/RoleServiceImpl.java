@@ -40,10 +40,15 @@ public class RoleServiceImpl implements IRoleService{
 	}
 
 	@Override
-	public Boolean addRole(String roleName, List<String> permissionNames) {
+	public Boolean addRole(String roleName, String[] permissionNames) {
 		
 		try{
-			roleMapper.addRole(roleName);
+			Role role = new Role();
+			role.setName(roleName);
+			roleMapper.addRole(role);
+			for(String permissionName: permissionNames){
+				roleMapper.addPermissionToRole(roleName, permissionName);
+			}
 		}catch(Exception e){
 			return false;
 		}
@@ -64,7 +69,9 @@ public class RoleServiceImpl implements IRoleService{
 	@Override
 	public Boolean deleteRoleByName(String roleName) {
 		try{
+			Role role = roleMapper.getRoleByName(roleName);
 			roleMapper.deleteRoleByName(roleName);
+			roleMapper.deleteAllPermissionsOfRole(role.getId());
 		}catch(Exception e){
 			return false;
 		}
@@ -140,6 +147,20 @@ public class RoleServiceImpl implements IRoleService{
 			}
 		}
 		return retList;
+	}
+
+	@Override
+	public Boolean updateRolePermissions(String roleName, String[] permissionNames) {
+		try {
+			Role role = roleMapper.getRoleByName(roleName);
+			roleMapper.deleteAllPermissionsOfRole(role.getId());
+			for(String permissionName: permissionNames){
+				roleMapper.addPermissionToRole(roleName, permissionName);
+			}
+		}catch(Exception e){
+			return false;
+		}
+		return true;
 	}
 	
 	 

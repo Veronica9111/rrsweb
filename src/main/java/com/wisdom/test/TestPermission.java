@@ -124,8 +124,34 @@ public class TestPermission {
 	}
 	
 	@Test
-	public void testDeletePermission(){
-		// TODO Add permission, add it to role, delete it, it should be remove from role.
+	public void testDeletePermission() throws ClientProtocolException, IOException{
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost httpPost = new HttpPost("http://localhost:8080/permission/addPermission");
+		List <BasicNameValuePair> nvps = new ArrayList <BasicNameValuePair>();
+		nvps.add(new BasicNameValuePair("name", "test permission2"));
+		nvps.add(new BasicNameValuePair("invoke_name", "test invoke name2"));
+		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+		CloseableHttpResponse response = httpclient.execute(httpPost);
+		response.close();
+		httpPost = new HttpPost("http://localhost:8080/role/addPermissionToRole");
+		nvps = new ArrayList <BasicNameValuePair>();
+		nvps.add(new BasicNameValuePair("role_name", "manage"));
+		nvps.add(new BasicNameValuePair("permissions", "test permission2"));
+		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+		response = httpclient.execute(httpPost);
+		response.close();	
+		httpPost = new HttpPost("http://localhost:8080/permission/deletePermission");
+		nvps = new ArrayList <BasicNameValuePair>();
+		nvps.add(new BasicNameValuePair("name", "test permission2"));
+		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+		response = httpclient.execute(httpPost);
+		String result = handleResponse(response);
+		ObjectMapper mapper = new ObjectMapper();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map = mapper.readValue(result, new TypeReference<Map<String, String>>(){});
+		Assert.assertEquals("ok", map.get("status"));		
+		
+		
 	}
 	
 }

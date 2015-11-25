@@ -36,9 +36,9 @@ public class RoleController {
 		logger.debug("enter addRole");
 		Map<String, String> retMap = new HashMap<>();
 		String name = request.getParameter("name");
-		List<String>permissionList = new ArrayList<>();
-		permissionList.add("permission");
-		if (roleService.addRole(name, permissionList)){
+		String permission = request.getParameter("permissions");
+		String[] permissions = permission.split(",");
+		if (roleService.addRole(name, permissions)){
 			retMap.put("status", "ok");
 		}
 		else{
@@ -49,11 +49,10 @@ public class RoleController {
 	
 	@RequestMapping("/role/getAllRoles")
 	@ResponseBody
-	public Map<String, String>getAllRoles(HttpServletRequest request){
-		Map<String,String>retMap = new HashMap<>();
+	public Map<String, Map<String, String>>getAllRoles(HttpServletRequest request){
+		Map<String,Map<String, String>>retMap = new HashMap<>();
 		Map<String,String>roles = roleService.getAllRoles();
-		String data = JSONArray.fromObject(roles).toString();
-		retMap.put("data", data);
+		retMap.put("data", roles);
 		return retMap;
 	}
 	
@@ -86,14 +85,15 @@ public class RoleController {
 		return retMap;
 	}
 	
+	/*
 	@RequestMapping("/role/addPermissionToRole")
 	@ResponseBody
 	public Map<String, String>addPermissionToRole(HttpServletRequest request){
 		boolean boo=false;
 		Map<String, String>retMap = new HashMap<>();
 		String rName=request.getParameter("role_name");
-		String pList=request.getParameter("p_list");
-		String[]pName=pList.split(";");
+		String pList=request.getParameter("permissions");
+		String[]pName=pList.split(",");
 		List list=Arrays.asList(pName);
 		boo=roleService.addPermissionToRole(rName, list);
 		if(boo==true){
@@ -143,7 +143,23 @@ public class RoleController {
 		
 		return retMap;
 	}
+	*/
 	
+	@RequestMapping("/role/updateRolePermissions")
+	@ResponseBody
+	public Map<String, String>updateRolePermissions(HttpServletRequest request){
+		Map<String, String> retMap = new HashMap<>();
+		String roleName = request.getParameter("roleName");
+		String permissions = request.getParameter("permissions");
+		String[] permissionNames = permissions.split(",");
+		if(roleService.updateRolePermissions(roleName, permissionNames)){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
+	}
 
 }
 

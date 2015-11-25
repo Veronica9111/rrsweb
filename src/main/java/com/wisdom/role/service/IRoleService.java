@@ -10,7 +10,7 @@ import com.wisdom.common.model.UserRole;
 
 public interface IRoleService {
 
-	Boolean addRole(String roleName, List<String>permissionNames);
+	Boolean addRole(String roleName, String[] permissionNames);
 	
 	Map<String, String> getAllRoles();
 	
@@ -25,4 +25,6 @@ public interface IRoleService {
 	boolean addRolePermission(String roleName,List<String>permissionNames);
 	
 	 List<String> getUserRoles(Integer uid);
+	 
+	 Boolean updateRolePermissions(String roleName, String[] permissionNames);
 }

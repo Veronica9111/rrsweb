@@ -16,7 +16,9 @@ public interface PermissionMapper {
 	//Select All Information
 	List<Permission> getAllPermission();
 	//Select Information By Name
-	List<Permission> getPermissionByName(@Param("name")String name);
+	Permission getPermissionByName(@Param("name")String name);
 	//Select Information By Role
 	List<Permission>getPermissionByRole(@Param("name")String name);
+	
+	Integer deletePermissionFromRoles(@Param("permission_id")Integer permission_id);
 }

@@ -40,7 +40,7 @@ public class TestInvoice extends TestCase{
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httpPost = new HttpPost("http://localhost:8080/invoice/sendJson");
 		List <BasicNameValuePair> nvps = new ArrayList <BasicNameValuePair>();
-		nvps.add(new BasicNameValuePair("id", "test"));
+		nvps.add(new BasicNameValuePair("id", "id2"));
 		httpPost.setEntity(new UrlEncodedFormEntity(nvps));
 		CloseableHttpResponse response = httpclient.execute(httpPost);
 		String me=this.handleResponse(response);

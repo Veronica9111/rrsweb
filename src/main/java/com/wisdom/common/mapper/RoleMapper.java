@@ -9,19 +9,21 @@ import com.wisdom.common.model.UserRole;
 
 public interface RoleMapper {
 
-	void addRole(@Param("name")String name);
+	Integer addRole(Role role);
 	
 	List<Role> getAllRoles();
 	
 	void deleteRoleByName(@Param("name")String name);
 	
+	void deleteAllPermissionsOfRole(@Param("id")Integer id);
+	
 	Role getRoleByName(@Param("name")String name);
 	
 	void updateRole(@Param("id")Integer id, @Param("name")String name);
 	
-	void addPermissionToRole(@Param("r_nam")String role_name, @Param("p_name")String permission_name);
+	void addPermissionToRole(@Param("r_name")String role_name, @Param("p_name")String permission_name);
 	
-	void removePermissionFromRole(@Param("r_nam")String role_name, @Param("p_name")String permission_name);	
+	void removePermissionFromRole(@Param("r_name")String role_name, @Param("p_name")String permission_name);	
 	
 	void addRolePermission(@Param("r_name")String roleName,@Param("p_name")String permissionName);
 	

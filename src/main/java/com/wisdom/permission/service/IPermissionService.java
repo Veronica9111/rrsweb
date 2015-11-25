@@ -15,7 +15,7 @@ public interface IPermissionService {
 		//Select All
 		public List<Map<String,String>> getAllPermission();
 		//Select By name
-		public List<Map<String,String>> getPermissionByName(String name);
+		public Map<String,String> getPermissionByName(String name);
 		//get Permission by  role
 		public List<Map<String,String>> getPermissionByRole(String string);
 }

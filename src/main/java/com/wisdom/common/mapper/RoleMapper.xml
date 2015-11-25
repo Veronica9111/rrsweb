@@ -20,6 +20,9 @@ select * from role
  <delete id="deleteRoleByName" parameterType="String">
 delete from role where name=#{name}
 </delete>
+<delete id="deleteAllPermissionsOfRole" parameterType="Integer">
+delete from role_permission where role_id=#{id}
+</delete>
 
 <select id="getRoleByName" parameterType="String" resultType="Role">
 select * from role where name=#{name}
@@ -31,11 +34,11 @@ update role set name=#{name} where id=#{id}
 
 <insert id="addPermissionToRole" parameterType="String">
 insert into role_permission(role_id, permission_id)
-values((SELECT id FROM permission WHERE name=#{r_name}),(SELECT id FROM role WHERE name=#{p_name}))
+values((SELECT id FROM role WHERE name=#{r_name}),(SELECT id FROM permission WHERE name=#{p_name}))
 </insert>
 
 <delete id="removePermissionFromRole" parameterType="String">
-delete from role_permission where permission_id=(SELECT id FROM permission WHERE name=#{r_name}) and role_id=(SELECT id FROM role WHERE name=#{p_name})
+delete from role_permission where permission_id=(SELECT id FROM permission WHERE name=#{p_name}) and role_id=(SELECT id FROM role WHERE name=#{r_name})
 </delete>
 <insert id="addRolePermission" parameterType="String">
 INSERT INTO role_permission(role_id,permission_id)VALUES( (SELECT id FROM role WHERE name=#{r_name} ),( SELECT id FROM permission WHERE name=#{p_name}))

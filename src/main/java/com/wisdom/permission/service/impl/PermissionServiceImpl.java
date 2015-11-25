@@ -49,7 +49,9 @@ public class PermissionServiceImpl implements IPermissionService{
 	@Override
 	public boolean deletePermission(String name) {
 		try{
+			Permission permission = permissionMapper.getPermissionByName(name);
 			permissionMapper.deletePermission(name);
+			permissionMapper.deletePermissionFromRoles(permission.getId());
 		}catch(Exception e){
 			logger.error(e.getMessage());
 			return false;
@@ -79,17 +81,14 @@ public class PermissionServiceImpl implements IPermissionService{
  * @see com.wisdom.permission.service.IPermissionService#getPermissionByName(java.lang.String)
  */
 	@Override
-	public List<Map<String, String>> getPermissionByName(String name) {
-		List<Permission>pList=permissionMapper.getPermissionByName(name);
-		List<Map<String, String>> gapList = new ArrayList<>();
-		for(Permission per:pList){
-			Map<String, String> newMap = new HashMap<>();
-			newMap.put(per.getName(), per.getName().toString());
-			newMap.put(per.getInvokeName(), per.getInvokeName().toString());
-			newMap.put(Integer.toString(per.getId()), per.getId().toString());
-			gapList.add(newMap);
-		}
-		return gapList;
+	public Map<String, String> getPermissionByName(String name) {
+		Permission permission =permissionMapper.getPermissionByName(name);
+		Map<String, String> retMap = new HashMap<>();
+		retMap.put("id", permission.getId().toString());
+		retMap.put("name", permission.getName());
+		retMap.put("invoke_name", permission.getInvokeName());
+
+		return retMap;
 	}
 /*
  * Get Permission By RoleName
