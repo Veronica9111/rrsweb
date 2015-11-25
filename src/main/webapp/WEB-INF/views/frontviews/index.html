@@ -169,8 +169,10 @@ table {
 		var name = $("#name").val();
 		var password = $("#password").val();
 			$.post("/login",{"id":name, "password":password}, function(data){
+				console.log(data);
 				if(data.status == 'ok'){
-					window.location.href="/views/webviews/invoice/recognize.html";
+					window.location.href=data.url;
+					//window.location.href="/views/webviews/invoice/recognize.html";
 				}
 				else{
 					$("#message").html("用户名或密码错误，请重新输入！");

@@ -3,11 +3,8 @@
 <head>
 <meta charset="utf-8">
 <title>用户管理</title>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
-<script type="text/javascript" language="javascript" src="http://code.jquery.com/jquery-1.11.3.min.js">
-	</script>
-<link rel="stylesheet" type="text/css" href="https://datatables.net/media/css/site-examples.css?_=5caac04f688d89b2c49bcb280190366b">
-<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/webcss/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="/css/webcss/example.css">
 <link rel="stylesheet" type="text/css" href="/css/webcss/global.css"/>
 
 </style>
@@ -62,7 +59,8 @@
   </div>
 </div>
 </body>
-<script src="jq/jquery-1.11.3.js"></script>
+<script src="/js/webjs/jquery-1.11.3.js"></script>
+<script type="text/javascript" language="javascript" src="/js/webjs/jquery.dataTables.min.js"></script>
 <script>
 	$.post("/user/getUserWithWorkRecords", {}, function(data){
 		var info = $.parseJSON(data.data)

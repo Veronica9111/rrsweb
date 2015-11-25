@@ -76,6 +76,12 @@ public class UserController {
 		Integer uid = userService.checkUserValidate(id, password);
 		if(uid != 0){
 			retMap.put("status", "ok");
+			List<String> roles = roleService.getUserRoles(uid);
+			if (roles.contains("管理员")){
+				retMap.put("url", "/views/webviews/user/manage.html");
+			}else{
+				retMap.put("url", "/views/webviews/user/setting.html");
+			}
 			httpSession.setAttribute(SessionConstant.SESSION_USER_ID, uid);
 		}
 		else {
