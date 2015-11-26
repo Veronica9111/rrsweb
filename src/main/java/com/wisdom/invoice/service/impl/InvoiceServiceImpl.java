@@ -243,7 +243,10 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	
 	@Override
 	public Map<String, String> getInvoiceForUserByStatus(Integer uid, String status) {
-		Invoice invoice = invoiceMapper.getInvoiceForUserByStatus(uid, status);
+		//Get an avaiable invoice
+		Invoice invoice = invoiceMapper.getInvoiceForUserByStatus(status);
+		//Then set the owner
+		invoiceMapper.updateInvoiceOwner(invoice.getId(), uid);
 		Map<String, String> temp = new HashMap<>();
 		String modified_time;
 		String path;

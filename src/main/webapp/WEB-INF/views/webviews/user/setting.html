@@ -63,6 +63,10 @@
 <script type="text/javascript" language="javascript" src="/js/webjs/jquery.dataTables.min.js"></script>
 <script>
 	$.post("/user/getUserWithWorkRecords", {}, function(data){
+		if(data.status == 'nok'){
+			alert("您的访问超时，请重新登录！");
+			window.location.href="/views/frontviews/index.html";
+		}
 		var info = $.parseJSON(data.data)
 		var id = info[0];
 		var name = info[1];

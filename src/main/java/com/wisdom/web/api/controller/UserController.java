@@ -315,9 +315,15 @@ public class UserController {
 	public Map<String, String> getUserWithWorkRecords(HttpSession httpSession, HttpServletRequest request){
 		Map<String, String> retMap = new HashMap<>();
 		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
+		Boolean result = userService.isUserValidForPermission(uid, "visit page");
+		if(!result){
+			retMap.put("status", "nok");
+			return retMap;
+		}
 		List<String> record = userService.getUserWithWorkRecords(uid);
 		String data = JSONArray.fromObject(record).toString();
 		retMap.put("data", data);
+		retMap.put("status", "ok");
 		return retMap;
 	}
 	

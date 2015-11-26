@@ -41,4 +41,6 @@ public interface IUserService {
 	public Map<String, String> getUserById(Integer uid);
 	
 	public Boolean isUserValidForPermission(Integer uid, String permissionInvokeName);
+	
+	public Map<String, Integer> getUsersCurrentWork(String role);
 }

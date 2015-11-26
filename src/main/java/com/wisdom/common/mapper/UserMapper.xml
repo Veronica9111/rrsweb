@@ -100,4 +100,11 @@ SELECT u.id,u.name, sum(case when action = "check" then 1 else 0 end) as inspect
 sum(case when action="recognize" then 1 else 0 end) as recognize, u.mail as mail, u.company as company FROM record r right join user u on r.uid = u.id where u.id=#{uid} group by uid
 </select>
 
+<select id="getUsersCurrentWork" resultType="User" parameterType="String">
+select * from user u left join invoice i on u.id = i.uid
+left join user_role ur on u.id = ur.user_id
+left join role r on r.id = ur.role_id
+where r.name=#{rname}
+</select>
+
 </mapper>

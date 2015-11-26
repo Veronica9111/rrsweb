@@ -268,51 +268,6 @@ table {
 					<img class="invoice-img" src="/img/webimg/example.png" /> <input
 						type="checkbox" class="unrecognized-checkbox" id="check1" />
 				</div>
-				<div class="invoice">
-					<img class="invoice-img" src="/img/webimg/example.png" /> <input
-						type="checkbox" class="unrecognized-checkbox" id="check1" />
-				</div>
-				<div class="invoice">
-					<img class="invoice-img" src="/img/webimg/example.png" /> <input
-						type="checkbox" class="unrecognized-checkbox" id="check1" />
-				</div>
-				<div class="invoice">
-					<img class="invoice-img" src="/img/webimg/example.png" /> <input
-						type="checkbox" class="unrecognized-checkbox" id="check1" />
-				</div>
-				<div class="invoice">
-					<img class="invoice-img" src="/img/webimg/example.png" /> <input
-						type="checkbox" class="unrecognized-checkbox" id="check1" />
-				</div>
-				<div class="invoice">
-					<img class="invoice-img" src="/img/webimg/example.png" /> <input
-						type="checkbox" class="unrecognized-checkbox" id="check1" />
-				</div>
-				<div class="invoice">
-					<img class="invoice-img" src="/img/webimg/example.png" /> <input
-						type="checkbox" class="unrecognized-checkbox" id="check1" />
-				</div>
-				<div class="invoice">
-					<img class="invoice-img" src="/img/webimg/example.png" /> <input
-						type="checkbox" class="unrecognized-checkbox" id="check1" />
-				</div>
-				<div class="invoice">
-					<img class="invoice-img" src="/img/webimg/example.png" /> <input
-						type="checkbox" class="unrecognized-checkbox" id="check1" />
-				</div>
-				<div class="invoice">
-					<img class="invoice-img" src="/img/webimg/example.png" /> <input
-						type="checkbox" class="unrecognized-checkbox" id="check1" />
-				</div>
-				<div class="invoice">
-					<img class="invoice-img" src="/img/webimg/example.png" /> <input
-						type="checkbox" class="unrecognized-checkbox" id="check1" />
-				</div>
-				<div class="invoice">
-					<img class="invoice-img" src="/img/webimg/example.png" /> <input
-						type="checkbox" class="unrecognized-checkbox" id="check1" />
-				</div>
-
 			</div>
 			<div id="unchecked" class="content">
 				<ul class="tp-t">
@@ -338,14 +293,7 @@ table {
 		</div>
 
 		<div id="dispatcher" style="display:none;" >
-			<ul>
-				<li><input type="checkbox" value=""> &nbsp;小张</li>
-				<li><input type="checkbox" value=""> &nbsp;小丽</li>
-				<li><input type="checkbox" value=""> &nbsp;小张</li>
-				<li><input type="checkbox" value=""> &nbsp;小丽</li>
-				<li><input type="checkbox" value=""> &nbsp;小张</li>
-				<li><input type="checkbox" value=""> &nbsp;小丽</li>
-
+			<ul id="dispatcher-ul">
 			</ul>
 		</div>
 
@@ -362,20 +310,43 @@ table {
 <script src="/js/webjs/jquery.tooltipster.js"></script>
 <script>
 	$("#container").tabs();
-/*	$(function() {
-		$(".fen").click(function() {
-			var doH = $(document).height();
-			var doW = $(document).width();
-			$(".mask").css({
-				"width" : doW,
-				"height" : doH
-			});
-			$(".yh").show();
-			$(".mask").show();
-		});
-	});*/
+
+	$.post("/invoice/getInvoicesByStatus", {"status":"UNRECOGNIZED"}, function(data){
+		console.log(data);
+
+		if(data.status == 'nok'){
+			alert("您的访问超时，请重新登录！");
+			window.location.href="/views/frontviews/index.html";
+			return;
+		}
+		var invoices = $.parseJSON(data.data);
+		for(key in invoices){
+			var invoiceBox = '<div class="tooltip invoice" title="&lt;img src=&quot;'+invoices[key]["path"] + '&quot; /&gt;"><img class="invoice-img" src="' + invoices[key]["path"] +
+			'" /> <input type="checkbox" class="unrecognized-checkbox" id="' + invoices[key]["id"] + '" /></div>';
+			$("#unrecognized").append(invoiceBox);
+		}
+		$('.tooltip').tooltipster({
+			contentAsHTML: true
+	    });
+		console.log(invoices);
+	});
 	
 	$("#dispatch-unrecognized").on("click", function(){
+		//Get all invoice recognizer
+		$.post("/invoice/getUsersCurrentWork", {'role':'发票识别员'}, function(data){
+			var userData = $.parseJSON(data.data);
+			var users = userData[0];
+			for(var key in users){
+				var temp = key.split(",");
+				var id = temp[0];
+				var name = temp[1];
+				var count = users[key];
+				var checkbox = '<li><input type="checkbox" value="' + id + '">' + name + '(' + count + ')</input>';
+				$("#dispatcher-ul").append(checkbox);
+			}
+			console.log(users);
+		});
+		
 		$("#dispatcher").dialog({
 		      height:440,
 		      modal: true,
@@ -437,9 +408,7 @@ table {
 		}
 	}
 	
-	$('.tooltip').tooltipster({
-		contentAsHTML: true
-    });
+
 </script>
 <script>
 	$(function() {

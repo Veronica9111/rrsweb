@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.wisdom.common.utils.ReadingXML;
 import com.wisdom.invoice.service.IInvoiceService;
 import com.wisdom.permission.service.IPermissionService;
+import com.wisdom.user.service.IUserService;
 import com.wisdom.utils.SessionConstant;
 
 import net.sf.json.JSONArray;
@@ -26,6 +27,8 @@ import net.sf.json.JSONArray;
 public class InvoiceController {
 
 	@Autowired IInvoiceService invoiceService;
+	
+	@Autowired IUserService userService;
 	
 	private static final Logger logger = LoggerFactory
 			.getLogger(InvoiceController.class);
@@ -101,12 +104,19 @@ public class InvoiceController {
 	
 	@RequestMapping("/invoice/getInvoicesByStatus")
 	@ResponseBody
-	public Map<String, String> getInvoicesByStatus(HttpServletRequest request){
+	public Map<String, String> getInvoicesByStatus(HttpSession httpSession, HttpServletRequest request){
 		Map<String, String> retMap = new HashMap<>();
+		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
+		Boolean result = userService.isUserValidForPermission(uid, "manage invoice");
+		if(!result){
+			retMap.put("status", "nok");
+			return retMap;
+		}
 		String status = request.getParameter("status");
 		List<Map<String,String>> invoices = invoiceService.getInvoicesByStatus(status);
 		String data = JSONArray.fromObject(invoices).toString();
 		retMap.put("data", data);
+		retMap.put("status", "ok");
 		return retMap;
 	}
 	
@@ -193,9 +203,17 @@ public class InvoiceController {
 	public Map<String, String>getInvoiceForUserByStatus(HttpSession httpSession, HttpServletRequest request){
 		Map<String, String>retMap = new HashMap<>();
 		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
+		Boolean result = userService.isUserValidForPermission(uid, "recognize invoice");
+		if(!result){
+			retMap.put("status", "nok");
+			return retMap;
+		}
 		String status = request.getParameter("status");
 		Map<String, String> invoice = invoiceService.getInvoiceForUserByStatus(uid, status);
-		String data = JSONArray.fromObject(invoice).toString();
+		String data = "";
+		if (invoice != null){
+			data = JSONArray.fromObject(invoice).toString();			
+		}
 		retMap.put("data", data);
 		return retMap;
 		
@@ -215,6 +233,24 @@ public class InvoiceController {
 		}else{
 			retMap.put("status", "nok");
 		}
+		return retMap;
+	}
+	
+	@RequestMapping("/invoice/getUsersCurrentWork")
+	@ResponseBody
+	public Map<String, String>getUsersCurrentWork(HttpSession httpSession, HttpServletRequest request){
+		Map<String, String> retMap = new HashMap<>();
+		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
+		Boolean result = userService.isUserValidForPermission(uid, "manage invoice");
+		if(!result){
+			retMap.put("status", "nok");
+			return retMap;
+		}
+		String role = request.getParameter("role");
+		Map<String, Integer> users = userService.getUsersCurrentWork(role);
+		String data = JSONArray.fromObject(users).toString();
+		retMap.put("data", data);
+		retMap.put("status", "ok");
 		return retMap;
 	}
 }

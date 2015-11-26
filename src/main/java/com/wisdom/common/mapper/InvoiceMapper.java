@@ -27,6 +27,6 @@ public interface InvoiceMapper {
 	
 	void addModifyInvoiceRecord(@Param("uid")Integer uid, @Param("invoice_id")String invoice_id, @Param("created_time")Timestamp modified_time, @Param("action") String action);
 	
-	Invoice getInvoiceForUserByStatus(@Param("uid")Integer uid, @Param("status")String status);
+	Invoice getInvoiceForUserByStatus(@Param("status")String status);
 }
 

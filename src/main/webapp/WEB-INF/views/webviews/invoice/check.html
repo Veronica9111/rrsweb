@@ -84,7 +84,7 @@
         });
         
         var id = "";
-        $.post('/invoice/getInvoiceForUser', {"status":"UNRECOGNIZED"}, function(data){
+        $.post('/invoice/getInvoiceForUser', {"status":"UNCHECK"}, function(data){
         	console.log(data);
         	if(data.status == "nok"){
         		alert("您的访问超时，请重新登录！");

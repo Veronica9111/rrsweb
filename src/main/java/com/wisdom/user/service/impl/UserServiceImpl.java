@@ -315,6 +315,22 @@ public class UserServiceImpl implements IUserService{
 		return false;
 	}
 
+	@Override
+	public Map<String, Integer> getUsersCurrentWork(String role) {
+		Map<String, Integer> retMap = new HashMap<>();
+		List<User> users = userMapper.getUsersCurrentWork(role);
+		for(User user: users){
+			if(retMap.containsKey(user.getId().toString() + "," + user.getName())){
+				Integer count = retMap.get(user.getId().toString() + "," + user.getName());
+				count += 1;
+				retMap.replace(user.getId().toString() + "," + user.getName(), count);
+			}else{
+				retMap.put(user.getId().toString() + "," + user.getName(), 1);
+			}
+		}
+		return retMap;
+	}
+
 
 
 }

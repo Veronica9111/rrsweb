@@ -43,4 +43,6 @@ public interface UserMapper {
   
   UserRecord getUserWithWorkRecord(@Param("uid")Integer uid);
   
+  List<User> getUsersCurrentWork(@Param("rname")String roleName);
+  
 } 

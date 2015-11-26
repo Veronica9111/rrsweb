@@ -48,7 +48,7 @@
   insert into record (uid, invoice_id, action, created_time) values(#{uid}, #{invoice_id}, #{action}, #{created_time})
   </insert>
   <select id="getInvoiceForUserByStatus" parameterType="String" resultType="Invoice">
-  select * from invoice where status=#{status} and uid=#{uid}
+  select * from invoice where status=#{status} and uid is null limit 1
   </select>
 
 </mapper>
