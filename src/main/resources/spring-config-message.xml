@@ -14,10 +14,10 @@
         <constructor-arg value="${javamail.smtp.host}"></constructor-arg>
     </bean>
     
-    <bean id="javaMailService" class="com.wisdom.dispatch.service.impl.JavaMailService">
+    <bean id="javaMailService" class="com.wisdom.common.utils.JavaMailService">
     	<property name="javaMail" ref="javaMail"></property>
-    	<property name="username" value="${javamail.username}"></property>
-    	<property name="password" value="${javamail.password}"></property>
+    	<constructor-arg value="${javamail.username}"></constructor-arg>
+    	<constructor-arg value="${javamail.password}"></constructor-arg>
     </bean>
     
 

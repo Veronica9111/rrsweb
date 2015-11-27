@@ -25,6 +25,8 @@ import com.wisdom.common.model.Role;
 import com.wisdom.common.model.User;
 import com.wisdom.common.model.UserRecord;
 import com.wisdom.common.model.UserRole;
+import com.wisdom.common.utils.JavaMail;
+import com.wisdom.common.utils.JavaMailService;
 import com.wisdom.utils.GenerateMD5;
 
 @Service("userService")
@@ -35,6 +37,9 @@ public class UserServiceImpl implements IUserService{
 	  
 	  @Autowired
 	  private PermissionMapper permissionMapper;
+	  
+	  @Autowired
+	  private JavaMailService javaMailService;
 
 
     
@@ -328,6 +333,44 @@ public class UserServiceImpl implements IUserService{
 				retMap.put(user.getId().toString() + "," + user.getName(), 1);
 			}
 		}
+		return retMap;
+	}
+
+	@Override
+	public Map<String, String> generateNewPassword(Integer uid) {
+		Map<String, String> retMap = new HashMap<>();
+		//Check if the mail address is available
+		User user = userMapper.getUserById(uid);
+		if(user.getMail() != null && !user.getMail().equals("")){
+			Integer max = 999999;
+			Integer min = 100000;
+			String cryptedPassword = "";
+			Integer password = (int) Math.round(Math.random() * (max - min + 1) + min);
+			try {
+				cryptedPassword = GenerateMD5.generateMD5(password.toString());
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				retMap.put("status", "nok");
+				retMap.put("message", "密码生成失败，请稍后再试！");
+				return retMap;
+			}
+			// Update password
+			userMapper.updateUserPassword(uid, cryptedPassword);
+			//Send out mail
+			Boolean result = javaMailService.sendMailOut(user.getMail(), "忘记密码", "密码"+password.toString(), "bbz@bangbangzhang.com");
+
+			if(result){
+				retMap.put("status", "ok");
+				retMap.put("message", "密码发送成功，请查收邮箱！");
+			}else{
+				retMap.put("status", "nok");
+				retMap.put("message", "密码发送失败，请稍后重试！");
+			}
+			
+			
+		}
+
 		return retMap;
 	}
 

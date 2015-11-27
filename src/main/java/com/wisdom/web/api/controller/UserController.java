@@ -348,4 +348,20 @@ public class UserController {
 		retMap.put("data", result);
 		return retMap;
 	}
+	
+	@RequestMapping("/user/generateNewPassword")
+	@ResponseBody
+	public Map<String, String>generateNewPassword(HttpServletRequest request){
+		Map<String, String> retMap = new HashMap<>();
+		Integer uid = null;
+		try{
+			uid = Integer.parseInt(request.getParameter("uid"));
+		}catch(Exception e){
+			retMap.put("status", "nok");
+			retMap.put("message", "员工号输入错误！");
+		}
+
+		retMap = userService.generateNewPassword(uid);
+		return retMap;
+	}
 }

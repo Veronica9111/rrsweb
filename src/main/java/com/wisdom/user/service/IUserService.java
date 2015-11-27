@@ -43,4 +43,6 @@ public interface IUserService {
 	public Boolean isUserValidForPermission(Integer uid, String permissionInvokeName);
 	
 	public Map<String, Integer> getUsersCurrentWork(String role);
+	
+	public Map<String, String> generateNewPassword(Integer uid);
 }
