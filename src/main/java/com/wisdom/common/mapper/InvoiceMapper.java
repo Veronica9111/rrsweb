@@ -19,6 +19,8 @@ public interface InvoiceMapper {
 	
 	List<Invoice>getUnexportedInvoices();
 	
+	Invoice getInvoiceByUserAndStatus(@Param("uid")Integer uid, @Param("status")String status);
+	
 	void setInvoiceExported(@Param("id")String id);
 	
 	void updateInvoiceStatus(@Param("id")String id, @Param("status")String status);

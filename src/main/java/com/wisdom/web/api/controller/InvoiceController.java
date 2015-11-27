@@ -221,14 +221,20 @@ public class InvoiceController {
 	
 	@RequestMapping("/invoice/updateInvoiceContent")
 	@ResponseBody
-	public Map<String, String>updateInvoiceContent(HttpServletRequest request){
-		Map<String, String> retMap = new HashMap<>();
+	public Map<String, String>updateInvoiceContent(HttpSession httpSession, HttpServletRequest request){
+		Map<String, String>retMap = new HashMap<>();
+		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
+		Boolean result = userService.isUserValidForPermission(uid, "recognize invoice");
+		if(!result){
+			retMap.put("status", "nok");
+			return retMap;
+		}
 		String data = request.getParameter("data");
 		String FA = request.getParameter("FA");
 		String id = request.getParameter("id");
 		String realPath = request.getSession().getServletContext()
 				.getRealPath("/WEB-INF").substring(0);
-		if(invoiceService.updateInvoiceContent(realPath, data, FA, id)){
+		if(invoiceService.updateInvoiceContent(realPath, data, FA, id, uid)){
 			retMap.put("status", "ok");
 		}else{
 			retMap.put("status", "nok");

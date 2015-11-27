@@ -26,7 +26,7 @@ public interface IInvoiceService {
 	
 	public Map<String, String> getInvoiceForUserByStatus(Integer uid, String status);
 	
-	public Boolean updateInvoiceContent(String path, String data, String FA, String id);
+	public Boolean updateInvoiceContent(String path, String data, String FA, String id, Integer uid);
 	
 	public String readingeXML(String path);
 }

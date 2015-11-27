@@ -48,7 +48,10 @@
   insert into record (uid, invoice_id, action, created_time) values(#{uid}, #{invoice_id}, #{action}, #{created_time})
   </insert>
   <select id="getInvoiceForUserByStatus" parameterType="String" resultType="Invoice">
-  select * from invoice where status=#{status} and uid is null limit 1
+  select * from invoice where status=#{status} and (uid is null or uid = 0) order by created_time, priority desc limit 1
+  </select>
+  <select id="getInvoiceByUserAndStatus" parameterType="String" resultType="Invoice">
+  select * from invoice where status=#{status} and uid=#{uid}
   </select>
 
 </mapper>

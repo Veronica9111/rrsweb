@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="com.wisdom.common.mapper.RecordMapper">
+<cache />
+<resultMap type="com.wisdom.common.model.Record" id="Record">   
+<result property="uid" column="uid"/>  
+<result property="invoice_id" column="invoice_id"/>
+<result property="action" column="action"/>
+<result property="created_time" column="created_time"/>  
+</resultMap>
+ <insert id="addRecord" parameterType="Record">
+insert into record(uid,invoice_id, action, created_time)
+values(#{uid}, #{invoice_id}, #{action}, NOW())
+</insert>
+</mapper>

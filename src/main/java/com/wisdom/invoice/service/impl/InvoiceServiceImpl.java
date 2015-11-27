@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import com.wisdom.common.mapper.InvoiceMapper;
 import com.wisdom.common.mapper.PermissionMapper;
+import com.wisdom.common.mapper.RecordMapper;
 import com.wisdom.common.model.Invoice;
+import com.wisdom.common.model.Record;
 import com.wisdom.invoice.service.IInvoiceService;
 import com.wisdom.common.utils.ReadingXML;
 import com.wisdom.common.utils.WriteXML;
@@ -26,6 +28,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
 	  @Autowired
 	  private	InvoiceMapper invoiceMapper;
+	  
+	  @Autowired
+	  private RecordMapper recordMapper;
 
 
 
@@ -35,6 +40,10 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	
 	public void setInvoiceMapper(InvoiceMapper invoiceMapper) {
 		    this.invoiceMapper = invoiceMapper;
+	}
+	
+	public void setRecordMapper(RecordMapper recordMapper){
+		this.recordMapper = recordMapper;
 	}
 	
 	@Override
@@ -243,10 +252,17 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	
 	@Override
 	public Map<String, String> getInvoiceForUserByStatus(Integer uid, String status) {
-		//Get an avaiable invoice
-		Invoice invoice = invoiceMapper.getInvoiceForUserByStatus(status);
-		//Then set the owner
-		invoiceMapper.updateInvoiceOwner(invoice.getId(), uid);
+		//If the user already have one, then just return it
+		Invoice invoice = invoiceMapper.getInvoiceByUserAndStatus(uid, status);
+		if(invoice == null){
+			//Get an avaiable invoice
+			invoice = invoiceMapper.getInvoiceForUserByStatus(status);
+			if(invoice == null){
+				return null;
+			}
+			//Then set the owner
+			invoiceMapper.updateInvoiceOwner(invoice.getId(), uid);
+		}
 		Map<String, String> temp = new HashMap<>();
 		String modified_time;
 		String path;
@@ -288,7 +304,17 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	}
 
 	@Override
-	public Boolean updateInvoiceContent(String path, String data, String FA, String id) {
+	public Boolean updateInvoiceContent(String path, String data, String FA, String id, Integer uid) {
+		//TODO set the status to UNCHECK, remove the uid
+		updateInvoiceStatus(id, "UNCHECK");
+		updateInvoiceOwner(id, 0);
+		//Set the work record
+		Record record = new Record();
+		record.setInvoice_id(id);
+		record.setUid(uid);
+		record.setAction("RECOGNIZE");
+		recordMapper.addRecord(record);
+		
 		try{
 			WriteXML.WriteXML(path, data, FA, id);
 		}catch(Exception e){

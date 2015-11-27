@@ -146,6 +146,11 @@
   <property name="sqlSessionFactory" ref="sqlSessionFactory" />
 </bean>
 
+<bean id="recordMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+  <property name="mapperInterface" value="com.wisdom.common.mapper.RecordMapper" />
+  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+
 <bean id="roleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
   <property name="mapperInterface" value="com.wisdom.common.mapper.RoleMapper" />
   <property name="sqlSessionFactory" ref="sqlSessionFactory" />
@@ -167,11 +172,13 @@
 	
 	<bean id="invoiceServiceImpl" class="com.wisdom.invoice.service.impl.InvoiceServiceImpl">
 		<property name="invoiceMapper" ref="invoiceMapper" />
+				<property name="recordMapper" ref="recordMapper" />
 	</bean>	
 	
 	<bean id="roleServiceImpl" class="com.wisdom.role.service.impl.RoleServiceImpl">
 		<property name="roleMapper" ref="roleMapper" />
 	</bean>	
+
 	
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
   <property name="basePackage" value="mapper" />

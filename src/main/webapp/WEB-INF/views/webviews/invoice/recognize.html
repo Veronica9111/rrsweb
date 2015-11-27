@@ -124,6 +124,7 @@
         		$.post('/invoice/updateInvoiceContent', {"data": JSON.stringify(resultList), 'FA':FA, "id":id}, function(data){
         			if(data.status == 'ok'){
         				alert("切换到下一张");
+        				window.location.reload();
         			}
         			else{
         				alert("提交出错，请稍后再试！");

@@ -13,6 +13,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         <typeAlias alias="Role" type="com.wisdom.common.model.Role" />
         <typeAlias alias="UserRole" type="com.wisdom.common.model.UserRole" />
         <typeAlias alias="UserRecord" type="com.wisdom.common.model.UserRecord" />
+        <typeAlias alias="record" type="com.wisdom.common.model.Record" />
 
   </typeAliases>
   <mappers>
@@ -21,6 +22,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     <mapper resource="com/wisdom/common/mapper/PermissionMapper.xml" />
     <mapper resource="com/wisdom/common/mapper/InvoiceMapper.xml" />
     <mapper resource="com/wisdom/common/mapper/RoleMapper.xml" />
+    <mapper resource="com/wisdom/common/mapper/RecordMapper.xml" />
   </mappers>
 
 </configuration>
