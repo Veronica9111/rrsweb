@@ -281,14 +281,17 @@ public class UserServiceImpl implements IUserService{
 			tempList.add(record.getCompany());
 			tempList.add(record.getRecognize().toString());
 			tempList.add(record.getInspect().toString());
+			String activate = "";
 			if(record.getActive() == 0){
 				tempList.add("未激活");
+				activate = "<input type='button' value='激活' class='activate' id='activate-" + record.getId().toString() + "'/>";
 			}else{
 				tempList.add("已激活");
+				activate = "<input type='button' disabled='disabled' value='激活' class='activate' id='activate-" + record.getId().toString() + "'/>";
 			}
 			String edit = "<input type='button' value='编辑' class='edit' id='edit-"+ record.getId().toString() +"'/>";
 			String delete = "<input type='button' value='删除' class='delete' id='delete-"+ record.getId().toString() +"'/>";
-			tempList.add(edit + delete);
+			tempList.add(activate + edit + delete);
 			retList.add(tempList);
 		}
 		return retList;

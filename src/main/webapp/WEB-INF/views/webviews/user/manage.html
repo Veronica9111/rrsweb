@@ -141,6 +141,16 @@ function deleteRow(elem) {
 			    	        ]
 			    });
 			    
+			    $("#example tbody").on("click", ".activate", function(){
+				    var id = $(this).parent().parent().children().eq(0)[0].innerHTML;
+				    var activateBox = $(this);
+				    $.post("/user/activateUser", {"id": id}, function(){
+				    	activateBox.parents('tr').children().eq(6)[0].innerHTML = "已激活";
+				    	activateBox.attr("disabled", "disabled");
+				    });
+				    	
+			    });
+			    
 			    $("#example tbody").on('click', '.delete', function (){
 			    	var id = $(this).parent().parent().children().eq(0)[0].innerHTML;
 			    	$.post("/user/deleteUser", {"uid": id}, function(data){

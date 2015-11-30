@@ -214,9 +214,15 @@ public class UserController {
 	//uid 0-->1
 	@RequestMapping("/user/activateUser")
 	@ResponseBody
-	public Map<String, String>activateUser(HttpServletRequest request){
-		Integer id=Integer.parseInt(request.getParameter("id"));
-		Map<String, String>retMap = new HashMap<>();
+	public Map<String, String>activateUser(HttpSession httpSession, HttpServletRequest request){
+		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
+		Integer id = Integer.parseInt(request.getParameter("id"));
+		Map<String, String> retMap = new HashMap<>();
+		Boolean result = userService.isUserValidForPermission(uid, "manage all users");
+		if(!result){
+			retMap.put("status", "nok");
+			return retMap;
+		}
 		boolean boo=userService.activateUser(id);
 		if (boo){
 			retMap.put("status", "ok");
