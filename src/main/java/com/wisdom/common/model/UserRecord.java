@@ -8,13 +8,22 @@ public class UserRecord implements java.io.Serializable{
     private Integer recognize;
     private String company;
     private String mail;
+    private Integer active;
 
 
  
  
 
  
-    public Integer getId() {
+    public Integer getActive() {
+		return active;
+	}
+
+	public void setActive(Integer active) {
+		this.active = active;
+	}
+
+	public Integer getId() {
         return id;
     }
  

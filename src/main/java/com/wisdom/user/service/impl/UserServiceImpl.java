@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.wisdom.user.service.IUserService;
 import com.wisdom.web.api.controller.UserController;
 import com.wisdom.common.mapper.PermissionMapper;
+import com.wisdom.common.mapper.RoleMapper;
 import com.wisdom.common.mapper.TestMapper;
 import com.wisdom.common.mapper.UserMapper;
 import com.wisdom.common.model.Permission;
@@ -34,6 +35,9 @@ public class UserServiceImpl implements IUserService{
 
 	  @Autowired
 	  private UserMapper userMapper;
+	  
+	  @Autowired
+	  private RoleMapper roleMapper;
 	  
 	  @Autowired
 	  private PermissionMapper permissionMapper;
@@ -269,9 +273,22 @@ public class UserServiceImpl implements IUserService{
 			List<String> tempList = new ArrayList<>();
 			tempList.add(record.getId().toString());
 			tempList.add(record.getName());
+			String mail = "";
+			if(record.getMail() != null){
+				mail = record.getMail().toString();
+			}
+			tempList.add(mail);
 			tempList.add(record.getCompany());
 			tempList.add(record.getRecognize().toString());
 			tempList.add(record.getInspect().toString());
+			if(record.getActive() == 0){
+				tempList.add("未激活");
+			}else{
+				tempList.add("已激活");
+			}
+			String edit = "<input type='button' value='编辑' class='edit' id='edit-"+ record.getId().toString() +"'/>";
+			String delete = "<input type='button' value='删除' class='delete' id='delete-"+ record.getId().toString() +"'/>";
+			tempList.add(edit + delete);
 			retList.add(tempList);
 		}
 		return retList;
@@ -372,6 +389,21 @@ public class UserServiceImpl implements IUserService{
 		}
 
 		return retMap;
+	}
+
+	@Override
+	public Boolean updateUserRoles(Integer uid, String[] roles) {
+		List<Role> currentRoles = roleMapper.getUserRoles(uid);
+		for (Role role: currentRoles){
+			if(role == null){
+				continue;
+			}
+			userMapper.removeRoleFromUser(uid, role.getName());
+		}
+		for(String role: roles){
+			userMapper.addRoleToUser(uid, role);
+		}
+		return true;
 	}
 
 

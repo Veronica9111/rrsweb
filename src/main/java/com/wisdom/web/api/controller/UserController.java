@@ -364,4 +364,48 @@ public class UserController {
 		retMap = userService.generateNewPassword(uid);
 		return retMap;
 	}
+	
+	@RequestMapping("/user/updateUserByAdmin")
+	@ResponseBody
+	public Map<String, String>updateUserByAdmin(HttpSession httpSession, HttpServletRequest request){
+		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
+		Map<String, String> retMap = new HashMap<>();
+		Boolean result = userService.isUserValidForPermission(uid, "manage all users");
+		if(!result){
+			retMap.put("status", "nok");
+			return retMap;
+		}
+		Integer id = Integer.parseInt(request.getParameter("id"));
+		String email=request.getParameter("email");
+		String name=request.getParameter("name");
+		String company=request.getParameter("company");
+		boolean boo=userService.updateUser(id,email,name,company);
+		if (boo){
+			retMap.put("status", "ok");
+		}
+		else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
+	}
+	
+	@RequestMapping("/user/updateUserRoles")
+	@ResponseBody
+	public Map<String, String>updateUserRoles(HttpSession httpSession, HttpServletRequest request){
+		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
+		Integer id = Integer.parseInt(request.getParameter("id"));
+		String[] roles = request.getParameter("roles").split(",");
+		Map<String, String> retMap = new HashMap<>();
+		Boolean result = userService.isUserValidForPermission(uid, "manage all users");
+		if(!result){
+			retMap.put("status", "nok");
+			return retMap;
+		}
+		if(userService.updateUserRoles(id, roles)){
+			retMap.put("status", "ok");
+		}else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
+	}
 }

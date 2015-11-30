@@ -45,4 +45,6 @@ public interface IUserService {
 	public Map<String, Integer> getUsersCurrentWork(String role);
 	
 	public Map<String, String> generateNewPassword(Integer uid);
+	
+	public Boolean updateUserRoles(Integer uid, String[] roles);
 }

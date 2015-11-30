@@ -19,9 +19,9 @@ public class JavaMailService {
 	
 	public boolean sendMailOut(String to,String subject,String body,String from_user){
 		JavaMail javaMail = new JavaMail("smtp.bangbangzhang.com");
-		javaMail.setNamePass(this.username, this.password);
+		javaMail.setNamePass("bbz@bangbangzhang.com", "bhu89IJN");
 		javaMail.setNeedAuth(true);
-		javaMail.setFrom(username);
+		javaMail.setFrom("bbz@bangbangzhang.com");
 		javaMail.setTo(to);
 		javaMail.setSubject(subject);
 		javaMail.setBody(body);

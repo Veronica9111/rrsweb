@@ -67,6 +67,9 @@
     <li><span>公司名称</span>
       <input id="edit-company" type="text" value="">
     </li>
+    <li><span>邮箱地址</span>
+    	<input id="edit-mail" type="text" value="">
+    </li>
     <li><span>用户类型</span>
       <select id="edit-role" tabindex="" name="htmltest" multiple="multiple">
       </select>
@@ -92,6 +95,20 @@ function deleteRow(elem) {
 
 	
 	$(document).ready(function() {
+		
+		//For IE 8 and below
+		if(!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function(needle) {
+        for(var i = 0; i < this.length; i++) {
+            if(this[i] === needle) {
+                return i;
+            }
+        }
+        return -1;
+    };
+}
+		
+		
 		var invalid = false;
 		var dataSet = [];
 		var roles = [];
@@ -114,105 +131,102 @@ function deleteRow(elem) {
 			    	columns: [
 			    	          	{title: "员工号"},
 			    	            { title: "姓名" },
+			    	            { title: "邮箱" },
 			    	            { title: "公司" },
 			    	            { title: "识别数" },
-			    	            { title: "审核数." },
+			    	            { title: "审核数" },
+			    	            { title: "状态"},
+			    	            { title: ""}
 
 			    	        ]
 			    });
 
-			    $('#example tbody').on( 'click', 'tr', function () {
-			        if ( $(this).hasClass('selected') ) {
-			            $(this).removeClass('selected');
-			        }
-			        else {
-			            table.$('tr.selected').removeClass('selected');
-			            $(this).addClass('selected');
-			        }
-			    } );
-			    
-			    
-			    $("#edit-user-btn").on("click", function(){
-			    	var id = table.row('.selected').data()[0];
-			    	var name = table.row('.selected').data()[1];
-			    	var company = table.row('.selected').data()[2];
+			    $('#example tbody').on('click', '.edit', function () {
+			    	var editButton = $(this);
+
+			        var id = $(this).parent().parent().children().eq(0)[0].innerHTML;
+			        console.log($(this).parent().parent().children().eq(0)[0]);
+			        var name = $(this).parent().parent().children().eq(1)[0].innerHTML;
+			        var mail = $(this).parent().parent().children().eq(2)[0].innerHTML;
+			        var company = $(this).parent().parent().children().eq(3)[0].innerHTML;
+			        console.log(id);
 			    	$("#edit-name").val(name);
 			    	$("#edit-company").val(company);
-
+			    	$("#edit-mail").val(mail);
 					  $.post("/user/getUserRoles", {"id":id}, function(data){
+						  //Clean the select box first
+						  $("#edit-role").html("");
 						  var options = $.parseJSON(data.data);
-					    	$(".sol-container").each(function(){
-					    		$(this).remove();
-					    	});
-					    	//$("#edit-role").empty();
-					    	$("#edit-role").val('').trigger('chosen:updated');
-					    	$('#edit-role').css("display","inline-block");	
-					    	$("#edit-role").attr("name", "htmltest");
-					    	console.log($("#edit-role"));
-					    	$.each(roles, function(key, value){
-
-					    		if($.inArray(value, options) !== -1){
-
-					    		     $('#edit-role')
-				    	        	  .append($('<option selected="selected">', { key: value })
-				    	          	  .text(value)); 
-					    		}else{
-				    			
-					    		     $('#edit-role')
-				    	        	  .append($('<option>', { key: value })
-				    	          	  .text(value)); 
-					    		}
-					    		
-					    	});
-				    		$('#edit-role').searchableOptionList({
-				    			texts : {
-				    				searchplaceholder: '点击此处查询用户角色',
-				    				  selectAll: '全选',
-				    				  selectNone: '取消全选',
-
-				    				}
-				    		});
-				    		$("#edit-role").trigger("chosen:updated");
+						  console.log(options);
+						  for(key in roles){
+							  console.log(roles);
+							  if(options.indexOf(roles[key]) > -1){
+						  		$("#edit-role").append("<option selected='selected'>" + roles[key] + "</option>");
+							  }
+							  else{
+								  $("#edit-role").append("<option>" + roles[key] + "</option>");
+							  }
+						  }
+					    	$("#edit-role").select2({tags: true});
 				    	});
-			    	console.log("hello");
-			    	$("#edit-user-dialog").dialog({
-			    		height:480,
-			    		  width:640,
-			    		  title:"编辑用户",
-			    		  buttons: [
-			    		            {
-			    		              text: "编辑用户",
-			    		              icons: {
-			    		                primary: "ui-icon-heart"
-			    		              },
-			    		              click: function() {
-			    		    		    	var name = $("#edit-name");
-			    		    		    	var company = $("#edit-company");
-			    		    		    	var role = $('#add-role').find(":selected").text();
-			    		    		    	
-			    		    		    	$.post('/user/addUser',{'name':name.val(), 'company':company.val(),'role':role},function(data){
-			    		    		    		console.log(data);
-			    		    		    	});
-			    		    		    	console.log(role);
-			    		                $( this ).dialog( "close" );
-			    		              }
-			    		         
-			    		              // Uncommenting the following line would hide the text,
-			    		              // resulting in the label being used as a tooltip
-			    		              //showText: false
-			    		            },{
-			    		            	text: "取消",
+				    	$("#edit-user-dialog").dialog({
+				    		height:480,
+				    		  width:640,
+				    		  title:"编辑用户",
+				    		  buttons: [
+				    		            {
+				    		              text: "编辑用户",
 				    		              icons: {
 				    		                primary: "ui-icon-heart"
 				    		              },
 				    		              click: function() {
+				    		    		    	var name = $("#edit-name").val();
+				    		    		    	var company = $("#edit-company").val();
+				    		    		    	var roles = ""; 
+				    		    		    	$('#edit-role :selected').each(function(i, selected){ 
+				    		    		    	  roles += $(selected).text() + ","; 
+				    		    		    	});
+				    		    		    	//var role = $('#edit-role').find(":selected").text();
+				    		    		    	var email = $("#edit-mail").val()
+				    		    		    	$.post('/user/updateUserByAdmin', {'id': id, 'email': email, 'name': name, 'company':company}, function(data){
+				    		    		    		console.log(data);
+				    		    		    		if(data.status == "ok"){
+				    		    		    			console.log(editButton.parent().parent().children().eq(1)[0].innerHTML);
+				    		    		    			editButton.parent().parent().children().eq(1)[0].innerHTML = name;
+				    		    		    			editButton.parent().parent().children().eq(2)[0].innerHTML = email;
+				    		    		    			editButton.parent().parent().children().eq(3)[0].innerHTML = company;
+				    		    		    			
+				    		    		    		}
+				    		    		    	});
+				    		    		    	//Update all user's roles
+				    		    		    	$.post("/user/updateUserRoles", {'id':id, 'roles':roles}, function(data){
+				    		    		    		console.log(data);
+				    		    		    	});
+				    		    		    	/*$.post('/user/addUser',{'name':name.val(), 'company':company.val(),'role':role},function(data){
+				    		    		    		console.log(data);
+				    		    		    	});*/
+				    		    		    	//console.log(role);
 				    		                $( this ).dialog( "close" );
 				    		              }
-			    		            }
-			    		          ]
-			    		        });
-			    		
-			    	});
+				    		         
+				    		              // Uncommenting the following line would hide the text,
+				    		              // resulting in the label being used as a tooltip
+				    		              //showText: false
+				    		            },{
+				    		            	text: "取消",
+					    		              icons: {
+					    		                primary: "ui-icon-heart"
+					    		              },
+					    		              click: function() {
+					    		                $( this ).dialog( "close" );
+					    		              }
+				    		            }
+				    		          ]
+				    		        });
+			        
+			    } );
+			    
+
 			    
 		});
 
@@ -225,29 +239,13 @@ function deleteRow(elem) {
 						invalid = true;
 						window.location.href="/views/frontviews/index.html";
 					}
-
 		    	}
 		    	for(var key in data.data){
-	
 		    		roles.push(data.data[key]);
 		    		optionData.push({"id":key, "text":data.data[key]});
-		    	  //   $('#add-role')
-		    	    //      .append($('<option>', { key: value })
-		    	      //    .text(value)); 
-
-
-
 		    	}
 		    	console.log(optionData);
 
-	    		/*$('#add-role').searchableOptionList({
-	    			texts : {
-	    				searchplaceholder: '点击此处查询用户角色',
-	    				  selectAll: '全选',
-	    				  selectNone: '取消全选',
-
-	    				}
-	    		});*/
 		    });
 
 

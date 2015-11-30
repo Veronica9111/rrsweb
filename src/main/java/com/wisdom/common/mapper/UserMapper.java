@@ -31,7 +31,7 @@ public interface UserMapper {
   
   Integer addRoleToUser(@Param("uid")Integer uid,@Param("rname")String rName);
   
-  boolean removeRoleFromUser(@Param("uid")Integer uid,@Param("pname")String pName);
+  Integer removeRoleFromUser(@Param("uid")Integer uid,@Param("rname")String rName);
   
   List<User> getUsersByPname(@Param("pname")String pName);
   
