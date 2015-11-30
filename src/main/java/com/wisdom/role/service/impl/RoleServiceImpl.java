@@ -168,7 +168,7 @@ public class RoleServiceImpl implements IRoleService{
 	@Override
 	public Map<String, List<String>> getAllRolesPermissions() {
 		Map<String, List<String>> retMap = new HashMap<>();
-		List<RolePermissions> rolePermissions = roleMapper.getAllRolesPermissions();
+		/*List<RolePermissions> rolePermissions = roleMapper.getAllRolesPermissions();
 		for (RolePermissions rolePermission: rolePermissions){
 			List<Permission>permissions = rolePermission.getPermissions();
 			List<String>temp = new ArrayList<>();
@@ -176,6 +176,17 @@ public class RoleServiceImpl implements IRoleService{
 				temp.add(permission.getName());
 			}
 			retMap.put(rolePermission.getName(), temp);
+		}*/
+		List<Role> roles = roleMapper.getAllRoles();
+		for (Role role: roles){
+			List<Permission> permissions = permissionMapper.getPermissionByRole(role.getName());
+			List<String> temp = new ArrayList<>();
+			for(Permission permission: permissions){
+				if(permission != null){
+					temp.add(permission.getName());
+				}
+			}
+			retMap.put(role.getName(), temp);
 		}
 		return retMap;
 	}
