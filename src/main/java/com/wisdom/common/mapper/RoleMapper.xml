@@ -8,6 +8,19 @@
 <result property="name" column="name"/>    
 </resultMap>
 
+
+<resultMap type="com.wisdom.common.model.RolePermissions" id="RolePermissions">
+<result property="id" column="id"/>  
+<result property="name" column="name"/>
+<collection property="permissions" ofType="Permission" resultMap="PermissionResult">
+</collection>   	
+</resultMap>
+<resultMap type="Permission" id="PermissionResult">
+    <id property='id' column='pid'/>
+    <result property='name' column='pname'/>
+    <result property='invoke_name' column='invoke_name'/>
+</resultMap>
+
  <insert id="addRole" parameterType="String">
 insert into role(name)
 values(#{name})
@@ -50,5 +63,15 @@ INSERT INTO role_permission(role_id,permission_id)VALUES( (SELECT id FROM role W
 	from user u left join user_role ur on u.id = ur.user_id 
 	left join role r on ur.role_id = r.id
 	where u.id=#{uid}
+</select>
+
+<select id="getAllRolesPermissions" resultType="RolePermissions">
+	select r.id as id,
+	r.name as name,
+	p.id as pid,
+	p.name as pname,
+	p.invoke_name as invoke_name
+	from role r left join role_permission rp on r.id = rp.role_id 
+	left join permission p on rp.permission_id = p.id
 </select>
 </mapper>

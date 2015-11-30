@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import com.wisdom.common.mapper.PermissionMapper;
 import com.wisdom.common.mapper.RoleMapper;
 import com.wisdom.common.mapper.UserMapper;
+import com.wisdom.common.model.Permission;
 import com.wisdom.common.model.Role;
+import com.wisdom.common.model.RolePermissions;
 import com.wisdom.role.service.IRoleService;
 
 
@@ -161,6 +163,21 @@ public class RoleServiceImpl implements IRoleService{
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public Map<String, List<String>> getAllRolesPermissions() {
+		Map<String, List<String>> retMap = new HashMap<>();
+		List<RolePermissions> rolePermissions = roleMapper.getAllRolesPermissions();
+		for (RolePermissions rolePermission: rolePermissions){
+			List<Permission>permissions = rolePermission.getPermissions();
+			List<String>temp = new ArrayList<>();
+			for (Permission permission: permissions){
+				temp.add(permission.getName());
+			}
+			retMap.put(rolePermission.getName(), temp);
+		}
+		return retMap;
 	}
 	
 	 

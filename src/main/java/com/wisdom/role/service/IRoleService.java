@@ -27,4 +27,6 @@ public interface IRoleService {
 	 List<String> getUserRoles(Integer uid);
 	 
 	 Boolean updateRolePermissions(String roleName, String[] permissionNames);
+	 
+	 Map<String, List<String>> getAllRolesPermissions();
 }

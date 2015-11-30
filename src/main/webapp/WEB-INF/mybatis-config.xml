@@ -16,6 +16,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         <typeAlias alias="UserRole" type="com.wisdom.common.model.UserRole" />
         <typeAlias alias="UserRecord" type="com.wisdom.common.model.UserRecord" />
         <typeAlias alias="record" type="com.wisdom.common.model.Record" />
+        <typeAlias alias="RolePermissions" type="com.wisdom.common.model.RolePermissions" />
 
   </typeAliases>
   <mappers>

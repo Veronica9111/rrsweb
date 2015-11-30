@@ -29,4 +29,8 @@ public interface IInvoiceService {
 	public Boolean updateInvoiceContent(String path, String data, String FA, String id, Integer uid);
 	
 	public String readingeXML(String path);
+	
+	public Boolean increaseInvoicesPriority(String[] invoices);
+	
+	public Boolean decreaseInvoicesPriority(String[] invoices);
 }

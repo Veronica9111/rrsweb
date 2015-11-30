@@ -330,4 +330,20 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		return rx.read(path) ;
 	}
 
+	@Override
+	public Boolean increaseInvoicesPriority(String[] invoices) {
+		for(String id : invoices){
+			invoiceMapper.increaseInvoicePriority(id);
+		}
+		return true;
+	}
+
+	@Override
+	public Boolean decreaseInvoicesPriority(String[] invoices) {
+		for(String id: invoices){
+			invoiceMapper.decreaseInvoicePriority(id);
+		}
+		return true;
+	}
+
 }

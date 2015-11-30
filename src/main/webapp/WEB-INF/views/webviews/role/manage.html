@@ -45,15 +45,22 @@
         </div>
       </div>
     </div>
+    
+    <div id="edit-role-dialog">
+  <ul class="tj-l">
+    <li><span>角色名</span>
+      <input id="edit-name" type="text"  value="">
+    </li>
+    <li><span>权限类型</span>
+      <select id="edit-role" tabindex="" name="htmltest" multiple="multiple">
+      </select>
+    </li>
+  </ul>
+</div>
 
 
     <script>
-    	$("#add-role").click(function(){
-    		var name = $("#name");
-    		$.post('/role/addRole', {'name':name.val(), 'permissions':[]}, function(data){
-    			console.log(data);
-    		});
-    	});
+
     	
     	$("#delete-role").click(function(){
     		var name = $("#name");
@@ -69,28 +76,42 @@
     			console.log(data);
     		});
     	});
-    	
+    	$.post("/role/getAllRolesPermissions", {}, function(data){
+    		console.log(data);
+    	});
     	$.post("/role/getAllRoles", {}, function(data){
-    		var roles = $.parseJSON(data.data);
+    		console.log(data);
+    		var roles = data.data;
     		var dataSet = new Array();
-    		for(key in roles[0]){
+    		for(key in roles){
     			console.log(key);
     			var temp = new Array();
-    			temp.push(roles[0][key]);
-    			temp.push("<span>编辑</span>");
+    			temp.push(roles[key]);
+    			temp.push("<input type='button' value='编辑' id='" + key + "'/>");
     			dataSet.push(temp);
     		}
     		console.log(dataSet);
+			//Get all permissions
+			var columnSet = [];
+			$.post("/permission/getAllPermission", {}, function(data){
+				console.log(data);
+				for(var key in data){
+					columnSet.push({title: data[key]});
+				}
+	    		var table = $('#roles').DataTable({
+	    			"sDom": '<"top" f>rt<"bottom" p><"clear">',
+			    	data: dataSet,	
+			    	columns: columnSet
+			    });
+			});
 
-    		var table = $('#roles').DataTable({
-    			"sDom": '<"top" f>rt<"bottom" p><"clear">',
-		    	data: dataSet,	
-		    	columns: [
-		    	          	{title: "角色名"},
-		    	            { title: "" }
-
-		    	        ]
-		    });
+        	$("#add-role").click(function(){
+        		var name = $("#name");
+        		/*$.post('/role/addRole', {'name':name.val(), 'permissions':[]}, function(data){
+        			console.log(data);
+        		});*/
+        		//table.row.add(['1', '2']).draw(false);
+        	});
     		console.log(roles);
     	});
     </script>

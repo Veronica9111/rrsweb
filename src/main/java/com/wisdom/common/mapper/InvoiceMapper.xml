@@ -53,5 +53,11 @@
   <select id="getInvoiceByUserAndStatus" parameterType="String" resultType="Invoice">
   select * from invoice where status=#{status} and uid=#{uid}
   </select>
+  <update id="increaseInvoicePriority" parameterType="String">
+  update invoice set priority = priority + 10 where id = #{id}
+  </update>
+  <update id="decreaseInvoicePriority" parameterType="String">
+  update invoice set priority = priority - 10 where id = #{id}
+  </update>
 
 </mapper>

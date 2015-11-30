@@ -175,6 +175,14 @@ public class RoleController {
 		}
 		return retMap;
 	}
+	
+	@RequestMapping("/role/getAllRolesPermissions")
+	@ResponseBody
+	public Map<String, List<String>>getAllRolesPermissions(HttpServletRequest request){
+		Map<String, List<String>> retMap = new HashMap<>();
+		retMap = roleService.getAllRolesPermissions();
+		return retMap;
+	}
 
 }
 

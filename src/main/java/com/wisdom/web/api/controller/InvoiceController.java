@@ -178,6 +178,15 @@ public class InvoiceController {
 	@ResponseBody
 	public Map<String, String>updateInvoicePriority(HttpServletRequest request){
 		Map<String, String> retMap = new HashMap<>();
+		String action = request.getParameter("action");
+		String[] invoices = request.getParameter("invoices").split(",");
+		if(action.equals("increase")){
+			invoiceService.increaseInvoicesPriority(invoices);
+		}else if(action.equals("decrease")){
+			invoiceService.decreaseInvoicesPriority(invoices);
+		}else{
+			retMap.put("status", "nok");
+		}
 		return retMap;
 	}
 	

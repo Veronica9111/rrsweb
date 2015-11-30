@@ -10,8 +10,34 @@
 
 	<link rel="stylesheet" href="/css/webcss/jquery-ui.theme.css"/>
 	<link rel="stylesheet" href="/css/webcss/tooltipster.css" />
+	<link rel="stylesheet" href="/css/webcss/dropit.css" type="text/css" />
 	
 <style>
+.operation ul { display: none; } /* Hide before plugin loads */
+.operation ul.dropit-submenu {
+    background-color: #fff;
+    border: 1px solid #b2b2b2;
+    padding: 6px 0;
+    margin: 3px 0 0 1px;
+    -webkit-border-radius: 3px;
+       -moz-border-radius: 3px;
+            border-radius: 3px;
+    -webkit-box-shadow: 0px 1px 3px rgba(0,0,0,0.15);
+       -moz-box-shadow: 0px 1px 3px rgba(0,0,0,0.15);
+            box-shadow: 0px 1px 3px rgba(0,0,0,0.15);
+}          
+.operation ul.dropit-submenu a {
+    display: block;
+    font-size: 14px;
+    line-height: 25px;
+    color: #7a868e;
+    padding: 0 18px;
+}
+.operation ul.dropit-submenu a:hover {
+    background: #248fc1;
+    color: #fff;
+    text-decoration: none;
+}
 @charset "UTF-8";
 
 html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, p,
@@ -260,14 +286,23 @@ table {
 							name="zone_checkbox" value="zone_checkbox"
 							id="check-all-unrecognized">全选</input>
 					</a></li>
-					<li id="dispatch-unrecognized" class="fen"><a href="javascript:;">分发任务</a></li>
+					<li id="dispatch-unrecognized" class="fen">
+					<ul class="operation">
+ 					   <li>
+					        <a href="#">操作</a>
+					        <ul>
+					            <li><a href="javascript:increasePriority()"　id="increase-priority">提高优先级</a></li>
+					            <li><a href="javascript:decreasePriority()" id="decrease-priority">降低优先级</a></li>
+					            <li><a href="#">其它</a></li>
+					            <li><a href="#">其它</a></li>
+					        </ul>
+					    </li>
+					</ul>
+					</li>
 					<li><a class="fl delete" id="delete-unrecognized" >删除</a></li>
 				</ul>
 				</div>
-				<div class="tooltip invoice" title="&lt;img src=&quot;/img/webimg/example.png&quot; /&gt;">
-					<img class="invoice-img" src="/img/webimg/example.png" /> <input
-						type="checkbox" class="unrecognized-checkbox" id="check1" />
-				</div>
+
 			</div>
 			<div id="unchecked" class="content">
 				<ul class="tp-t">
@@ -296,7 +331,7 @@ table {
 			<ul id="dispatcher-ul">
 			</ul>
 		</div>
-
+		
 		<div class="mask"></div>
 		<div class="footer">
 			<div class="container">
@@ -308,8 +343,54 @@ table {
 <script src="/js/webjs/jquery-1.11.3.js"></script>
 <script src="/js/webjs/jquery-ui.js"></script>
 <script src="/js/webjs/jquery.tooltipster.js"></script>
+<script src="/js/webjs/dropit.js"></script>
+
 <script>
 	$("#container").tabs();
+    $('.operation').dropit();
+    
+    function increasePriority(){
+    	var invoices = [];
+    	
+       	$( ".unrecognized-checkbox:checked" ).each(function(){
+    		console.log($(this).parent().find("b"));
+    		var priority = $(this).parent().find("b")[0];
+    		console.log(priority.innerHTML);
+    		if(priority.innerHTML == "低"){
+    			invoices.push($(this).attr("id"));
+    			priority.innerHTML = "一般";
+    		}else if (priority.innerHTML == "一般"){
+    			invoices.push($(this).attr("id"));
+    			priority.innerHTML = "高";
+    		}
+    	});
+       	var invoiceStr = invoices.join();
+       	$.post("/invoice/updateInvoicePriority", {"invoices": invoiceStr, "action": "increase"}, function(data){
+       		console.log(data);
+       	});
+    	
+    }
+    
+    function decreasePriority(){
+    	var invoices = [];
+       	$( ".unrecognized-checkbox:checked" ).each(function(){
+    		console.log($(this).parent().find("b"));
+    		var priority = $(this).parent().find("b")[0];
+    		console.log(priority.innerHTML);
+    		if(priority.innerHTML == "一般"){
+    			invoices.push($(this).attr("id"));
+    			priority.innerHTML = "低";
+    		}else if (priority.innerHTML == "高"){
+    			invoices.push($(this).attr("id"));
+    			priority.innerHTML = "一般";
+    		}
+    	});
+       	var invoiceStr = invoices.join();
+       	$.post("/invoice/updateInvoicePriority", {"invoices": invoiceStr, "action": "decrease"}, function(data){
+       		console.log(data);
+       	});
+    }
+
 
 	$.post("/invoice/getInvoicesByStatus", {"status":"UNRECOGNIZED"}, function(data){
 		console.log(data);
@@ -320,9 +401,19 @@ table {
 			return;
 		}
 		var invoices = $.parseJSON(data.data);
+		console.log(invoices);
 		for(key in invoices){
+			var priority = "";
+			console.log(invoices[key]["priority"] ==20);
+			if(invoices[key]["priority"] == 10) {
+				priority = "一般";
+			}else if (invoices[key]["priority"] == 20) {
+				priority = "高";
+			}else {
+				priority = "低";
+			}
 			var invoiceBox = '<div class="tooltip invoice" title="&lt;img src=&quot;'+invoices[key]["path"] + '&quot; /&gt;"><img class="invoice-img" src="' + invoices[key]["path"] +
-			'" /> <input type="checkbox" class="unrecognized-checkbox" id="' + invoices[key]["id"] + '" /></div>';
+			'" /> <input type="checkbox" class="unrecognized-checkbox" id="' + invoices[key]["id"] + '" /><p>优先级: <b>' + priority + '</b></p></div>';
 			$("#unrecognized").append(invoiceBox);
 		}
 		$('.tooltip').tooltipster({
@@ -331,7 +422,7 @@ table {
 		console.log(invoices);
 	});
 	
-	$("#dispatch-unrecognized").on("click", function(){
+/*	$("#dispatch-unrecognized").on("click", function(){
 		//Get all invoice recognizer
 		$.post("/invoice/getUsersCurrentWork", {'role':'发票识别员'}, function(data){
 			var userData = $.parseJSON(data.data);
@@ -360,7 +451,7 @@ table {
 		      }
 		});
 		
-	});
+	});*/
 	
 	$("#check-all-unrecognized").change(function(){
 		if($(this).prop("checked")){
