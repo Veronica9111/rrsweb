@@ -140,6 +140,17 @@ function deleteRow(elem) {
 
 			    	        ]
 			    });
+			    
+			    $("#example tbody").on('click', '.delete', function (){
+			    	var id = $(this).parent().parent().children().eq(0)[0].innerHTML;
+			    	$.post("/user/deleteUser", {"uid": id}, function(data){
+			    		console.log(data);
+			    	});
+			    	table
+			        .row( $(this).parents('tr') )
+			        .remove()
+			        .draw();
+			    });
 
 			    $('#example tbody').on('click', '.edit', function () {
 			    	var editButton = $(this);

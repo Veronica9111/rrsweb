@@ -126,11 +126,15 @@ public class UserController {
 	
 	@RequestMapping("/user/deleteUser")
 	@ResponseBody
-	public Map<String, String>deleteUser(HttpServletRequest request){
-		//Integer uid = Integer.parseInt((String) request.getSession().getAttribute(SessionConstant.SESSION_USER_ID));
-		//TODO Permission check
-		Integer deleteUID = Integer.parseInt(request.getParameter("uid"));
+	public Map<String, String>deleteUser(HttpSession httpSession, HttpServletRequest request){
+		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
 		Map<String, String> retMap = new HashMap<>();
+		Boolean result = userService.isUserValidForPermission(uid, "manage all users");
+		if(!result){
+			retMap.put("status", "nok");
+			return retMap;
+		}
+		Integer deleteUID = Integer.parseInt(request.getParameter("uid"));
 		if(userService.deleteUser(deleteUID)){
 			retMap.put("status", "ok");
 		}
@@ -171,61 +175,6 @@ public class UserController {
 		retMap.put("data", data);
 		return retMap;
 	}
-	/*
-	//get Uid Pname
-	@RequestMapping("/user/addRoleToUser")
-	@ResponseBody
-	public Map<String, String>addRoleToUser(HttpServletRequest request){
-		boolean boo=false;
-		Integer uId=Integer.parseInt(request.getParameter("userid"));
-		String pName=request.getParameter("permissionName");
-		Map<String, String>retMap = new HashMap<>();
-		boo=userService.addRoleToUser(uId,pName);
-		if (boo){
-			retMap.put("status", "ok");
-		}
-		else{
-			retMap.put("status", "nok");
-		}
-		return retMap;
-	}
-	//get Uid Pname
-	@RequestMapping("/user/RemoveRoleFromUser")
-	@ResponseBody
-	public Map<String, String>removeRoleFromUser(HttpServletRequest request){
-		boolean boo=false;
-		Integer uId=Integer.parseInt(request.getParameter("userid"));
-		String pName=request.getParameter("permissionName");
-		Map<String, String>retMap = new HashMap<>();
-		boo=userService.removeRoleFromUser(uId, pName);
-		if (boo){
-			retMap.put("status", "ok");
-		}
-		else{
-			retMap.put("status", "nok");
-		}
-		return retMap;
-	}
-	
-	//Pname
-	@RequestMapping("/user/getUsersByPname")
-	@ResponseBody
-	public Map<String, String>getUsersByPname(HttpServletRequest request){
-		String pName=request.getParameter("pname");
-		List<Map<String, String>>uList=userService.getUsersByPname(pName);
-		Map<String, String>retMap = new HashMap<>();
-		for(int i=0;i<uList.size();i++){
-			System.out.println(uList.get(i));
-			retMap=uList.get(i);
-		}
-		if (retMap!=null){
-			retMap.put("status", "ok");
-		}
-		else{
-			retMap.put("status", "nok");
-		}
-		return retMap;
-	}*/
 	
 	// name email company id
 	@RequestMapping("/user/updateUser")
