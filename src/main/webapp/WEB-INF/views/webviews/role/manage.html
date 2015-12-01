@@ -13,18 +13,15 @@
 <link rel="stylesheet" type="text/css" href="/css/webcss/jquery-ui.css" />
 <link rel="stylesheet" href="/css/webcss/jquery-ui.theme.css"/>
 <script src="/js/webjs/jquery-ui.js"></script>
+	<script src="/js/webjs/navigator.js"></script>
 
 </head>
 
   <body>
 
 <div class="nav">
-  <div class="container"> <img src="images/logo-white1.png">
-    <ul class="nav-header">
-      <li><a href="">发票识别</a></li>
-      <li><a  href="">发票审核</a></li>
-      <li><a href="">发票管理</a></li>
-      <li><a   class="fp"  href="">用户管理</a></li>
+  <div class="container"> <img src="/img/webimg/logo-white1.png">
+    <ul id="navigator" class="nav-header">
     </ul>
   </div>
 </div>
@@ -33,20 +30,20 @@
 <input id="add-permission" type="button" value="添加权限" />
 
 <table id="roles" class="display" cellspacing="0" width="100%"></table>
-<div id="add-role-dialog">
+<div id="add-role-dialog" style="display:none;">
 	<input id="add-role-name" type="textfield" placeholder="请输入新的角色名"/>
 </div>
-<div id="add-permission-dialog">
+<div id="add-permission-dialog" style="display:none;">
 	<input id="add-permission-name" type="textfield" placeholder="请输入新的权限名"/>
 	<input id="add-invoke-permission-name" type="textfield" placeholder="新输入权限调用名" />
 </div>
 
  
 
-	<div id="edit-role-dialog">
+	<div id="edit-role-dialog" style="display:none;">
 		<input id="edit-role-name" type="textfield" />
 	</div>
-	<div id="edit-permission-dialog">
+	<div id="edit-permission-dialog" style="display:none;">
 		<input id="edit-permission-name" type="textfield" placeholder="权限名"/>
 		<input id="edit-permission-invoke-name" type="textfield" placeholder="调用名" />
 	</div>

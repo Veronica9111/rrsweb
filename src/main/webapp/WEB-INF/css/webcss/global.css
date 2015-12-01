@@ -58,6 +58,8 @@ a {
 }
 a:hover {
 	color: #484848;
+	text-decoration:none !important;
+	cursor: pointer;
 }
 table {
 	border-collapse: collapse;

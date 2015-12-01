@@ -14,16 +14,13 @@
 <script src="/js/webjs/jquery-ui.js"></script>
 <script src="/js/webjs/select2.full.js"></script>
 <link href="/css/webcss/select2.css" rel="stylesheet">
+	<script src="/js/webjs/navigator.js"></script>
 </head>
 
 <body>
 <div class="nav">
-  <div class="container"> <img src="images/logo-white1.png">
-    <ul class="nav-header">
-      <li><a href="">发票识别</a></li>
-      <li><a  href="">发票审核</a></li>
-      <li><a href="">发票管理</a></li>
-      <li><a   class="fp"  href="">用户管理</a></li>
+  <div class="container"> <a href="/views/webviews/user/setting.html"><img src="/img/webimg/logo-white1.png"></a>
+    <ul id="navigator" class="nav-header">
     </ul>
   </div>
 </div>
@@ -45,7 +42,7 @@
 </div>
 
 
-<div id="add-user-dialog">
+<div id="add-user-dialog" style="display:none;">
   <ul class="tj-l">
     <li><span>用户名</span>
       <input id="name" type="text"  value="">
@@ -59,7 +56,7 @@
     </li>
   </ul>
 </div>
-<div id="edit-user-dialog">
+<div id="edit-user-dialog" style="display:none;">
   <ul class="tj-l">
     <li><span>用户名</span>
       <input id="edit-name" type="text"  value="">
@@ -128,6 +125,14 @@ function deleteRow(elem) {
 			 dataSet  = $.parseJSON(data.data);
 			    var table = $('#example').DataTable({"sDom": '<"top" f>rt<"bottom" p><"clear">',
 			    	data: dataSet,	
+			    	"oLanguage": {
+			    	    "sSearch": "查找 ",
+			    	    oPaginate: {
+			    	    	'sPrevious': "上一页",
+			    	    	'sNext': "下一页",
+			    	    }
+			    	  },
+			    	  pageLength:10,
 			    	columns: [
 			    	          	{title: "员工号"},
 			    	            { title: "姓名" },

@@ -363,4 +363,14 @@ public class UserController {
 		}
 		return retMap;
 	}
+	
+	@RequestMapping("/user/getRoles")
+	@ResponseBody	
+	public Map<String, List<String>>getUserRoles(HttpSession httpSession, HttpServletRequest request){
+		Map<String, List<String>> retMap = new HashMap<>();
+		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
+		List<String> roles = roleService.getUserRoles(uid);
+		retMap.put("data", roles);
+		return retMap;
+	}
 }

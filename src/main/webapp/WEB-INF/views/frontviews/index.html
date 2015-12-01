@@ -8,6 +8,8 @@
 <meta name="keywords" content="关键字">
 <link rel="stylesheet" type="text/css" href="/css/webcss/jquery-ui.css" />
 <link rel="stylesheet" href="/css/webcss/jquery-ui.theme.css"/>
+<link rel="stylesheet" href="/css/webcss/bootstrap.css" />
+<link rel="stylesheet" href="/css/webcss/bootstrap-theme.css" />
 <script src=""></script>
 <style>
 @charset "UTF-8";
@@ -137,6 +139,12 @@ table {
 	margin-left: 30px;
 	color: #fff;
 }
+
+#forget-password{
+    float: right;
+    margin: -1em 2em 0.5em 0em;
+    cursor:pointer;
+}
 </style>
 </head>
 <body>
@@ -155,10 +163,9 @@ table {
           <input id="password" type="password" class="upass" placeholder="密码"/>
         </p>
         <p>
-          <input type="checkbox" value="记住密码" style="vertical-align:middle; width:17px; height:17px;">
-          记住密码 <a id="forget-password">忘记密码？</a></p>
+ <a id="forget-password">忘记密码？</a></p>
         <p class="sub">
-          <input id="login" type="button" value="登录"/>
+          <input id="login" type="button" class="btn primary-btn" value="登录"/>
         </p>
       </form>
       <div id="message"></div>

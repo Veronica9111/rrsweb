@@ -4,40 +4,86 @@
 <meta charset="utf-8">
 <title>用户管理</title>
 <link rel="stylesheet" type="text/css" href="/css/webcss/jquery.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="/css/webcss/example.css">
-<link rel="stylesheet" type="text/css" href="/css/webcss/global.css"/>
 
+<link rel="stylesheet" type="text/css" href="/css/webcss/global.css"/>
+<link rel="stylesheet" href="/css/webcss/bootstrap.css" />
+<link rel="stylesheet" href="/css/webcss/bootstrap-theme.css" />
+<script src="/js/webjs/jquery-1.11.3.js"></script>
+<link rel="stylesheet" type="text/css" href="/css/webcss/jquery-ui.css" />
+<link rel="stylesheet" href="/css/webcss/jquery-ui.theme.css"/>
+<script src="/js/webjs/jquery-ui.js"></script>
+<script src="/js/webjs/navigator.js"></script>
+<style>
+
+#info-row{
+	margin-top: 3em;
+    margin: auto;
+    width: 80%;
+    font-size: 200%;
+}
+.info>b{    
+ margin: 2em 0.5em 1em 0em;
+}
+#record-table{
+    padding: 1em 20em 1em 10em;
+    font-size: 200%;
+    text-align: center;
+    margin:auto;
+    width:80%;
+}
+
+.col1{
+	text-align: right;
+}
+.col2{
+	text-align: center;
+}
+
+.col3{
+	text-align: left;
+}
+
+#edit-email{
+	width: 220px;
+}
+
+.password {
+    margin: 0em 0em 1em 0em;
+}
 </style>
 </head>
 
 <body>
 <div class="nav">
-  <div class="container"> <img src="images/logo-white1.png">
-    <ul class="nav-header">
-      <li><a href="">发票识别</a></li>
-      <li><a  href="">发票审核</a></li>
-      <li><a href="">发票管理</a></li>
-      <li><a class="fp" href="/views/webviews/user/setting.html">个人设置</a></li>
-      <li><a href="">用户管理</a></li>
-      <li><a id="logout">退出登录</a></li>
+  <div class="container"> <a href="http://localhost:8080/views/webviews/user/setting.html"><img src="/img/webimg/logo-white1.png"></a>
+    <ul  id="navigator" class="nav-header">
     </ul>
   </div>
 </div>
 <div class="nav-t">
- 	<div>
- 		<input id="name" placeholder="姓名" disabled="disabled"/><br />
- 		<input id="company" placeholder="公司名" disabled="disabled"/><br />
- 		<input id="mail" placeholder="邮箱" /><br />
- 		<input type="button" id="edit" value="修改" />
- 	</div>
- 	<div>
- 		<h2>修改密码</h2>
- 		<input id="old-password" placeholder="请输入当前密码" type="password"/>
- 		<input id="new-password" placeholder="请输入新密码" type="password"/>
- 		<input id="new-password2" placeholder="请再输入一遍" type="password" />
- 		<input id="update-password" type="button" value="修改密码" />
- 	</div>
- 	<table>
+ 	<table id="info-row">
+ 		<tbody>
+ 			<tr>
+ 				<td class="col1">姓名</td>
+ 				<td class="col2" id="name"></td>
+ 			</tr>
+ 			<tr>
+ 				<td class="col1">公司</td>
+ 				<td class="col2" id="company"></td>
+ 			</tr>
+ 			<tr>
+ 				<td class="col1" width="20%">邮箱</td>
+ 				<td class="col2" id="mail" width="60%"></td>
+ 				<td class="col3" width="20%"><input type="button" class="btn btn-primary" id="edit" value="修改" /></td>
+ 			</tr>
+ 			<tr>
+ 				<td class="col1"><input type="button" class="btn btn-primary" id="change-password" value="修改密码"/></div></td>
+ 			</tr>
+ 		</tbody>
+ 	</table>
+ 	 		
+ 	<div id="record-table">
+ 	<table width="400">
  		<thead>
  			<tr>
  				<td>发票识别数</td>
@@ -51,6 +97,7 @@
  			</tr>
  		</tbody>
  	</table>
+ 	</div>
 </div>
 <div class="mask"></div>
 <div class="footer">
@@ -58,46 +105,108 @@
     <p>沪ICP备15012848号 | COPYRIGHT © 2014-2015, BANGBANGZHANG, ALL RIGHTS RESERVED </p>
   </div>
 </div>
+
+<div id="edit-password-dialog">
+	<input id="old-password" placeholder="请输入当前密码" class="form-control password" type="password"/>
+ 	<input id="new-password" placeholder="请输入新密码" class="form-control password" type="password"/>
+ 	<input id="new-password2" placeholder="请再输入一遍" class="form-control password" type="password" />
+</div>
+<div id="edit-email-dialog">
+	<input id="edit-email" placeholder="请输入邮箱地址" type="textfield" />
+</div>
 </body>
-<script src="/js/webjs/jquery-1.11.3.js"></script>
+
 <script type="text/javascript" language="javascript" src="/js/webjs/jquery.dataTables.min.js"></script>
 <script>
+	var name = "";
+	var company = "";
+	var mail = "";
 	$.post("/user/getUserWithWorkRecords", {}, function(data){
 		if(data.status == 'nok'){
 			alert("您的访问超时，请重新登录！");
 			window.location.href="/views/frontviews/index.html";
 		}
 		var info = $.parseJSON(data.data)
+		console.log(data.data);
 		var id = info[0];
-		var name = info[1];
-		var company = info[2];
-		var mail = info[3];
+		name = info[1];
+		company = info[2];
+		mail = info[3];
 		var recognize = info[4];
 		var inspect = info[5];
-		$("#name").val(name);
-		$("#company").val(company);
-		$("#mail").val(mail);
+		console.log(name);
+		$("#name").html(name);
+		$("#company").html(company);
+		$("#mail").html(mail);
 		$("#recognize").html(recognize);
 		$("#inspect").html(inspect);
 	});
 	
 	$("#edit").on("click", function(){
-		console.log("click");
-		var mail = $("#mail").val();
-		var name = $("#name").val();
-		var company = $("#company").val();
-		$.post("/user/updateUser", {"name":name, 'company':company,'email':mail}, function(data){
-			console.log(data);
+		console.log(mail);
+		$("#edit-email").val(mail);
+		$("#edit-email-dialog").dialog({
+			height:200,
+			weight:400,
+			resizable:false,
+			title:"修改邮箱地址",
+			buttons:[
+ 		            	{
+	    		              text: "提交",
+	    		              icons: {
+	    		                primary: "ui-icon-heart"
+	    		              },
+	    		              click: function() {
+	    		            	  var newMail = $("#edit-email").val();
+	    		          		$.post("/user/updateUser", {"name":name, 'company':company,'email':newMail}, function(data){
+	    		      				if(data.status == "ok"){
+	    		      					$("#mail").html(newMail);
+	    		      					mail = newMail;
+	    		      				}
+	    		      			});
+	    		          		$( this ).dialog( "close" );
+	    		         }
+ 		            }]
 		});
+
 	});
 	$("#update-password").on("click", function(){
 		var password = $("#old-password").val();
 		var newPassword = $("#new-password").val();
-		$.post("/user/updateUserPassword", {"oldPassword": password, "newPassword": newPassword}, function(data){
-			console.log(data);
-		})
+
 		
-	})
+	});
+	
+	$("#change-password").on("click", function(){
+		$("#edit-password-dialog").dialog({
+			title:"修改密码",
+			buttons:[
+		            	{
+	    		              text: "提交",
+	    		              icons: {
+	    		                primary: "ui-icon-heart"
+	    		              },
+	    		              click: function() {
+	    		            	  var oldPassword = $("#old-password").val();
+	    		            	  var newPassword = $("#new-password").val();
+	    		            	  var newPassword2 = $("#new-password2").val();
+	    		            	  if(newPassword != newPassword2){
+	    		            		  $("#error-message").html("新密码输入不一致！");
+	    		            	  }else{
+	    		            			$.post("/user/updateUserPassword", {"oldPassword": oldPassword, "newPassword": newPassword}, function(data){
+	    		            				console.log(data);
+	    		            			});
+	    		            	  }
+	    		            	  $(this).dialog("close");
+	    		            	  
+	    		            	  
+	    		              }			
+	    		        }
+		            ]
+			
+		});
+		
+	});
 	
 </script>
 
