@@ -18,4 +18,6 @@ public interface IPermissionService {
 		public Map<String,String> getPermissionByName(String name);
 		//get Permission by  role
 		public List<Map<String,String>> getPermissionByRole(String string);
+		
+		public boolean updatePermission(Integer id, String name, String invokeName);
 }

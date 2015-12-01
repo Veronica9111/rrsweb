@@ -12,7 +12,7 @@ public interface PermissionMapper {
 	//Delete
 	Integer deletePermission(@Param("name")String name);
 	//Update
-	void updatePermission(@Param("name")String name,@Param("id")Integer id,@Param("invoke_name")String invoke_name);
+	void updatePermission(@Param("id")Integer id, @Param("name")String name,@Param("invoke_name")String invoke_name);
 	//Select All Information
 	List<Permission> getAllPermission();
 	//Select Information By Name

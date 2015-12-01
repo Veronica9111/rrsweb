@@ -92,33 +92,23 @@ public class RoleServiceImpl implements IRoleService{
 	}
 
 	@Override
-	public Boolean addPermissionToRole(String roleName, List<String> permissionNames) {
-		if(permissionNames.size()==0 || roleName==null ){
+	public Boolean addPermissionToRole(String roleName, String permissionName) {
+		try{
+			roleMapper.addPermissionToRole(roleName, permissionName);
+		}catch(Exception e){
 			return false;
-		}else if(permissionNames.size()==1) {
-			roleMapper.addPermissionToRole(roleName, permissionNames.get(0));
-			return true;
-		}else{
-			for(int i=0;i<permissionNames.size();i++){
-				roleMapper.addPermissionToRole(roleName, permissionNames.get(i));
-			}
-			return true;
 		}
+		return true;
 	}
 
 	@Override
-	public Boolean removePermissionFromRole(String roleName, List<String> permissionNames) {
-		if(permissionNames.size()==0 || roleName==null ){
+	public Boolean removePermissionFromRole(String roleName, String permissionName) {
+		try{
+			roleMapper.removePermissionFromRole(roleName, permissionName);
+		}catch(Exception e){
 			return false;
-		}else if(permissionNames.size()==1) {
-			roleMapper.removePermissionFromRole( roleName, permissionNames.get(0));
-			return true;
-		}else{
-			for(int i=0;i<permissionNames.size();i++){
-				roleMapper.removePermissionFromRole( roleName, permissionNames.get(i));
-			}
-			return true;
 		}
+		return true;
 	}
 
 	@Override

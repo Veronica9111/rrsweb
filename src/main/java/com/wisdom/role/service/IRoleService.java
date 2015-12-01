@@ -18,9 +18,9 @@ public interface IRoleService {
 	
 	Boolean updateRole(String oldRoleName, String newRoleName);
 	
-	Boolean addPermissionToRole(String roleName, List<String>permissionNames);
+	Boolean addPermissionToRole(String roleName, String permissionName);
 	
-	Boolean removePermissionFromRole(String roleName, List<String>permissionNames);
+	Boolean removePermissionFromRole(String roleName, String permissionName);
 	
 	boolean addRolePermission(String roleName,List<String>permissionNames);
 	

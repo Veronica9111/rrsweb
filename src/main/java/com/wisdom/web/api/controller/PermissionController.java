@@ -110,5 +110,20 @@ public class PermissionController {
 		}
 		return mMap;
 	}
+	
+	@RequestMapping("/permission/updatePermission")
+	@ResponseBody
+	public Map<String, String> updatePermission(HttpServletRequest request){
+		Map<String, String> retMap = new HashMap<>();
+		Integer id = Integer.parseInt(request.getParameter("id"));
+		String name = request.getParameter("name");
+		String invokeName = request.getParameter("invoke_name");
+		if(permissionService.updatePermission(id, name, invokeName)){
+			retMap.put("status", "ok");
+		}else{
+			retMap.put("status", "nok");
+		}
+		return retMap;
+	}
 
 }

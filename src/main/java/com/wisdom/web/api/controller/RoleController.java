@@ -100,21 +100,17 @@ public class RoleController {
 		return retMap;
 	}
 	
-	/*
+	
 	@RequestMapping("/role/addPermissionToRole")
 	@ResponseBody
 	public Map<String, String>addPermissionToRole(HttpServletRequest request){
 		boolean boo=false;
 		Map<String, String>retMap = new HashMap<>();
-		String rName=request.getParameter("role_name");
-		String pList=request.getParameter("permissions");
-		String[]pName=pList.split(",");
-		List list=Arrays.asList(pName);
-		boo=roleService.addPermissionToRole(rName, list);
-		if(boo==true){
+		String roleName = request.getParameter("role_name");
+		String permissionName = request.getParameter("permission_name");
+		if(roleService.addPermissionToRole(roleName, permissionName)){
 			retMap.put("status", "ok");
-		}
-		else{
+		}else{
 			retMap.put("status", "nok");
 		}
 		return retMap;
@@ -124,21 +120,16 @@ public class RoleController {
 	@ResponseBody
 	public Map<String, String>removePermissionFromRole(HttpServletRequest request){
 		Map<String, String>retMap = new HashMap<>();
-		boolean boo=false;
-		String rName=request.getParameter("role_name");
-		String pList=request.getParameter("p_list");
-		String[]pName=pList.split(";");
-		List list=Arrays.asList(pName);
-		boo=roleService.removePermissionFromRole(rName, list);
-		if(boo==true){
+		String roleName=request.getParameter("role_name");
+		String permissionName=request.getParameter("permission_name");
+		if(roleService.removePermissionFromRole(roleName, permissionName)){
 			retMap.put("status", "ok");
-		}
-		else{
+		}else{
 			retMap.put("status", "nok");
 		}
-		
 		return retMap;
 	}
+	/*
 	@RequestMapping("/role/addRolePermission")
 	@ResponseBody
 	public Map<String, String>addRolePermission(HttpServletRequest request){

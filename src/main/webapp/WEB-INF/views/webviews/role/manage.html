@@ -10,6 +10,9 @@
 <link rel="stylesheet" type="text/css" href="https://datatables.net/media/css/site-examples.css?_=5caac04f688d89b2c49bcb280190366b">
 <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
 <link rel="stylesheet" type="text/css" href="/css/webcss/global.css"/>
+<link rel="stylesheet" type="text/css" href="/css/webcss/jquery-ui.css" />
+<link rel="stylesheet" href="/css/webcss/jquery-ui.theme.css"/>
+<script src="/js/webjs/jquery-ui.js"></script>
 
 </head>
 
@@ -26,39 +29,27 @@
   </div>
 </div>
 
-    <div class="container-fluid">
-      <div class="row">
+<input id="add-role" type="button" value="添加角色" />
+<input id="add-permission" type="button" value="添加权限" />
 
-
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
-			<div id="add-role-form">
-				<input id='name' type='textfield' placeholder='角色名'></input>
-				<input type='button' id='add-role' value='添加'></input>
-				<input type='button' id='delete-role' value='删除'></input>
-				<input type='textfield' id='new-name' placeholder='新名称'></input>
-				<input type='button' id='modify-role' value='修改'></input>
-			</div>
-
-          <h2 class="sub-header">Section title</h2>
-          <table id="roles" class="display" cellspacing="0" width="100%"></table>
-        </div>
-      </div>
-    </div>
-    
-    <div id="edit-role-dialog">
-  <ul class="tj-l">
-    <li><span>角色名</span>
-      <input id="edit-name" type="text"  value="">
-    </li>
-    <li><span>权限类型</span>
-      <select id="edit-role" tabindex="" name="htmltest" multiple="multiple">
-      </select>
-    </li>
-  </ul>
+<table id="roles" class="display" cellspacing="0" width="100%"></table>
+<div id="add-role-dialog">
+	<input id="add-role-name" type="textfield" placeholder="请输入新的角色名"/>
+</div>
+<div id="add-permission-dialog">
+	<input id="add-permission-name" type="textfield" placeholder="请输入新的权限名"/>
+	<input id="add-invoke-permission-name" type="textfield" placeholder="新输入权限调用名" />
 </div>
 
+ 
 
+	<div id="edit-role-dialog">
+		<input id="edit-role-name" type="textfield" />
+	</div>
+	<div id="edit-permission-dialog">
+		<input id="edit-permission-name" type="textfield" placeholder="权限名"/>
+		<input id="edit-permission-invoke-name" type="textfield" placeholder="调用名" />
+	</div>
     <script>
 
     	
@@ -76,44 +67,212 @@
     			console.log(data);
     		});
     	});
-    	$.post("/role/getAllRolesPermissions", {}, function(data){
-    		console.log(data);
-    	});
-    	$.post("/role/getAllRoles", {}, function(data){
-    		console.log(data);
-    		var roles = data.data;
-    		var dataSet = new Array();
-    		for(key in roles){
-    			console.log(key);
-    			var temp = new Array();
-    			temp.push(roles[key]);
-    			temp.push("<input type='button' value='编辑' id='" + key + "'/>");
-    			dataSet.push(temp);
-    		}
-    		console.log(dataSet);
+
+    	
 			//Get all permissions
 			var columnSet = [];
+			var columns = [];
+			var table;
+			columnSet.push({title:""});
 			$.post("/permission/getAllPermission", {}, function(data){
 				console.log(data);
 				for(var key in data){
 					columnSet.push({title: data[key]});
+					columns.push(data[key]);
 				}
-	    		var table = $('#roles').DataTable({
-	    			"sDom": '<"top" f>rt<"bottom" p><"clear">',
-			    	data: dataSet,	
-			    	columns: columnSet
-			    });
+				columnSet.push({title:""});
+
+		    	var dataSet = [];
+		    	$.post("/role/getAllRolesPermissions", {}, function(data){
+		    		console.log(data);
+		    		for(key in data){
+		    			var tempRow = [];
+		    			tempRow.push(key);
+		    			for(var columnKey in columns){
+		    				console.log(columns[columnKey]);
+		    				console.log(data[key]);
+		    				if(data[key].indexOf(columns[columnKey]) != -1){
+		    					tempRow.push("<input type='checkbox' id='"+key+"-"+columns[columnKey]+"' checked='checked'/>");
+		    				}
+		    				else{
+		    					tempRow.push("<input type='checkbox' id='"+key+"-"+columns[columnKey]+"'/>");
+		    				}
+		    			}
+		    			tempRow.push("<input type='button' value='编辑' class='edit'/><input type='button' value='删除' class='delete'>");
+		    			dataSet.push(tempRow);
+		    		}
+		    		console.log(dataSet);
+		    		console.log(columnSet);
+		    		table = $('#roles').DataTable({
+		    			"bSort" : false,
+		    	        "paging": false,
+		    			"sDom": '<"top" f>rt<"bottom" p><"clear">',
+				    	data: dataSet,	
+				    	columns: columnSet
+				    });
+					$('#roles tbody').on('click', '.edit', function () {
+						console.log($(this).parents('tr').children().eq(0));
+						var roleName = $(this).parents('tr').children().eq(0)[0].innerHTML;
+						var editBox = $(this);
+						console.log(roleName);
+						$("#edit-role-name").val(roleName);
+
+						$("#edit-role-dialog").dialog({
+							buttons:[
+				    		            {
+					    		              text: "提交",
+					    		              icons: {
+					    		                primary: "ui-icon-heart"
+					    		              },
+					    		              click: function() {
+					    		            	  var newRoleName = $("#edit-role-name").val();
+					    		            	  console.log(roleName);
+					    		            	  console.log(newRoleName);
+					    		            	  $.post("/role/updateRole", {"oldName": roleName, "newName": newRoleName}, function(data){
+					    		            		  if(data.status == 'ok'){
+					    		            			  editBox.parents('tr').children().eq(0)[0].innerHTML = newRoleName;
+					    		            		  }
+					    		            		  console.log(data);
+					    		            	  });
+					    		            	  $( this ).dialog( "close" );
+					    		              }
+				    		            }
+				    		        ]
+						});
+					});
+					
+					$('#roles tbody').on('click', '.delete', function () {
+						var roleName = $(this).parents('tr').children().eq(0)[0].innerHTML;
+						table
+				        .row( $(this).parents('tr') )
+				        .remove()
+				        .draw();
+						$.post("/role/deleteRole", {"name": roleName}, function(data){
+							console.log(data);
+						});
+						
+					});
+		      		$("#roles tbody").on("change", "input[type=checkbox]", function(){
+		      			console.log($(this));
+		      			if($(this).prop("checked")){
+		      				//addPermissionToRole
+		      				var temp  = $(this).attr("id").split("-");
+		      				var roleName = temp[0];
+		      				var permissionName = temp[1];
+		      				$.post("/role/addPermissionToRole", {"role_name":roleName, "permission_name": permissionName}, function(data){
+		      					console.log(data);
+		      				});
+		      			}else{
+		      				//removePermissionFromRole
+		      				var temp  = $(this).attr("id").split("-");
+		      				var roleName = temp[0];
+		      				var permissionName = temp[1];
+		      				$.post("/role/removePermissionFromRole", {"role_name":roleName, "permission_name": permissionName}, function(data){
+		      					console.log(data);
+		      				});
+		      			}
+		      		});
+		      		$('#roles thead').on('click', 'th', function () {
+		      			var permissionName = $(this)[0].innerHTML;
+		      			$("#edit-permission-name").val(permissionName);
+		      			var permissionId= "";
+		      			$.post("/permission/getPermissionByName", {"name": permissionName}, function(data){
+		      				var invokeName = data.data['invoke_name'];
+		      				permissionId = data.data["id"];
+		      				
+		      				$("#edit-permission-invoke-name").val(invokeName);
+		      				console.log(data);
+		      			});
+						$("#edit-permission-dialog").dialog({
+		        			buttons:[
+				    		            {
+					    		              text: "提交",
+					    		              icons: {
+					    		                primary: "ui-icon-heart"
+					    		              },
+					    		              click: function() {
+					    		            	  var name = $("#edit-permission-name").val();
+					    		            	  var invoke_name = $("#edit-permission-invoke-name").val();
+					    		            	  console.log(permissionId);
+					    		            	  console.log(name);
+					    		            	  console.log(invoke_name);
+					    		            	  $.post("/permission/updatePermission", {"id": permissionId, "name":name, "invoke_name": invoke_name}, function(data){
+					    		            		  console.log(data);
+					    		            		  if(data.status == 'ok'){
+					    		            			  window.location.reload();
+					    		            		  }
+					    		            	  });
+					    		            	  $(this).dialog("close");
+					    		            	  }
+					    		         }
+				    		        ]
+						});
+		      		});
+					
+					
+		    	});
+
 			});
 
-        	$("#add-role").click(function(){
-        		var name = $("#name");
-        		/*$.post('/role/addRole', {'name':name.val(), 'permissions':[]}, function(data){
-        			console.log(data);
-        		});*/
-        		//table.row.add(['1', '2']).draw(false);
+      	$("#add-role").click(function(){
+        		
+        		$("#add-role-dialog").dialog({
+        			buttons:[
+		    		            {
+			    		              text: "提交",
+			    		              icons: {
+			    		                primary: "ui-icon-heart"
+			    		              },
+			    		              click: function() {
+			    		            	  var roleName = $("#add-role-name").val();
+			    		            	  console.log(roleName);
+			    		            	  $.post('/role/addRole', {'name':roleName, 'permissions':""}, function(data){
+			    		            		  
+			    		          			console.log(data);
+			    		          		  });
+			    		            	  var newRow = [];
+			    		          		newRow.push(roleName);
+			    		          		for (var key in columns){
+			    		          			newRow.push("<input type='checkbox' id='"+name+"-"+columns[key]+"'/>");
+			    		          		}
+			    		          		newRow.push("<input type='button' value='编辑' class='edit'/><input type='button' value='删除' class='delete'>");
+			    		          		table.row.add(newRow).draw(false);
+			    		          		 $( this ).dialog( "close" );
+			    		             }
+			    		         }
+		    		        ]
+		    		            
+        			
+        		});
+        		
         	});
-    		console.log(roles);
-    	});
+      	
+      		$("#add-permission").click(function(){
+      				$("#add-permission-dialog").dialog({
+      					buttons:[{
+ 			    		              text: "提交",
+ 			    		              icons: {
+ 			    		                primary: "ui-icon-heart"
+ 			    		              },
+ 			    		              click: function() {
+ 			    		            	  var permissionName = $("#add-permission-name").val();
+ 			    		            	  var invokeName = $("#add-invoke-permission-name").val();
+ 			    		            	  $.post("/permission/addPermission", {'name': permissionName, 'invoke_name': invokeName}, function(data){
+ 			    		            		  console.log(data);
+ 			    		            		  if(data.status == "ok"){
+ 			    		            			  window.location.reload();
+ 			    		            		  }
+ 			    		            	  });
+ 			    		              }
+ 		    		            }]
+      				});
+      		});
+      		
+
+      		
+
+
+
     </script>
   </body>
 </html>

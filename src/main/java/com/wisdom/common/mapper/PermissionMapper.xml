@@ -19,10 +19,10 @@ values(#{name},#{invoke_name})
 	delete from role_permission where permission_id=#{permission_id}
 </delete>
   <update id="updatePermission" parameterType="String">    
-       UPDATE Permission   
-            SET id = #{id},     
-                invoke_name=#{invoke_name},
-         WHERE name = #{name};  
+       UPDATE permission   
+            SET name = #{name},     
+                invoke_name=#{invoke_name}
+         WHERE id = #{id};  
     </update> 
     <select id="getAllPermission" parameterType="String" resultType="Permission">  
         select * from permission 

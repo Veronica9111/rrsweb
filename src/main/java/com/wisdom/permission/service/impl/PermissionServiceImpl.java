@@ -105,5 +105,15 @@ public class PermissionServiceImpl implements IPermissionService{
 		gapList.add(newMap);
 		return gapList;
 	}
+	
+	@Override
+	public boolean updatePermission(Integer id, String name, String invokeName) {
+		try{
+			permissionMapper.updatePermission(id, name, invokeName);
+		}catch(Exception e){
+			return false;
+		}
+		return true;
+	}
 
 }
