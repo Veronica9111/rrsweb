@@ -4,6 +4,7 @@
 	xmlns:task="http://www.springframework.org/schema/task"
 	xmlns:tx="http://www.springframework.org/schema/tx"
   xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:redis="http://www.springframework.org/schema/redis"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
@@ -15,7 +16,9 @@
 	http://www.springframework.org/schema/task/spring-task-4.0.xsd
 	http://www.springframework.org/schema/tx
 	http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
-	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/redis http://www.springframework.org/schema/redis/spring-redis.xsd
+	">
 
 
 
@@ -117,6 +120,7 @@
     	<context:component-scan base-package="com.wisdom.invoice.service" />
     	<context:component-scan base-package="com.wisdom.role.service" />
     	<context:component-scan base-package="com.wisdom.common.utils" />
+    	<context:component-scan base-package="com.wisdom.common.queue" />
     <!-- 事务管理 -->
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
     <!-- (this dependency is defined somewhere else) -->  
@@ -191,14 +195,35 @@
   <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
         p:host-name="localhost" p:port="6379"/>
 
-  
+  <bean id="ConnectionFactory"
+    class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+    <property name="port" value="6379" />
+</bean>
 
     
       <bean id="RedisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
     p:connection-factory-ref="jedisConnectionFactory"/>
 
 
-	
+
+<bean id="messageListener" class="org.springframework.data.redis.listener.adapter.MessageListenerAdapter">
+  <constructor-arg>
+    <bean class="com.wisdom.common.queue.DefaultMessageDelegate"/>
+  </constructor-arg>
+</bean>
+
+<bean id="redisContainer" class="org.springframework.data.redis.listener.RedisMessageListenerContainer">
+  <property name="messageListeners">
+    <map>
+      <entry key-ref="messageListener">
+        <bean class="org.springframework.data.redis.listener.ChannelTopic">
+          <constructor-arg value="invoice"></constructor-arg>
+        </bean>
+      </entry>
+    </map>
+  </property>
+    <property name="ConnectionFactory" ref="ConnectionFactory"/>
+</bean>
 	
  	 <tx:annotation-driven transaction-manager="txManager"></tx:annotation-driven>
 
