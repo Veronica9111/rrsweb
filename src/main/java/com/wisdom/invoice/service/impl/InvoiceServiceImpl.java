@@ -3,14 +3,20 @@ package com.wisdom.invoice.service.impl;
 import java.sql.Timestamp;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.wisdom.common.mapper.InvoiceMapper;
@@ -19,6 +25,12 @@ import com.wisdom.common.mapper.RecordMapper;
 import com.wisdom.common.model.Invoice;
 import com.wisdom.common.model.Record;
 import com.wisdom.invoice.service.IInvoiceService;
+
+import net.sf.json.JSONArray;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+
 import com.wisdom.common.utils.ReadingXML;
 import com.wisdom.common.utils.WriteXML;
 
@@ -32,6 +44,8 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	  @Autowired
 	  private RecordMapper recordMapper;
 
+	  @Autowired
+	  private RedisTemplate template;
 
 
 	private static final Logger logger = LoggerFactory
@@ -67,6 +81,8 @@ public class InvoiceServiceImpl implements IInvoiceService {
 			Timestamp now = new Timestamp(date.getTime());
 			String uuid  =  UUID.randomUUID().toString(); 
 			invoiceMapper.addInvoice(uuid, name, now, path, company);
+
+
 		}catch(Exception e){
 			return false;
 		}
@@ -305,8 +321,8 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
 	@Override
 	public Boolean updateInvoiceContent(String path, String data, String FA, String id, Integer uid) {
-		//TODO set the status to UNCHECK, remove the uid
-		updateInvoiceStatus(id, "UNCHECK");
+		//TODO set the status to RECOGNIZED, remove the uid
+		updateInvoiceStatus(id, "RECOGNIZED");
 		updateInvoiceOwner(id, 0);
 		//Set the work record
 		Record record = new Record();
@@ -314,6 +330,39 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		record.setUid(uid);
 		record.setAction("RECOGNIZE");
 		recordMapper.addRecord(record);
+		//Add the invoice to queue
+		
+		JedisPoolConfig poolConfig = new JedisPoolConfig();
+		poolConfig.setMaxIdle(5);
+		poolConfig.setMinIdle(1);
+		poolConfig.setTestOnBorrow(true);
+		poolConfig.setNumTestsPerEvictionRun(10);
+		poolConfig.setTimeBetweenEvictionRunsMillis(60000);
+		poolConfig.setMaxWaitMillis(3000);
+		//poolConfig.setBlockWhenExhausted(org.apache.commons.pool.impl.GenericObjectPool.WHEN_EXHAUSTED_FAIL);
+
+
+		JedisPool jedisPool = new JedisPool(poolConfig,"localhost", 6379, 100);
+
+	    ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(10);
+	    newFixedThreadPool.submit(new Runnable() {
+
+	        @Override
+	        public void run() {
+
+	                
+	                Jedis jedis = jedisPool.getResource();
+	                try {
+	                   jedis.publish("INVOICE", data);
+	                } catch (Exception e) {
+	                   e.printStackTrace();
+	                } finally {
+	                   jedisPool.returnResource(jedis);
+	                }
+	            
+
+	        }
+	    });
 		
 		try{
 			WriteXML.WriteXML(path, data, FA, id);

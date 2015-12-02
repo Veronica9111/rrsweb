@@ -189,6 +189,18 @@
   <artifactId>mybatis-spring</artifactId>
   <version>1.1.0</version>
 </dependency>
+<dependency>
+	<groupId>redis.clients</groupId>
+	<artifactId>jedis</artifactId>
+	<version>2.6.0</version>
+</dependency>
+
+<dependency>
+	<groupId>org.springframework.data</groupId>
+	<artifactId>spring-data-redis</artifactId>
+	<version>1.5.0.RELEASE</version>
+</dependency>
+
 
 		<dependency>
   <groupId>org.apache.httpcomponents</groupId>

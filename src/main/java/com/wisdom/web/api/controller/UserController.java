@@ -91,8 +91,7 @@ public class UserController {
 	}
 	
 	@RequestMapping("/logout")
-	@ResponseBody
-	public Map<String, String>logout(HttpSession httpSession, HttpServletRequest request){
+	public String logout(HttpSession httpSession, HttpServletRequest request){
 		Map<String, String> retMap = new HashMap<>();
 		try {
 			httpSession.removeAttribute(SessionConstant.SESSION_USER_ID);
@@ -100,7 +99,7 @@ public class UserController {
 		}catch(Exception e){
 			retMap.put("status", "nok");
 		}
-		return retMap;
+		return "redirect:/views/frontviews/index.html";
 	}
 	
 	@RequestMapping("/user/addUser")
