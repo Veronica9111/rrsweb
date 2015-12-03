@@ -15,6 +15,19 @@
 <script src="/js/webjs/select2.full.js"></script>
 <link href="/css/webcss/select2.css" rel="stylesheet">
 	<script src="/js/webjs/navigator.js"></script>
+	<style>
+	#add-user-btn{
+		padding: 0.5em 1em;
+	}
+	
+	.form-group {
+    	margin: 1em 0em 1em 0em;
+	}
+	
+	th{
+		text-align: center;
+	}
+	</style>
 </head>
 
 <body>
@@ -28,9 +41,9 @@
   <div class="container">
     <ul class="nav-l">
 
-      <li><a class="bj2" id="add-user-btn">添加用户</a></li>
-      <li><a class="bj2" id="edit-user-btn">编辑用户</a></li>
-      <li><a class="bj2" id="delete-user-btn">删除用户</a></li>
+      <li>
+      <input  id="add-user-btn" type="button" class="btn btn-default" value="添加新用户" />
+      </li>
     </ul>
     <ul class="table-l">
       <table id="example" class="display" cellspacing="0" width="100%">
@@ -43,35 +56,40 @@
 
 
 <div id="add-user-dialog" style="display:none;">
-  <ul class="tj-l">
-    <li><span>用户名</span>
-      <input id="name" type="text"  value="">
-    </li>
-    <li><span>公司名称</span>
-      <input id="company" type="text" value="">
-    </li>
-    <li><span>用户类型</span>
-      <select id="add-role" tabindex="" name="htmltest" multiple="multiple">
+<div class="form-group">
+    <label for="inputAddName">用户姓名</label>
+    <input type="textfield" class="form-control" id="inputAddName" placeholder="用户姓名">
+  </div>
+  <div class="form-group">
+    <label for="inputAddCompany">所属公司</label>
+    <input type="textfield" class="form-control" id="inputAddCompany" placeholder="所属公司">
+  </div>
+  <div class="form-group">
+  <label for="add-role">用户类型</label>
+  <select id="add-role" tabindex="" name="htmltest" multiple="multiple" style="width: 15em;">
       </select>
-    </li>
-  </ul>
+  </div>
 </div>
 <div id="edit-user-dialog" style="display:none;">
-  <ul class="tj-l">
-    <li><span>用户名</span>
-      <input id="edit-name" type="text"  value="">
-    </li>
-    <li><span>公司名称</span>
-      <input id="edit-company" type="text" value="">
-    </li>
-    <li><span>邮箱地址</span>
-    	<input id="edit-mail" type="text" value="">
-    </li>
-    <li><span>用户类型</span>
-      <select id="edit-role" tabindex="" name="htmltest" multiple="multiple">
+
+<div class="form-group">
+    <label for="edit-name">用户姓名</label>
+    <input type="textfield" class="form-control" id="edit-name" placeholder="用户姓名">
+  </div>
+  <div class="form-group">
+    <label for="edit-company">所属公司</label>
+    <input type="textfield" class="form-control" id="edit-company" placeholder="所属公司">
+  </div>
+    <div class="form-group">
+    <label for="edit-company">邮箱地址</label>
+    <input type="textfield" class="form-control" id="edit-mail" placeholder="邮箱地址">
+  </div>
+  <div class="form-group">
+  <label for="edit-role">用户类型</label>
+  <select id="edit-role" tabindex="" name="htmltest" multiple="multiple" style="width: 15em;">
       </select>
-    </li>
-  </ul>
+  </div>
+
 </div>
 
 <div class="footer">
@@ -109,6 +127,7 @@ function deleteRow(elem) {
 		var invalid = false;
 		var dataSet = [];
 		var roles = [];
+		var table;
 		$.post('/user/getAllUsersWithWorkRecords', {},function(data){
 			if (data.status == "nok"){
 
@@ -123,8 +142,9 @@ function deleteRow(elem) {
 			}
 			console.log(data);
 			 dataSet  = $.parseJSON(data.data);
-			    var table = $('#example').DataTable({"sDom": '<"top" f>rt<"bottom" p><"clear">',
+			    table = $('#example').DataTable({"sDom": '<"top" f>rt<"bottom" p><"clear">',
 			    	data: dataSet,	
+			    	"order": [[ 0, "desc" ]],
 			    	"oLanguage": {
 			    	    "sSearch": "查找 ",
 			    	    oPaginate: {
@@ -291,8 +311,8 @@ function deleteRow(elem) {
 		    		                primary: "ui-icon-heart"
 		    		              },
 		    		              click: function() {
-		    		    		    	var name = $("#name");
-		    		    		    	var company = $("#company");
+		    		    		    	var name = $("#inputAddName");
+		    		    		    	var company = $("#inputAddCompany");
 		    		    		    	var roles = $('#add-role').find(":selected");
 		    		    		    	var rolesList = [];
 		    		    		    	roles.each(function(){
@@ -301,7 +321,12 @@ function deleteRow(elem) {
 		    		    		    	var roleStr = rolesList.join(",")
 		    		    		    	console.log(roleStr);
 		    		    		    	$.post('/user/addUser',{'name':name.val(), 'company':company.val(),'role':roleStr},function(data){
-		    		    		    		console.log(data);
+		    		    		    		if(data.status == "ok"){
+		    		    		    			var uid = data.uid;
+		    		    		    			var buttons = "<input type='button' value='激活' class='activate' id='activate-" + uid + 
+		    		    		    			"'/><input type='button' value='编辑' class='edit' id='edit-"+ uid +"'/><input type='button' value='删除' class='delete' id='delete-"+ uid +"'/>";
+		    		    		    			table.row.add( [uid, name.val(), "", company.val(), 0, 0, "未激活",buttons ] ).draw( false );
+		    		    		    		}
 		    		    		    	});
 		    		                $( this ).dialog( "close" );
 		    		              }

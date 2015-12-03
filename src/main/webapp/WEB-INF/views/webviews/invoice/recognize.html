@@ -21,7 +21,7 @@
 </div>
 <div class="text">
   <ul class="nav-left">
-    <img id="invoice-img" src="images/images/fapiao_03.png">
+    <img id="invoice-img" onerror="imgError(this);"/>
   </ul>
   <ul class="nav-right">
     <table id="addCont" width="400" border="0" cellspacing="0" cellpadding="0">
@@ -133,6 +133,11 @@
         		window.location.href = '/views/frontviews/index.html';
         	});
         });
+        function imgError(image) {
+            image.onerror = "";
+            image.src = "/img/webimg/error.jpg";
+            return true;
+        }
         
 </script>
 </body>

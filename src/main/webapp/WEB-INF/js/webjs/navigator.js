@@ -21,7 +21,7 @@ $(document).ready(function(){
 		
 		$(".link").each(function(){
 			if($(this).attr("href") == window.location.pathname){
-				$(this).addClass("fp");
+				$(this).addClass("active");
 			}
 			
 		});

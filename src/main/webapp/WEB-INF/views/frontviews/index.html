@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>点豆成兵</title>
+<title>发票识别系统</title>
 <meta name="description" content="简介">
 <meta name="keywords" content="关键字">
 <link rel="stylesheet" type="text/css" href="/css/webcss/jquery-ui.css" />
@@ -145,21 +145,45 @@ table {
     margin: -1em 2em 0.5em 0em;
     cursor:pointer;
 }
+
+body{
+	background-image: url("/img/webimg/bg.jpg");
+	background-repeat:no-repeat;
+	  background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  -webkit-background-size: cover;
+}
+
+.glyphicon{
+    background-color: #006DD4;
+    color: white;
+    padding: 0.5em;
+    font-size: larger;
+    border-radius: 0.3em;
+}
+
+input {
+	border-radius: 0.2em;
+}
+
+a:hover{
+	text-decoration: none;
+}
 </style>
 </head>
 <body>
 <div class="all">
-  <div class="bj"><img src="/img/webimg/bg.jpg"></div>
   <div class="login">
     <ul class="tou">
       <p>登&nbsp;录</p>
     </ul>
     <ul class="us">
       <form>
-        <p class="form-group"><img src="/img/webimg/user.png">
+        <p class="form-group"> <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
           <input id="name" type="text" placeholder="用户名"/>
         </p>
-        <p class="form-group"><img src="/img/webimg/pw.png">
+        <p class="form-group"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
           <input id="password" type="password" class="upass" placeholder="密码"/>
         </p>
         <p>
@@ -172,7 +196,7 @@ table {
     </ul>
   </div>
 </div>
-<div id="forget-pwd-dialog">
+<div id="forget-pwd-dialog" style="display:none;">
 <p>请输入邮箱，我们将为您重新生成新密码</p>
 <input id="uid" type="textfield" placeholder="请输入员工号"/>
 </div>

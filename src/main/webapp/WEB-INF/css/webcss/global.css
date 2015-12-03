@@ -78,9 +78,7 @@ table {
 	position: relative;
 	background: #098B8B
 }
-.nav img {
-	margin-top: 18px;
-}
+
 .nav ul {
 	float: right;
 }
@@ -186,18 +184,8 @@ table {
 	height: 26px;
 	width: 120px;
 }
-.footer {
-	display: block;
-	width: 100%;
-	height: 50px;
-	line-height: 50px;
-	text-align: center;
-	color: #EDEDED;
-	background: #098B8B;
-	overflow: hidden;
-}
 
-<style>
+
 @charset "UTF-8";
 html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd, p, blockquote, pre, form, input, textarea, fieldset, table, th, td {
 	margin: 0;
@@ -288,9 +276,7 @@ table {
 	position: relative;
 	background: #098B8B
 }
-.nav img {
-	margin-top: 18px;
-}
+
 .nav ul {
 	float: right;
 }
@@ -324,7 +310,6 @@ table {
 }
 .nav-t .nav-l {
 	float: left;
-	border-bottom: 1px dashed #9B9595;
 	margin-top: 20px;
 	width: 140px;
 	text-align: center;
@@ -368,9 +353,7 @@ table {
 	margin-top: 50px;
 	margin-left: 30px;
 }
-.tj-l li {
-	width: 100%;
-}
+
 .tj h4 {
 	color: #787878;
 	font-size: 32px;
@@ -409,7 +392,6 @@ table {
 	margin-left: 30px;
 }
 .tj-l li {
-	width: 100%;
 	margin:0.5em;
 }
 .tian h4 {
@@ -462,16 +444,6 @@ table {
 }
 #list_b {
 	display: none;
-}
-.footer {
-	display: block;
-	width: 100%;
-	height: 50px;
-	line-height: 50px;
-	text-align: center;
-	color: #EDEDED;
-	background: #098B8B;
-	overflow: hidden;
 }
 
 body, button, input, select, textarea {
@@ -540,16 +512,14 @@ table {
 }
 .nav {
 	width: 100%;
-	height: 80px;
-	line-height: 80px;
+	height: 60px;
+	line-height: 60px;
 	margin-left: 50px;
 	margin: auto;
 	position: relative;
 	background: #098B8B
 }
-.nav img {
-	margin-top: 18px;
-}
+
 .nav ul {
 	float: right;
 }
@@ -565,11 +535,11 @@ table {
 .nav li a:hover {
 	color: #E3E0E0;
 }
-.nav .fp {
+.nav .active {
 	display: block;
 	color: #E3E0E0;
 	width: 120px;
-	height: 80px;
+	height: 60px;
 	text-align: center;
 	background-color: #1F595A;
 	margin-left: 25px;
@@ -580,6 +550,7 @@ table {
 	height: 835px;
 	position: relative;
 	margin: 0 auto;
+	margin-top: 2em;
 }
 .nav-t li a {
 	color: #0a2fd6;
@@ -591,7 +562,6 @@ table {
 }
 .nav-t .nav-l {
 	float: left;
-	border-bottom: 1px dashed #9B9595;
 }
 .nav-t .nav-l li {
 	float: left;
@@ -682,4 +652,6 @@ table {
 	color: #EDEDED;
 	background: #098B8B;
 	overflow: hidden;
+	position: fixed;
+	bottom: 0px;
 }

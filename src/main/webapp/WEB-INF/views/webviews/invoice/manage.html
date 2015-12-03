@@ -452,7 +452,7 @@ table {
 			}else {
 				priority = "低";
 			}
-			var invoiceBox = '<div class="tooltip invoice" title="&lt;img src=&quot;'+invoices[key]["path"] + '&quot; /&gt;"><img class="invoice-img" src="' + invoices[key]["path"] +
+			var invoiceBox = '<div class="tooltip invoice" title="&lt;img onerror=&quot;imgError(this); &quot; src=&quot;'+invoices[key]["path"] + '&quot; /&gt;"><img onerror="imgError(this);" class="invoice-img" src="' + invoices[key]["path"] +
 			'" /> <input type="checkbox" class="unrecognized-checkbox" id="' + invoices[key]["id"] + '" /><p>优先级: <b>' + priority + '</b></p></div>';
 			$("#unrecognized").append(invoiceBox);
 		}
@@ -585,6 +585,12 @@ table {
 		});
 		
 	});
+	
+    function imgError(image) {
+        image.onerror = "";
+        image.src = "/img/webimg/error-small.jpg";
+        return true;
+    }
 	
 </script>
 <script language="JavaScript">
