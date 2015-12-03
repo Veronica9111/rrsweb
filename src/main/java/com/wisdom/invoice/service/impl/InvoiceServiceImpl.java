@@ -25,6 +25,7 @@ import com.wisdom.common.mapper.RecordMapper;
 import com.wisdom.common.model.Invoice;
 import com.wisdom.common.model.Record;
 import com.wisdom.invoice.service.IInvoiceService;
+import com.wisdom.utils.RedisSetting;
 
 import net.sf.json.JSONArray;
 import redis.clients.jedis.Jedis;
@@ -44,8 +45,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	  @Autowired
 	  private RecordMapper recordMapper;
 
-	  @Autowired
-	  private RedisTemplate template;
+
 
 
 	private static final Logger logger = LoggerFactory
@@ -333,16 +333,16 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		//Add the invoice to queue
 		
 		JedisPoolConfig poolConfig = new JedisPoolConfig();
-		poolConfig.setMaxIdle(5);
-		poolConfig.setMinIdle(1);
-		poolConfig.setTestOnBorrow(true);
-		poolConfig.setNumTestsPerEvictionRun(10);
-		poolConfig.setTimeBetweenEvictionRunsMillis(60000);
-		poolConfig.setMaxWaitMillis(3000);
+		poolConfig.setMaxIdle(RedisSetting.MAX_IDLE);
+		poolConfig.setMinIdle(RedisSetting.MIN_IDLE);
+		poolConfig.setTestOnBorrow(RedisSetting.TEST_ON_BORROW);
+		poolConfig.setNumTestsPerEvictionRun(RedisSetting.NUM_TESTS_PER_EVICTION_RUN);
+		poolConfig.setTimeBetweenEvictionRunsMillis(RedisSetting.TIME_BETWEEN_EVICTION_RUNS_MILLIS);
+		poolConfig.setMaxWaitMillis(RedisSetting.MAX_WAIT_MILLIS);
 		//poolConfig.setBlockWhenExhausted(org.apache.commons.pool.impl.GenericObjectPool.WHEN_EXHAUSTED_FAIL);
 
 
-		JedisPool jedisPool = new JedisPool(poolConfig,"localhost", 6379, 100);
+		JedisPool jedisPool = new JedisPool(poolConfig,RedisSetting.ADDRESS, RedisSetting.PORT, 100);
 
 	    ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(10);
 	    newFixedThreadPool.submit(new Runnable() {
@@ -363,6 +363,8 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
 	        }
 	    });
+
+
 		
 		try{
 			WriteXML.WriteXML(path, data, FA, id);

@@ -5,6 +5,7 @@
 	xmlns:tx="http://www.springframework.org/schema/tx"
   xmlns:p="http://www.springframework.org/schema/p"
   xmlns:redis="http://www.springframework.org/schema/redis"
+  xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
@@ -18,6 +19,7 @@
 	http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/redis http://www.springframework.org/schema/redis/spring-redis.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
 	">
 
 
@@ -191,39 +193,22 @@
   <property name="basePackage" value="mapper" />
 </bean>
 
-
-  <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+ <bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
         p:host-name="localhost" p:port="6379"/>
 
-  <bean id="ConnectionFactory"
-    class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-    <property name="port" value="6379" />
-</bean>
-
-    
-      <bean id="RedisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
-    p:connection-factory-ref="jedisConnectionFactory"/>
 
 
 
-<bean id="messageListener" class="org.springframework.data.redis.listener.adapter.MessageListenerAdapter">
-  <constructor-arg>
-    <bean class="com.wisdom.common.queue.DefaultMessageDelegate"/>
-  </constructor-arg>
-</bean>
 
-<bean id="redisContainer" class="org.springframework.data.redis.listener.RedisMessageListenerContainer">
-  <property name="messageListeners">
-    <map>
-      <entry key-ref="messageListener">
-        <bean class="org.springframework.data.redis.listener.ChannelTopic">
-          <constructor-arg value="invoice"></constructor-arg>
-        </bean>
-      </entry>
-    </map>
-  </property>
-    <property name="ConnectionFactory" ref="ConnectionFactory"/>
-</bean>
+
+  <!-- the default ConnectionFactory -->
+  <redis:listener-container>
+    <redis:listener ref="listener" method="handleMessage" topic="chat" />
+  </redis:listener-container>
+  
+  <bean id="listener" class="com.wisdom.common.queue.DefaultMessageDelegate"/>
+  
+
 	
  	 <tx:annotation-driven transaction-manager="txManager"></tx:annotation-driven>
 
