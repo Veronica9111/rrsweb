@@ -36,7 +36,10 @@ public class DefaultMessageDelegate implements MessageDelegate {
 	System.out.println(path);
 	String name = (String)o.get("name");
 	String company = (String)o.get("company");
-	invoiceService.addInvoice(name, path, company);
+	Integer priority = 10;
+	Integer invoiceId = (Integer)o.get("invoice_id");
+	Integer companyId = (Integer)o.get("company_id");
+	invoiceService.addInvoice(priority, name, path, company, invoiceId, companyId);
 	}
 
 }

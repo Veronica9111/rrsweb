@@ -11,7 +11,7 @@ public interface InvoiceMapper {
 
 	List<Invoice> getAllInvoices();
 	
-	void addInvoice(@Param("id")String id, @Param("name")String name, @Param("created_time")Timestamp created_time, @Param("path")String path, @Param("company")String company);
+	void addInvoice(@Param("id")String id, @Param("name")String name, @Param("created_time")Timestamp created_time, @Param("priority")Integer priority, @Param("path")String path, @Param("company")String company, @Param("invoice_id")Integer invoiceId, @Param("company_id") Integer companyId);
 	
 	List<Invoice> getInvoicesByCompany(@Param("company")String company);
 	

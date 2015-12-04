@@ -57,9 +57,12 @@ public class InvoiceController {
 		Map<String, String>retMap = new HashMap<>();
 		String name = request.getParameter("name");
 		String path = request.getParameter("path");
+		Integer invoiceId = Integer.parseInt(request.getParameter("invoice_id"));
+		Integer companyId = Integer.parseInt(request.getParameter("company_id"));
+		Integer priority = 10;
 		//TODO get company from uid in session
 		String company = "company";
-		if(invoiceService.addInvoice(name, path, company)){
+		if(invoiceService.addInvoice(priority, name, path, company, invoiceId, companyId)){
 			retMap.put("status", "ok");
 		}
 		else{

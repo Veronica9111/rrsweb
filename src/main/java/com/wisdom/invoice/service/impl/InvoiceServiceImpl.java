@@ -75,12 +75,12 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	}
 
 	@Override
-	public Boolean addInvoice(String name, String path, String company) {
+	public Boolean addInvoice(Integer priority, String name, String path, String company, Integer invoiceId, Integer companyId) {
 		try{
 			java.util.Date date= new java.util.Date();
 			Timestamp now = new Timestamp(date.getTime());
 			String uuid  =  UUID.randomUUID().toString(); 
-			invoiceMapper.addInvoice(uuid, name, now, path, company);
+			invoiceMapper.addInvoice(name, name, now, priority, path, company, invoiceId, companyId);
 
 
 		}catch(Exception e){

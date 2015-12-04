@@ -23,8 +23,17 @@
   </select>
   
   <insert id="addInvoice" parameterType="String">
-  insert into invoice (id, name, created_time, priority, path, company, exported, uid,document, status)
-  values(#{id}, #{name},#{created_time}, 10, #{path}, #{company}, 0, null, null, "UNRECOGNIZED")
+  INSERT INTO invoice
+  (id, name, created_time, priority, path, company, exported, uid,document, status, invoice_id, company_id)
+VALUES
+  (#{id}, #{name},#{created_time}, #{priority}, #{path}, #{company}, 0, null, null, "UNRECOGNIZED", #{invoice_id}, #{company_id})
+ON DUPLICATE KEY UPDATE
+  created_time     = VALUES(created_time),
+  priority = VALUES(priority),
+  path = VALUES(path),
+  company = VALUES(company),
+  company_id = VALUES(company_id)
+
   </insert>
   <select id="getInvoicesByCompany" parameterType="String" resultType="Invoice">
   select * from invoice where company=#{company}
