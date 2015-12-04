@@ -13,7 +13,7 @@ public interface IPermissionService {
 		//Delete
 		public boolean deletePermission(String name);
 		//Select All
-		public List<Map<String,String>> getAllPermission();
+		public Map<String,String> getAllPermission();
 		//Select By name
 		public Map<String,String> getPermissionByName(String name);
 		//get Permission by  role

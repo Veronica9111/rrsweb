@@ -64,17 +64,15 @@ public class PermissionServiceImpl implements IPermissionService{
 	 * @see com.wisdom.permission.service.IPermissionService#getAllPermission()
 	 */
 	@Override
-	public List<Map<String, String>> getAllPermission() {
-		List<Permission>pList=permissionMapper.getAllPermission();
+	public Map<String, String> getAllPermission() {
+		Map<String, String> retMap = new HashMap<>();
+		List<Permission>permissions = permissionMapper.getAllPermission();
 		
-		System.out.println(pList.get(0));
-		List<Map<String, String>> gapList = new ArrayList<>();
-		Map newMap = new HashMap<>();
-		for(Permission per:pList){
-			newMap.put(per.getId(), per.getName());
+		for(Permission permission: permissions){
+			retMap.put(permission.getId().toString(), permission.getName());
 		}
-		gapList.add(newMap);
-		return gapList;
+		
+		return retMap;
 	}
 /*
  * Get Permission ByName

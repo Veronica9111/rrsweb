@@ -117,7 +117,8 @@ table {
 	margin-left: 100px;
 	width: 55%;
 	height: 850px;
-	border: 1px solid #f00;
+	border: 1px solid #008B8B;
+    box-shadow: 5px 5px 20px grey;
 }
 .nav-left img {
 	width: 100%;
@@ -140,12 +141,11 @@ table {
 	height: 26px;
 }
 .btn input {
-	float: left;
-	margin-left: 150px;
+	float: right;
+	margin-left: 10vw;
 	margin-top: 80px;
 	width: 200px;
 	height: 50px;
-	background-color: #eb694f;
 	font-size: 20px;
 }
 .btn-r {

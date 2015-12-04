@@ -93,7 +93,15 @@
 			var columns = [];
 			var table;
 			columnSet.push({title:""});
-			$.post("/permission/getAllPermission", {}, function(data){
+			$.post("/permission/getAllPermission", {}, function(rawData){
+				//console.log(data);
+				var data = $.parseJSON(rawData.data);
+				if(rawData.status == "nok"){
+					alert("您的访问超时，请重新登录！");
+					window.location.href="/views/frontviews/index.html";
+					return;
+				}
+				data = data[0];
 				console.log(data);
 				for(var key in data){
 					columnSet.push({title: data[key]});
@@ -103,13 +111,10 @@
 
 		    	var dataSet = [];
 		    	$.post("/role/getAllRolesPermissions", {}, function(data){
-		    		console.log(data);
 		    		for(key in data){
 		    			var tempRow = [];
 		    			tempRow.push(key);
 		    			for(var columnKey in columns){
-		    				console.log(columns[columnKey]);
-		    				console.log(data[key]);
 		    				if(data[key].indexOf(columns[columnKey]) != -1){
 		    					tempRow.push("<input type='checkbox' id='"+key+"-"+columns[columnKey]+"' checked='checked'/>");
 		    				}
@@ -120,8 +125,6 @@
 		    			tempRow.push("<input type='button' value='编辑' class='edit'/><input type='button' value='删除' class='delete'>");
 		    			dataSet.push(tempRow);
 		    		}
-		    		console.log(dataSet);
-		    		console.log(columnSet);
 		    		table = $('#roles').DataTable({
 		    			"bSort" : false,
 		    	        "paging": false,
@@ -130,10 +133,8 @@
 				    	columns: columnSet
 				    });
 					$('#roles tbody').on('click', '.edit', function () {
-						console.log($(this).parents('tr').children().eq(0));
 						var roleName = $(this).parents('tr').children().eq(0)[0].innerHTML;
 						var editBox = $(this);
-						console.log(roleName);
 						$("#edit-role-name").val(roleName);
 
 						$("#edit-role-dialog").dialog({
@@ -145,13 +146,10 @@
 					    		              },
 					    		              click: function() {
 					    		            	  var newRoleName = $("#edit-role-name").val();
-					    		            	  console.log(roleName);
-					    		            	  console.log(newRoleName);
 					    		            	  $.post("/role/updateRole", {"oldName": roleName, "newName": newRoleName}, function(data){
 					    		            		  if(data.status == 'ok'){
 					    		            			  editBox.parents('tr').children().eq(0)[0].innerHTML = newRoleName;
 					    		            		  }
-					    		            		  console.log(data);
 					    		            	  });
 					    		            	  $( this ).dialog( "close" );
 					    		              }
@@ -162,17 +160,17 @@
 					
 					$('#roles tbody').on('click', '.delete', function () {
 						var roleName = $(this).parents('tr').children().eq(0)[0].innerHTML;
-						table
-				        .row( $(this).parents('tr') )
-				        .remove()
-				        .draw();
+						var deleteBox = $(this);
+
 						$.post("/role/deleteRole", {"name": roleName}, function(data){
-							console.log(data);
+							table
+					        .row( deleteBox.parents('tr') )
+					        .remove()
+					        .draw();
 						});
 						
 					});
 		      		$("#roles tbody").on("change", "input[type=checkbox]", function(){
-		      			console.log($(this));
 		      			if($(this).prop("checked")){
 		      				//addPermissionToRole
 		      				var temp  = $(this).attr("id").split("-");
@@ -224,7 +222,6 @@
 		      				permissionId = data.data["id"];
 		      				
 		      				$("#edit-permission-invoke-name").val(invokeName);
-		      				console.log(data);
 		      			});
 						$("#edit-permission-dialog").dialog({
 		        			buttons:[
@@ -236,11 +233,24 @@
 					    		              click: function() {
 					    		            	  var name = $("#edit-permission-name").val();
 					    		            	  var invoke_name = $("#edit-permission-invoke-name").val();
-					    		            	  console.log(permissionId);
-					    		            	  console.log(name);
-					    		            	  console.log(invoke_name);
 					    		            	  $.post("/permission/updatePermission", {"id": permissionId, "name":name, "invoke_name": invoke_name}, function(data){
-					    		            		  console.log(data);
+					    		            		  if(data.status == 'ok'){
+					    		            			  window.location.reload();
+					    		            		  }
+					    		            	  });
+					    		            	  $(this).dialog("close");
+					    		            	  }
+					    		         },
+					    		            {
+					    		              text: "删除",
+					    		              icons: {
+					    		                primary: "ui-icon-heart"
+					    		              },
+					    		              click: function() {
+					    		            	  var name = $("#edit-permission-name").val();
+					    		            	  var invoke_name = $("#edit-permission-invoke-name").val();
+
+					    		            	  $.post("/permission/deletePermission", { "name":name}, function(data){
 					    		            		  if(data.status == 'ok'){
 					    		            			  window.location.reload();
 					    		            		  }

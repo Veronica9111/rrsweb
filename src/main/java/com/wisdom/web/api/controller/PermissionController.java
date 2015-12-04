@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,11 +17,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.wisdom.common.model.Permission;
 import com.wisdom.permission.service.IPermissionService;
+import com.wisdom.user.service.IUserService;
+import com.wisdom.utils.SessionConstant;
+
+import net.sf.json.JSONArray;
 
 @Controller
 public class PermissionController {
 
 	@Autowired IPermissionService permissionService;
+	
+	@Autowired IUserService userService;
 	
 	private static final Logger logger = LoggerFactory
 			.getLogger(PermissionController.class);
@@ -59,24 +66,22 @@ public class PermissionController {
 	}
 	@RequestMapping("/permission/getAllPermission")
 	@ResponseBody
-	public Map<String, String> getAllPermission(HttpServletRequest request){
-		logger.debug("enter addPermission");
+	public Map<String, String> getAllPermission(HttpSession httpSession, HttpServletRequest request){
+		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
 		Map<String, String> retMap = new HashMap<>();
-		List<Map<String,String>> list=new ArrayList<>();
-		Permission permission=new Permission();
-		list=permissionService.getAllPermission();
-		Map<String, String> mMap=new HashMap<>();
-		for(int i=0;i<list.size();i++){
-			System.out.println(list.get(i));
-			mMap=list.get(i);
+		Boolean result = userService.isUserValidForPermission(uid, "manage all users");
+		if(!result){
+			retMap.put("status", "nok");
+			return retMap;
 		}
-		if (mMap!=null){
-			mMap.put("status", "ok");
-		}
-		else{
-			mMap.put("status", "nok");
-		}
-		return mMap;
+		logger.debug("enter addPermission");
+		
+
+		Map<String, String> permissions = permissionService.getAllPermission();
+		String data = JSONArray.fromObject(permissions).toString();
+		retMap.put("data", data);
+		retMap.put("status", "ok");
+		return retMap;
 	}
 	@RequestMapping("/permission/getPermissionByName")
 	@ResponseBody
