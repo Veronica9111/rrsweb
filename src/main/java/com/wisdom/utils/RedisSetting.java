@@ -3,7 +3,7 @@ package com.wisdom.utils;
 
 public class RedisSetting {
 
-	public static final String ADDRESS = "121.40.63.208";
+	public static final String ADDRESS = "139.196.40.99";
 	
 	public static final Integer PORT = 6379;
 	

@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>发票审核</title>
+<title>发票识别</title>
 <meta name="description" content="简介">
 <meta name="keywords" content="关键字">
 <link rel="stylesheet" type="text/css" href="/css/webcss/jquery.dataTables.min.css">
@@ -11,10 +11,8 @@
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/css/webcss/jquery.guillotine.css" />
 <link rel="stylesheet" href="/css/webcss/bootstrap.css" />
-<script src="/js/webjs/jquery-1.11.3.js"></script>
-<script type="text/javascript" language="javascript" src="/js/webjs/jquery.dataTables.min.js"></script>
-<script src="/js/webjs/navigator.js"></script>
-<script src="/js/webjs/jquery.guillotine.js"></script>
+<link rel="stylesheet" href="/css/webcss/jquery.loadmask.css" />
+
 
 		    	
 <style>
@@ -48,6 +46,12 @@
 .nav-right{
 	float:right;
 	margin-right: 10vw;
+}
+
+
+
+.loadmask-msg > div{
+	font-size: 400%;
 }
 </style>
 </head>
@@ -102,6 +106,11 @@
     <p>沪ICP备15012848号 | COPYRIGHT © 2014-2015, BANGBANGZHANG, ALL RIGHTS RESERVED </p>
   </div>
 </div>
+<script src="/js/webjs/jquery-1.11.3.js"></script>
+<script type="text/javascript" language="javascript" src="/js/webjs/jquery.dataTables.min.js"></script>
+<script src="/js/webjs/navigator.js"></script>
+<script src="/js/webjs/jquery.guillotine.js"></script>
+<script src="/js/webjs/jquery.loadmask.js"></script>
     <script>
 
                 
@@ -218,6 +227,9 @@
         			}
         		});
         	}else{
+        		
+        		//Need to apply a mask since the response is a bit slow
+        		$("body").mask("正在上传数据，请等待...");
         		var resultList = [];
         		$("tbody>tr").each(function(){
         			console.log($(this).children());
@@ -232,10 +244,12 @@
         		}
         		$.post('/invoice/updateInvoiceContent', {"data": JSON.stringify(resultList), 'FA':FA, "id":id}, function(data){
         			if(data.status == 'ok'){
+        				$("body").unmask();
         				alert("切换到下一张");
         				window.location.reload();
         			}
         			else{
+        				$("body").umask();
         				alert("提交出错，请稍后再试！");
         			}
         		});
