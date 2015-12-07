@@ -3,7 +3,7 @@ package com.wisdom.utils;
 
 public class RedisSetting {
 
-	public static final String ADDRESS = "localhost";//"121.40.63.208";
+	public static final String ADDRESS = "121.40.63.208";
 	
 	public static final Integer PORT = 6379;
 	
@@ -21,6 +21,6 @@ public class RedisSetting {
 	
 	public static final Integer TIME_BETWEEN_EVICTION_RUNS_MILLIS = 6000;
 	
-	public static final Integer MAX_WAIT_MILLIS = 3000;
+	public static final Integer MAX_WAIT_MILLIS = 10000;
 
 }

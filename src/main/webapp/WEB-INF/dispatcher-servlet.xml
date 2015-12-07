@@ -195,7 +195,7 @@
 </bean>
 
 
-  <bean id="srpConnectionFactory" class="org.springframework.data.redis.connection.srp.SrpConnectionFactory" p:host-name="localhost" p:port="6379"/>
+  <bean id="srpConnectionFactory" class="org.springframework.data.redis.connection.srp.SrpConnectionFactory" p:host-name="121.40.63.208" p:port="6379"/>
   
   <bean id="messageListener" class="org.springframework.data.redis.listener.adapter.MessageListenerAdapter">
   <constructor-arg>

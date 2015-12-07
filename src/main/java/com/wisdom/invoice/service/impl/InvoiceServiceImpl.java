@@ -342,9 +342,10 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		//poolConfig.setBlockWhenExhausted(org.apache.commons.pool.impl.GenericObjectPool.WHEN_EXHAUSTED_FAIL);
 
 
-		JedisPool jedisPool = new JedisPool(poolConfig,RedisSetting.ADDRESS, RedisSetting.PORT, 100);
-
-	    ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(10);
+		// Timeout is set larger to the deploy environment
+		JedisPool jedisPool = new JedisPool(poolConfig,RedisSetting.ADDRESS, RedisSetting.PORT, 1000);
+		
+	   ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(10);
 	    newFixedThreadPool.submit(new Runnable() {
 
 	        @Override
