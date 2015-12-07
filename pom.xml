@@ -216,7 +216,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>rssweb</finalName>
+		<finalName>rrsweb</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
