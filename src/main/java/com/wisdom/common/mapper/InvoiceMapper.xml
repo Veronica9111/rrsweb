@@ -14,7 +14,9 @@
 <result property="company" column="company"/> 
 <result property="exported" column="exported"/> 
 <result property="document" column="document"/> 
-<result property="status" column="status"/> 
+<result property="status" column="status"/>
+<result property="invoice_id" column="invoice_id"/>
+<result property="company_id" column="company_id"/>
 </resultMap>
   <select id="getAllInvoices" resultType="Invoice">
     SELECT
@@ -43,6 +45,9 @@ ON DUPLICATE KEY UPDATE
   </select>
   <select id="getUnexportedInvoices" resultType="Invoice">
   select * from invoice where exported = 0
+  </select>
+  <select id="getInvoiceById" resultType="Invoice" parameterType="String">
+  select * from invoice where id=#{id}
   </select>
   <update id="setInvoiceExported" parameterType="String">
   update invoice set exported=1 where id=#{id}

@@ -34,5 +34,7 @@ public interface InvoiceMapper {
 	void increaseInvoicePriority(@Param("id")String id);
 	
 	void decreaseInvoicePriority(@Param("id")String id);
+	
+	Invoice getInvoiceById(@Param("id")String id);
 }
 

@@ -335,7 +335,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		List<Map<String, String>> exportData = new ArrayList<>();
 		Map<String, String> temp = new HashMap<>();
 		temp.put("fa", FA);
-		temp.put("id", id);
+		Invoice invoice = invoiceMapper.getInvoiceById(id);
+		String invoiceId = Long.toString(invoice.getInvoice_id());
+		temp.put("id", invoiceId);
 		temp.put("data", data);
 		exportData.add(temp);
 		String exportDataStr = JSONArray.fromObject(exportData).toString();

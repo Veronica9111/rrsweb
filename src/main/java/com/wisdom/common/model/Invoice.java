@@ -16,6 +16,8 @@ public class Invoice implements java.io.Serializable{
     private Integer exported; 
     private String document;
     private String status;
+    private long invoice_id;
+    private long company_id;
 
  
     public Invoice() {
@@ -37,7 +39,47 @@ public class Invoice implements java.io.Serializable{
         return id;
     }
  
-    public void setId(String id) {
+    public Integer getUid() {
+		return uid;
+	}
+
+	public void setUid(Integer uid) {
+		this.uid = uid;
+	}
+
+	public Timestamp getCreated_time() {
+		return created_time;
+	}
+
+	public void setCreated_time(Timestamp created_time) {
+		this.created_time = created_time;
+	}
+
+	public Timestamp getModified_time() {
+		return modified_time;
+	}
+
+	public void setModified_time(Timestamp modified_time) {
+		this.modified_time = modified_time;
+	}
+
+	public long getInvoice_id() {
+		return invoice_id;
+	}
+
+	public void setInvoice_id(long invoice_id) {
+		this.invoice_id = invoice_id;
+	}
+
+	public long getCompany_id() {
+		return company_id;
+	}
+
+	public void setCompany_id(long company_id) {
+		this.company_id = company_id;
+	}
+
+	public void setId(String id) {
         this.id = id;
     }
  
