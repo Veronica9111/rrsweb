@@ -27,18 +27,21 @@ public class DefaultMessageDelegate implements MessageDelegate {
 		//System.out.println(message);
 	    JsonFactory factory = new JsonFactory(); 
 	    ObjectMapper mapper = new ObjectMapper(factory);
-	    TypeReference<HashMap<String,Object>> typeRef 
-        = new TypeReference<HashMap<String,Object>>() {};
+	    TypeReference<List<HashMap<String,Object>>> typeRef 
+        = new TypeReference<List<HashMap<String,Object>>>() {};
 
-    HashMap<String,Object> o = mapper.readValue(message, typeRef); 
-	System.out.println(o);
-	String path = (String) o.get("path");
+
+      //  "UNRECOGNIZED_INVOICE" "[{\"path\":\"jzzbeyond001@163.com1449556610603677.png\",\"company_id\":\"40\",\"invoice_id\":\"83\",\"company\":\"\xe5\x85\x83\xe5\x8d\x87\"}]"
+    List<HashMap<String,Object>> list = mapper.readValue(message, typeRef);
+    HashMap<String, Object> data = list.get(0);
+	System.out.println(data);
+	String path = (String) data.get("path");
 	System.out.println(path);
-	String name = (String)o.get("name");
-	String company = (String)o.get("company");
+	String name = (String)data.get("path");
+	String company = (String)data.get("company");
 	Integer priority = 10;
-	Integer invoiceId = (Integer)o.get("invoice_id");
-	Integer companyId = (Integer)o.get("company_id");
+	long invoiceId = Long.parseLong((String) data.get("invoice_id"));
+	long companyId = Long.parseLong((String)data.get("company_id"));
 	invoiceService.addInvoice(priority, name, path, company, invoiceId, companyId);
 	}
 

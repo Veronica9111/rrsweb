@@ -8,7 +8,7 @@ public interface IInvoiceService {
 
 	public List<Map<String, String>>  getAllInvoices();
 	
-	public Boolean addInvoice(Integer priority, String name, String path, String company, Integer invoiceId, Integer companyId);
+	public Boolean addInvoice(Integer priority, String name, String path, String company, long invoiceId, long companyId);
 	
 	public List<Map<String, String>> getInvoicesByCompany(String company);
 	
