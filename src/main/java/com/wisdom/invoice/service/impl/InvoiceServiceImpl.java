@@ -1,5 +1,6 @@
 package com.wisdom.invoice.service.impl;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 
 import java.util.ArrayList;
@@ -19,6 +20,12 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wisdom.common.mapper.InvoiceMapper;
 import com.wisdom.common.mapper.PermissionMapper;
 import com.wisdom.common.mapper.RecordMapper;
@@ -333,17 +340,14 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		//Add the invoice to queue
 		
 		List<Map<String, String>> exportData = new ArrayList<>();
-		Map<String, String> temp = new HashMap<>();
-		temp.put("fa", FA);
+		Map<String, String> exportedData = new HashMap<>();
+		exportedData.put("fa", FA);
 		Invoice invoice = invoiceMapper.getInvoiceById(id);
 		String invoiceId = Long.toString(invoice.getInvoice_id());
-		temp.put("id", invoiceId);
-		temp.put("data", data);
-		exportData.add(temp);
-		String exportDataStr = JSONArray.fromObject(exportData).toString();
-		
-		
-		
+		exportedData.put("id", invoiceId);
+		exportedData.put("data", data);
+		String exportDataStr = JSONArray.fromObject(exportedData).toString();
+			
 		JedisPoolConfig poolConfig = new JedisPoolConfig();
 		poolConfig.setMaxIdle(RedisSetting.MAX_IDLE);
 		poolConfig.setMinIdle(RedisSetting.MIN_IDLE);
