@@ -332,6 +332,16 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		recordMapper.addRecord(record);
 		//Add the invoice to queue
 		
+		List<Map<String, String>> exportData = new ArrayList<>();
+		Map<String, String> temp = new HashMap<>();
+		temp.put("fa", FA);
+		temp.put("id", id);
+		temp.put("data", data);
+		exportData.add(temp);
+		String exportDataStr = JSONArray.fromObject(exportData).toString();
+		
+		
+		
 		JedisPoolConfig poolConfig = new JedisPoolConfig();
 		poolConfig.setMaxIdle(RedisSetting.MAX_IDLE);
 		poolConfig.setMinIdle(RedisSetting.MIN_IDLE);
@@ -354,7 +364,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	                
 	                Jedis jedis = jedisPool.getResource();
 	                try {
-	                   jedis.publish("INVOICE", data);
+	                   jedis.publish("RECOGNIZED_INVOICE", exportDataStr);
 	                } catch (Exception e) {
 	                   e.printStackTrace();
 	                } finally {
