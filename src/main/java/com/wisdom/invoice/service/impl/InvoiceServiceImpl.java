@@ -33,6 +33,7 @@ import com.wisdom.common.model.Invoice;
 import com.wisdom.common.model.Record;
 import com.wisdom.invoice.service.IInvoiceService;
 import com.wisdom.utils.RedisSetting;
+import com.wisdom.utils.SystemSetting;
 
 import net.sf.json.JSONArray;
 import redis.clients.jedis.Jedis;
@@ -288,7 +289,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		}
 		Map<String, String> temp = new HashMap<>();
 		String modified_time;
-		String path;
+		String path = SystemSetting.INVOICE_IMAGE_PREFIX;
 		String userid;
 		if (invoice == null){
 			return null;
@@ -304,13 +305,8 @@ public class InvoiceServiceImpl implements IInvoiceService {
 			}
 			temp.put("modified_time", modified_time);
 			temp.put("priority", invoice.getPriority().toString());
-			if (invoice.getPath()== null){
-				path = "null";
-			}
-			else{
-				path = invoice.getPath().toString();
-			}			
-			temp.put("path", invoice.getPath());
+			path = path + invoice.getPath();
+			temp.put("path", path);
 			temp.put("company", invoice.getCompany());
 			temp.put("exported", invoice.getExported().toString());
 			if(invoice.getUID() == null){
