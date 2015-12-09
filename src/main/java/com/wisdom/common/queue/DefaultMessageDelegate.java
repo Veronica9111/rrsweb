@@ -22,7 +22,7 @@ public class DefaultMessageDelegate implements MessageDelegate {
 	@Autowired IInvoiceService invoiceService;
 
 	@Override
-	public void handleMessage(String message) throws JsonParseException, JsonMappingException, IOException {
+	public synchronized void handleMessage(String message) throws JsonParseException, JsonMappingException, IOException {
 		// TODO Auto-generated method stub
 		//System.out.println(message);
 	    JsonFactory factory = new JsonFactory(); 
