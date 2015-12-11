@@ -245,6 +245,44 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	public Boolean updateInvoiceStatus(String id, String status) {
 		try{
 			invoiceMapper.updateInvoiceStatus(id, status);
+			//publish message if the invoice is invalid
+			if(status.equals("INVALID")){
+				Invoice invoice = invoiceMapper.getInvoiceById(id);
+				long invoiceId = invoice.getInvoice_id();
+				
+				JedisPoolConfig poolConfig = new JedisPoolConfig();
+				poolConfig.setMaxIdle(RedisSetting.MAX_IDLE);
+				poolConfig.setMinIdle(RedisSetting.MIN_IDLE);
+				poolConfig.setTestOnBorrow(RedisSetting.TEST_ON_BORROW);
+				poolConfig.setNumTestsPerEvictionRun(RedisSetting.NUM_TESTS_PER_EVICTION_RUN);
+				poolConfig.setTimeBetweenEvictionRunsMillis(RedisSetting.TIME_BETWEEN_EVICTION_RUNS_MILLIS);
+				poolConfig.setMaxWaitMillis(RedisSetting.MAX_WAIT_MILLIS);
+				//poolConfig.setBlockWhenExhausted(org.apache.commons.pool.impl.GenericObjectPool.WHEN_EXHAUSTED_FAIL);
+
+
+				// Timeout is set larger to the deploy environment
+				JedisPool jedisPool = new JedisPool(poolConfig,RedisSetting.ADDRESS, RedisSetting.PORT, 10000, RedisSetting.PASSWORD);
+				
+			   ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(10);
+			    newFixedThreadPool.submit(new Runnable() {
+
+			        @Override
+			        public void run() {
+
+			                
+			                Jedis jedis = jedisPool.getResource();
+			                try {
+			                   jedis.publish("INVALID_INVOICE",Long.toString(invoiceId));
+			                } catch (Exception e) {
+			                   e.printStackTrace();
+			                } finally {
+			                   jedisPool.returnResource(jedis);
+			                }
+			            
+
+			        }
+			    });
+			}
 		}catch(Exception e){
 			return false;
 		}
