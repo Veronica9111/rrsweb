@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import com.wisdom.common.model.Invoice;
+
 public interface IInvoiceService {
 
 	public List<Map<String, String>>  getAllInvoices();
@@ -33,4 +35,8 @@ public interface IInvoiceService {
 	public Boolean increaseInvoicesPriority(String[] invoices);
 	
 	public Boolean decreaseInvoicesPriority(String[] invoices);
+	
+	public Boolean deleteInvoice(long invoiceId);
+	
+	public Invoice getInvoiceByInvoiceId(long invoiceId);
 }

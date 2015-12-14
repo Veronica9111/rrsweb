@@ -36,5 +36,9 @@ public interface InvoiceMapper {
 	void decreaseInvoicePriority(@Param("id")String id);
 	
 	Invoice getInvoiceById(@Param("id")String id);
+	
+	void deleteInvoice(@Param("invoice_id")long invoiceId);
+	
+	Invoice getInvoiceByInvoiceId(@Param("invoice_id") long invoiceId);
 }
 

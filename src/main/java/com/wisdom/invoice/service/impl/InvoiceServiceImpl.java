@@ -362,15 +362,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
 	@Override
 	public Boolean updateInvoiceContent(String path, String data, String FA, String id, Integer uid) {
-		//TODO set the status to RECOGNIZED, remove the uid
-		updateInvoiceStatus(id, "RECOGNIZED");
-		updateInvoiceOwner(id, 0);
-		//Set the work record
-		Record record = new Record();
-		record.setInvoice_id(id);
-		record.setUid(uid);
-		record.setAction("RECOGNIZE");
-		recordMapper.addRecord(record);
+
 		//Add the invoice to queue
 		
 		List<Map<String, String>> exportData = new ArrayList<>();
@@ -415,7 +407,14 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	        }
 	    });
 
-
+		updateInvoiceStatus(id, "RECOGNIZED");
+		updateInvoiceOwner(id, 0);
+		//Set the work record
+		Record record = new Record();
+		record.setInvoice_id(id);
+		record.setUid(uid);
+		record.setAction("RECOGNIZE");
+		recordMapper.addRecord(record);
 		
 		try{
 			WriteXML.WriteXML(path, data, FA, id);
@@ -447,5 +446,17 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		}
 		return true;
 	}
+
+	@Override
+	public Boolean deleteInvoice(long invoiceId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Invoice getInvoiceByInvoiceId(long invoiceId) {
+		return invoiceMapper.getInvoiceByInvoiceId(invoiceId);
+	}
+	
 
 }

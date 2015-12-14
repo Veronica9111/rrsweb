@@ -73,5 +73,11 @@ ON DUPLICATE KEY UPDATE
   <update id="decreaseInvoicePriority" parameterType="String">
   update invoice set priority = priority - 10 where id = #{id}
   </update>
+  <delete id="deleteInvoice" parameterType="long">
+  delete from invoice where invoice_id=#{invoice_id}
+  </delete>
+  <select id="getInvoiceByInvoiceId" parameterType="long" resultType="Invoice">
+  select * from invoice where invoice_id=#{invoice_id}
+  </select>
 
 </mapper>
