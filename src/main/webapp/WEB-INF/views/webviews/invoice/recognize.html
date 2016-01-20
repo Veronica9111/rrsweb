@@ -92,6 +92,7 @@
         <th>供应商</th>
         <th>摘要</th>
         <th>金额</th>
+        <th>税额</th>
         <th>操作</th>
       </tr>
       </thead>
@@ -130,11 +131,11 @@
 		    			"sDom": '<"top">rt<"bottom" p><"clear">'
                 	  
                   });
-                  table.row.add( ['<input type="text"/>','<input type="text"/>','<input type="text"/>',"<input type='button' class='delete' value='删除'/>" ] ).draw( false );
+                  table.row.add( ['<input type="text"/>','<input type="text"/>','<input type="text"/>','<input type="text" value="0"/>',"<input type='button' class='delete' value='删除'/>" ] ).draw( false );
                 
                 $('#add-row').click(function(){
    
-                    table.row.add( ['<input type="text"/>','<input type="text"/>','<input type="text"/>',"<input type='button' class='delete' value='删除'/>" ] ).draw( false );
+                    table.row.add( ['<input type="text"/>','<input type="text"/>','<input type="text"/>','<input type="text" value="0"/>',"<input type='button' class='delete' value='删除'/>" ] ).draw( false );
                 });
                 
                 $("#invoice tbody").on('click', '.delete', function (){
@@ -244,7 +245,8 @@
         			var supplier = $(this).children().eq(0).find('input');
         			var description = $(this).children().eq(1).find('input');
         			var amount = $(this).children().eq(2).find('input');
-        			resultList.push({'supplier': supplier.val(), 'description':description.val(), 'amount':amount.val()});
+        			var tax = $(this).children().eq(3).find('input');
+        			resultList.push({'supplier': supplier.val(), 'description':description.val(), 'amount':amount.val(), 'tax':tax.val()});
         		});
         		var FA = "no";
         		if($("#fa").prop("checked")){
