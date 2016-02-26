@@ -77,6 +77,7 @@
 	
 	<mvc:resources mapping="/views/webviews/**" location="/WEB-INF/views/webviews/" cache-period="3600" />
 	<mvc:resources mapping="/views/webviews/admin/**" location="/WEB-INF/views/webviews/admin/" cache-period="3600" />
+		<mvc:resources mapping="/views/webviews/sales/**" location="/WEB-INF/views/webviews/sales/" cache-period="3600" />
 	<mvc:resources mapping="/views/webviews/accounter/**" location="/WEB-INF/views/webviews/accounter/" cache-period="3600" />
 	<mvc:resources mapping="/views/webviews/company/**" location="/WEB-INF/views/webviews/company/" cache-period="3600" />
 	<mvc:resources mapping="/views/webviews/companyUser/**" location="/WEB-INF/views/webviews/companyUser/" cache-period="3600" />
@@ -165,6 +166,11 @@
   <property name="sqlSessionFactory" ref="sqlSessionFactory" />
 </bean>
 
+<bean id="salesMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+  <property name="mapperInterface" value="com.wisdom.common.mapper.SalesMapper" />
+  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+
 	<bean id="userController" class="com.wisdom.web.api.controller.UserController">
   		<property name="testMapper" ref="testMapper" />
 
@@ -188,6 +194,9 @@
 		<property name="roleMapper" ref="roleMapper" />
 	</bean>	
 
+	<bean id="salesServiceImpl" class="com.wisdom.sales.service.impl.SalesServiceImpl">
+		<property name="salesMapper" ref="salesMapper" />
+	</bean>	
 	
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
   <property name="basePackage" value="mapper" />
