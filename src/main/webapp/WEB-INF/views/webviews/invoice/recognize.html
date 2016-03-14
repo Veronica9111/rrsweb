@@ -153,6 +153,9 @@
                 			$("#supplier" + count).on("click", function(){
                 				$(this).autocomplete( "search", "" );
                 			});
+                		if(data){
+                			$("#supplier" + count).val(data[0]);
+                		}
                 	});
                 	
                 	$.post("/invoice/getCalculatedCandidatePhrase", {'type':'description', 'invoice_id':invoice_id}, function(data){
@@ -162,6 +165,9 @@
                 			$("#description" + count).on("click", function(){
                 				$(this).autocomplete( "search", "" );
                 			});
+                		if(data){
+                			$("#description" + count).val(data[0]);
+                		}
                 	});
                 });
                 
@@ -213,6 +219,9 @@
         			$("#supplier").on("click", function(){
         				$(this).autocomplete( "search", "" );
         			});
+        		if(data){
+        			$("#supplier").val(data[0]);
+        		}
         	});
         	
         	$.post("/invoice/getCalculatedCandidatePhrase", {'type':'description', 'invoice_id':invoice_id}, function(data){
@@ -221,6 +230,7 @@
         			$("#description").on("click", function(){
         				$(this).autocomplete( "search", "" );
         			});
+        			$("#description").val(data[0]);
         	});
         
         	$.post("/invoice/getCalculatedCandidatePhrase", {'type':'amount', 'invoice_id':invoice_id}, function(data){
