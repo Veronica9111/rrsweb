@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="com.wisdom.common.mapper.CandidateMapper">
+<cache />
+<resultMap type="com.wisdom.common.model.Candidate" id="Candidate">  
+<result property="id" column="id"/>  
+<result property="value" column="value"/>  
+<result property="type" column="type"/>
+<result property="confidence" column="confidence"/>
+<result property="invoiceId" column="invoice_id"/>
+</resultMap>
+ 
+    <select id="getCandidatesByTypeAndInvoiceId" parameterType="String" resultType="Candidate">  
+        select * from candidate where type=#{type} and invoice_id=#{invoice_id} 
+    </select>  
+    
+     <insert id="addCandidate" parameterType="String">
+		insert into candidate(value,type, confidence, invoice_id)
+		values(#{value}, #{type}, #{confidence}, #{invoice_id})
+</insert>
+</mapper>

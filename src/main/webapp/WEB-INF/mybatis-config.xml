@@ -17,7 +17,9 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         <typeAlias alias="UserRecord" type="com.wisdom.common.model.UserRecord" />
         <typeAlias alias="record" type="com.wisdom.common.model.Record" />
         <typeAlias alias="RolePermissions" type="com.wisdom.common.model.RolePermissions" />
-
+        <typeAlias alias="Symbol" type="com.wisdom.common.model.Symbol" />
+        <typeAlias alias="Phrase" type="com.wisdom.common.model.Phrase" />
+		<typeAlias alias="Candidate" type="com.wisdom.common.model.Candidate" />
   </typeAliases>
   <mappers>
 
@@ -26,6 +28,9 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     <mapper resource="com/wisdom/common/mapper/InvoiceMapper.xml" />
     <mapper resource="com/wisdom/common/mapper/RoleMapper.xml" />
     <mapper resource="com/wisdom/common/mapper/RecordMapper.xml" />
+    <mapper resource="com/wisdom/common/mapper/SymbolMapper.xml" />
+    <mapper resource="com/wisdom/common/mapper/PhraseMapper.xml" />
+    <mapper resource="com/wisdom/common/mapper/CandidateMapper.xml" />
   </mappers>
 
 </configuration>

@@ -356,6 +356,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 			temp.put("uid", userid);
 			temp.put("document", invoice.getDocument());
 			temp.put("status", invoice.getStatus());
+			temp.put("invoice_id", String.valueOf(invoice.getInvoice_id()));
 		}
 		return temp;
 	}
