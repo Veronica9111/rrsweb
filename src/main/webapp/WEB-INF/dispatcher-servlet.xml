@@ -77,6 +77,7 @@
 	
 	<mvc:resources mapping="/views/webviews/**" location="/WEB-INF/views/webviews/" cache-period="3600" />
 	<mvc:resources mapping="/views/webviews/admin/**" location="/WEB-INF/views/webviews/admin/" cache-period="3600" />
+		<mvc:resources mapping="/views/webviews/sales/**" location="/WEB-INF/views/webviews/sales/" cache-period="3600" />
 	<mvc:resources mapping="/views/webviews/accounter/**" location="/WEB-INF/views/webviews/accounter/" cache-period="3600" />
 	<mvc:resources mapping="/views/webviews/company/**" location="/WEB-INF/views/webviews/company/" cache-period="3600" />
 	<mvc:resources mapping="/views/webviews/companyUser/**" location="/WEB-INF/views/webviews/companyUser/" cache-period="3600" />
@@ -164,6 +165,7 @@
   <property name="mapperInterface" value="com.wisdom.common.mapper.RoleMapper" />
   <property name="sqlSessionFactory" ref="sqlSessionFactory" />
 </bean>
+
 
 <bean id="phraseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
   <property name="mapperInterface" value="com.wisdom.common.mapper.PhraseMapper" />
