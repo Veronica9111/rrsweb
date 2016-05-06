@@ -417,12 +417,12 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		record.setAction("RECOGNIZE");
 		recordMapper.addRecord(record);
 		
-		try{
+	/*	try{
 			WriteXML.WriteXML(path, data, FA, id);
 		}catch(Exception e){
 			logger.error(e.toString());
 			return false;
-		}
+		}*/
 		return true;
 	}
 

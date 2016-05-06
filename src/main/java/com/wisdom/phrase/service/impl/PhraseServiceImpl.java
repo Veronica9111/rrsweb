@@ -63,12 +63,13 @@ public class PhraseServiceImpl implements IPhraseService {
 		List<Phrase> phrases = phraseMapper.getPhraseBySymbol(rightSymbol);
 		String uncertainSymbol = phrase.substring(position2, position2+1);
 		List<Symbol> symbols = symbolMapper.getSimilarSymbols(uncertainSymbol);
-		List<String> phrasesList = new ArrayList<>();
+		//List<String> phrasesList = new ArrayList<>();
+		Map<String, Integer> phrasesMap = new HashMap<>();
 		for(Phrase elem: phrases){
-			phrasesList.add(elem.getPhrase());
+			phrasesMap.put(elem.getPhrase(), elem.getHit());
 		}
 		
-		Map<String, Integer> result = searchPhrase(rightSymbol, position1, phrase.length(), phrasesList);
+		Map<String, Integer> result = searchPhrase(rightSymbol, position1, phrase.length(), phrasesMap);
 		return result;
 	    
 	    
@@ -98,18 +99,19 @@ public class PhraseServiceImpl implements IPhraseService {
     return result;
 }
 	
-	public  Map<String, Integer> searchPhrase(String character, Integer position, Integer length, List<String>phrases){
+	public  Map<String, Integer> searchPhrase(String character, Integer position, Integer length, Map<String, Integer>phrases){
 		Map<String, Integer> result = new HashMap<>();
-		for(String phrase: phrases){
+		for (Map.Entry<String, Integer> entry : phrases.entrySet()) {
+			String phrase = entry.getKey();
 			Integer index = phrase.indexOf(character);
 			Integer left = index - position;
 			Integer right = length - position + index;
-			if(left >= 0 && right < phrase.length()){
+			if(left >= 0 && right <= phrase.length()){
 				String match = phrase.substring(left, right);
 				if(!result.containsKey(match)){
-					result.put(match, 1);
+					result.put(match, entry.getValue());
 				}else{
-					result.put(match, result.get(match) + 1);
+					result.put(match, result.get(match) + entry.getValue());
 				}
 			}
 		}
@@ -127,6 +129,32 @@ public class PhraseServiceImpl implements IPhraseService {
 	public List<Candidate> getCalculatedCandidatePhrases(String type, Integer invoiceId) {
 		// TODO Auto-generat ed method stub
 		return candidateMapper.getCandidatesByTypeAndInvoiceId(type, invoiceId);
+	}
+
+	@Override
+	public boolean addPhrase(String phrase, Integer hit) {
+		// TODO Auto-generated method stub
+		for(int i = 0; i < phrase.length(); i++){
+			phraseMapper.addPhraseWithSymbol(phrase, phrase.substring(i,i+1), hit, phrase.length(), i);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean isPhraseExist(String phrase) {
+		// TODO Auto-generated method stub
+		List<Phrase> list = phraseMapper.getPhrase(phrase);
+		if(list.isEmpty()){
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public boolean updatePhraseHit(String phrase, Integer hit) {
+		// TODO Auto-generated method stub
+		phraseMapper.updatePhraseHit(phrase, hit);
+		return true;
 	}
 
 }

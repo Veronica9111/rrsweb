@@ -13,4 +13,10 @@ public interface IPhraseService {
 	public int addCandidate(String value, String type, Integer confidence, Integer invoiceId);
 	
 	public List<Candidate> getCalculatedCandidatePhrases(String type, Integer invoiceId);	
+	
+	public boolean addPhrase(String phrase, Integer hit);
+	
+	public boolean isPhraseExist(String phrase);
+	
+	public boolean updatePhraseHit(String phrase, Integer hit);
 }

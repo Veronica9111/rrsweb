@@ -15,4 +15,16 @@
     <select id="getPhraseBySymbol" parameterType="String" resultType="Phrase">  
         select * from phrase where symbol=#{symbol} 
     </select>  
+    
+    <insert id="addPhraseWithSymbol" parameterType="String">
+    	insert into phrase (phrase, position, symbol, hit, length) values (#{phrase}, #{position}, #{symbol}, #{hit}, #{length})
+    </insert>
+    
+    <select id="getPhrase" parameterType="String" resultType="Phrase">
+    	select * from phrase where phrase=#{phrase}
+    </select>
+    
+    <update id="updatePhraseHit" parameterType="String">
+    	update phrase set hit = hit+#{hit} where phrase=#{phrase}
+    </update>
 </mapper>

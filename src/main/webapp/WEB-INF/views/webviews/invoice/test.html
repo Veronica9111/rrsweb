@@ -172,7 +172,7 @@ a,
 <script>
 alert("hello");
 
-	$.post("/invoice/getCandidatePhrase", {'phrase': '公矗', 'certain_pos':0, 'uncertain_pos':1}, function(data){
+	$.post("/invoice/getCandidatePhrase", {'phrase': '科矗', 'certain_pos':0, 'uncertain_pos':1}, function(data){
 		console.log(data);
 	});
 	
@@ -186,6 +186,10 @@ alert("hello");
 			$("#autocomplete").on("click", function(){
 				$("#autocomplete").autocomplete( "search", "" );
 			});
+	});
+	
+	$.post("/invoice/updatePhrase", {'phrase': '闪蝶'}, function(data){
+		alert("ok");
 	});
 </script>
 </body>

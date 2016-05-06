@@ -1,6 +1,7 @@
 package com.wisdom.common.queue;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,8 +14,11 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wisdom.common.model.Invoice;
 import com.wisdom.common.model.Model;
 import com.wisdom.invoice.service.IInvoiceService;
+
+import net.sf.json.JSONArray;
 
 @Service
 public class DefaultMessageDelegate implements MessageDelegate {
@@ -43,6 +47,24 @@ public class DefaultMessageDelegate implements MessageDelegate {
 	long invoiceId = Long.parseLong((String) data.get("invoice_id"));
 	long companyId = Long.parseLong((String)data.get("company_id"));
 	invoiceService.addInvoice(priority, name, path, company, invoiceId, companyId);
+	Integer uid = 1;
+	//if company id = 1680, just recognize it
+	if(companyId == 1680){
+		//'supplier': supplier.val(), 'description':description.val(), 'amount':amount.val(), 'tax':tax.val(), 'number':number.val()
+		Map<String, String> demoMap = new HashMap<>();
+		demoMap.put("supplier", "上海威武文化传播有限公司");
+		demoMap.put("amount", "19000");
+		demoMap.put("number", "1");
+		demoMap.put("tax", "0");
+		demoMap.put("description", "设计服务费");
+		String demoStr = "[{\"supplier\":\"上海石油\",\"description\":\"加油费\",\"amount\":\"500\",\"tax\":\"0\",\"number\":\"1\"}]";
+		//String demoStr = JSONArray.fromObject(demoMap).toString();
+		//String dataStr = "{'supplier':'上海威武文化传播有限公司','amount':'19000','number':'1','tax':'0','description':'设计服务'}";
+		Invoice invoice = invoiceService.getInvoiceByInvoiceId(invoiceId);
+		String id = invoice.getId();
+		invoiceService.updateInvoiceContent(path, demoStr, "no", id, uid);
+	}
+	
 	}
 
 }

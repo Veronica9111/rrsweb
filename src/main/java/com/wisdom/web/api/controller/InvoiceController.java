@@ -23,6 +23,7 @@ import com.wisdom.permission.service.IPermissionService;
 import com.wisdom.phrase.service.IPhraseService;
 import com.wisdom.user.service.IUserService;
 import com.wisdom.utils.SessionConstant;
+import com.wisdom.utils.SystemSetting;
 
 import net.sf.json.JSONArray;
 
@@ -316,4 +317,21 @@ public class InvoiceController {
 		}
 		return retList;
 	}
+	
+	@RequestMapping("/invoice/updatePhrase")
+	@ResponseBody
+	public Map<String, String> updatePhrase(HttpSession httpSession, HttpServletRequest request){
+		Map<String, String> retMap = new HashMap<>();
+		String phrase = request.getParameter("phrase");
+		Integer hit = SystemSetting.INCREASE_HIT;
+		if(phraseService.isPhraseExist(phrase)){
+			phraseService.updatePhraseHit(phrase, hit);
+		}else{
+			phraseService.addPhrase(phrase, hit);
+		}
+		retMap.put("status", "ok");
+		return retMap;
+		
+	}
+	
 }
