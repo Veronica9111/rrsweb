@@ -105,7 +105,7 @@
 		<property name="url"
 			value="jdbc:mysql://121.40.63.208:3306/rrs?useUnicode=true&amp;characterEncoding=UTF-8"></property>
 		<property name="username" value="root"></property>
-		<property name="password" value="cvb89IKMwepl"></property>
+		<property name="password" value="asfIHVqdla"></property>
 		<property name="maxIdle" value="30"></property>
 		<property name="defaultAutoCommit" value="true"></property>
 	</bean>
