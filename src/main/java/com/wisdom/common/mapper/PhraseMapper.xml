@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="com.wisdom.common.mapper.PhraseMapper">
+<cache />
+<resultMap type="com.wisdom.common.model.Phrase" id="Phrase">  
+<result property="id" column="id"/>  
+<result property="symbol" column="symbol"/>  
+<result property="phrase" column="phrase"/>
+<result property="position" column="position"/>
+<result property="hit" column="hit"/>
+<result property="length" column="length"/>  
+</resultMap>
+ 
+    <select id="getPhraseBySymbol" parameterType="String" resultType="Phrase">  
+        select * from phrase where symbol=#{symbol} 
+    </select>  
+    
+    <insert id="addPhraseWithSymbol" parameterType="String">
+    	insert into phrase (phrase, position, symbol, hit, length) values (#{phrase}, #{position}, #{symbol}, #{hit}, #{length})
+    </insert>
+    
+    <select id="getPhrase" parameterType="String" resultType="Phrase">
+    	select * from phrase where phrase=#{phrase}
+    </select>
+    
+    <update id="updatePhraseHit" parameterType="String">
+    	update phrase set hit = hit+#{hit} where phrase=#{phrase}
+    </update>
+</mapper>

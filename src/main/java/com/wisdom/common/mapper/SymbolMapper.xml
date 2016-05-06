@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="com.wisdom.common.mapper.SymbolMapper">
+<cache />
+<resultMap type="com.wisdom.common.model.Symbol" id="Symbol">  
+<result property="id" column="id"/>  
+<result property="symbol" column="symbol"/>  
+<result property="similar_symbol" column="similar_symbol"/>
+<result property="hit" column="hit"/>
+</resultMap>
+ 
+    <select id="getSimilarSymbols" parameterType="String" resultType="Symbol">  
+        select * from symbol where symbol=#{symbol} 
+    </select>  
+</mapper>

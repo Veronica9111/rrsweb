@@ -1,6 +1,7 @@
 package com.wisdom.web.api.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,11 +16,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wisdom.common.model.Candidate;
 import com.wisdom.common.utils.ReadingXML;
 import com.wisdom.invoice.service.IInvoiceService;
 import com.wisdom.permission.service.IPermissionService;
+import com.wisdom.phrase.service.IPhraseService;
 import com.wisdom.user.service.IUserService;
 import com.wisdom.utils.SessionConstant;
+import com.wisdom.utils.SystemSetting;
 
 import net.sf.json.JSONArray;
 
@@ -29,6 +33,8 @@ public class InvoiceController {
 	@Autowired IInvoiceService invoiceService;
 	
 	@Autowired IUserService userService;
+	
+	@Autowired IPhraseService phraseService;
 	
 	private static final Logger logger = LoggerFactory
 			.getLogger(InvoiceController.class);
@@ -271,4 +277,61 @@ public class InvoiceController {
 		retMap.put("status", "ok");
 		return retMap;
 	}
+	
+	@RequestMapping("/invoice/getCandidatePhrase")
+	@ResponseBody
+	public Map<String, Integer>getCandidatePhrase(HttpSession httpSession, HttpServletRequest request){
+		Map<String, Integer> retMap = new HashMap<>();
+		String phrase = request.getParameter("phrase");
+		Integer certainPosition = Integer.valueOf(request.getParameter("certain_pos"));
+		Integer uncertainPosition = Integer.valueOf(request.getParameter("uncertain_pos"));
+		retMap = phraseService.getCandidatePhrases(phrase, certainPosition, uncertainPosition);
+		return retMap;
+		
+	}
+	
+
+	@RequestMapping("/invoice/addCandidatePhrase")
+	@ResponseBody
+	public Map<String, String>addCandidatePhrase(HttpSession httpSession, HttpServletRequest request){
+		Map<String, String> retMap = new HashMap<>();
+		String value = request.getParameter("value");
+		String type = request.getParameter("type");
+		Integer confidence = Integer.valueOf(request.getParameter("confidence"));
+		Integer invoiceId = Integer.valueOf(request.getParameter("invoice_id"));
+		phraseService.addCandidate(value, type, confidence, invoiceId);
+		retMap.put("status", "ok");
+		return retMap;
+	}
+	
+	@RequestMapping("/invoice/getCalculatedCandidatePhrase")
+	@ResponseBody
+	public List<String> getCalculatedCandidatePhrase(HttpSession httpSession, HttpServletRequest request){
+		Map<String, String> retMap = new HashMap<>();
+		String type = request.getParameter("type");
+		Integer invoiceId = Integer.valueOf(request.getParameter("invoice_id"));
+		List<Candidate> candidates = phraseService.getCalculatedCandidatePhrases(type, invoiceId);
+		List<String> retList = new ArrayList<>();
+		for(Candidate candidate: candidates){
+			retList.add(candidate.getValue());
+		}
+		return retList;
+	}
+	
+	@RequestMapping("/invoice/updatePhrase")
+	@ResponseBody
+	public Map<String, String> updatePhrase(HttpSession httpSession, HttpServletRequest request){
+		Map<String, String> retMap = new HashMap<>();
+		String phrase = request.getParameter("phrase");
+		Integer hit = SystemSetting.INCREASE_HIT;
+		if(phraseService.isPhraseExist(phrase)){
+			phraseService.updatePhraseHit(phrase, hit);
+		}else{
+			phraseService.addPhrase(phrase, hit);
+		}
+		retMap.put("status", "ok");
+		return retMap;
+		
+	}
+	
 }

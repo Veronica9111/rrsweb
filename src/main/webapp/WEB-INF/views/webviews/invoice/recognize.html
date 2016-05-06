@@ -11,10 +11,16 @@
 <link rel="stylesheet" type="text/css" href="/css/webcss/jquery.guillotine.css" />
 <link rel="stylesheet" href="/css/webcss/bootstrap.css" />
 <link rel="stylesheet" href="/css/webcss/jquery.loadmask.css" />
+<link rel="stylesheet" href="/css/webcss/jquery-ui.css" />
 
 
 		    	
 <style>
+
+.ui-autocomplete{
+
+}
+
 #controls{
 	font-size: 250%;
     background-color: darkcyan;
@@ -80,6 +86,7 @@
     
   </ul>
   <ul class="nav-right">
+  	<div>公司名称: <b id="company-name"></b></div>
     <table id="invoice" width="30vw" border="0" cellspacing="0" cellpadding="0">
         <colgroup>
        <col span="1" style="width: 25%;">
@@ -119,6 +126,7 @@
   </div>
 </div>
 <script src="/js/webjs/jquery-1.11.3.js"></script>
+<script src="/js/webjs/jquery-ui.js"></script>
 <script type="text/javascript" language="javascript" src="/js/webjs/jquery.dataTables.min.js"></script>
 <script src="/js/webjs/navigator.js"></script>
 <script src="/js/webjs/jquery.guillotine.js"></script>
@@ -132,11 +140,35 @@
 		    			"sDom": '<"top">rt<"bottom" p><"clear">'
                 	  
                   });
-                  table.row.add( ['<input type="text"/>','<input type="text"/>','<input type="text"/>','<input type="text" value="0"/>','<input type="text" value="1"/>',"<input type='button' class='delete' value='删除'/>" ] ).draw( false );
+                  var count = 0;
+                  table.row.add( ['<input class="autocomplete" id="supplier" type="text"/>','<input id="description" class="autocomplete" type="text"/>','<input  id="amount" class="autocomplete" type="text"/>','<input type="text" value="0"/>','<input type="text" value="1"/>',"<input type='button' class='delete' value='删除'/>" ] ).draw( false );
                 
                 $('#add-row').click(function(){
+                	count = count + 1;
    
-                    table.row.add( ['<input type="text"/>','<input type="text"/>','<input type="text"/>','<input type="text" value="0"/>','<input type="text" value="1"/>',"<input type='button' class='delete' value='删除'/>" ] ).draw( false );
+                    table.row.add( ['<input id="supplier'+ count + '" class="autocomplete" type="text"/>','<input id="description'+count+'" class="autocomplete" type="text"/>','<input id="amount" class="autocomplete" type="text"/>','<input type="text" value="0"/>','<input type="text" value="1"/>',"<input type='button' class='delete' value='删除'/>" ] ).draw( false );
+                	$.post("/invoice/getCalculatedCandidatePhrase", {'type':'supplier', 'invoice_id':invoice_id}, function(data){
+                		var autocomplete = $("#supplier" + count).autocomplete( {source: data, minLength: 0
+                		});
+                			$("#supplier" + count).on("click", function(){
+                				$(this).autocomplete( "search", "" );
+                			});
+                		if(data){
+                			$("#supplier" + count).val(data[0]);
+                		}
+                	});
+                	
+                	$.post("/invoice/getCalculatedCandidatePhrase", {'type':'description', 'invoice_id':invoice_id}, function(data){
+                		console.log("hello");
+                		var autocomplete = $("#description" + count).autocomplete( {source: data, minLength: 0
+                		});
+                			$("#description" + count).on("click", function(){
+                				$(this).autocomplete( "search", "" );
+                			});
+                		if(data){
+                			$("#description" + count).val(data[0]);
+                		}
+                	});
                 });
                 
                 $("#invoice tbody").on('click', '.delete', function (){
@@ -147,6 +179,8 @@
                 });
                 
 
+            	
+            	
 
 
         $('.del-list').on('click',function(){
@@ -160,7 +194,10 @@
     	});
         
         var id = "";
+        var invoice_id = "";
+        var companyName = "";
         $.post('/invoice/getInvoiceForUser', {"status":"UNRECOGNIZED"}, function(data){
+        	console.log("hola");
         	var isImageExisted = true;
         	if(data.status == "nok"){
         		alert("您的访问超时，请重新登录！");
@@ -175,8 +212,38 @@
             	var result = $.parseJSON(data.data);
         		var invoicePath = result[0]['path'];
             	id = result[0]['id'];
+            	invoice_id = result[0]['invoice_id'];
+            	companyName = result[0]['company'];
+            	$("#company-name").html(companyName);
+            	console.log(companyName);
         	}
+        	
+        	$.post("/invoice/getCalculatedCandidatePhrase", {'type':'supplier', 'invoice_id':invoice_id}, function(data){
+        		var autocomplete = $("#supplier").autocomplete( {source: data, minLength: 0
+        		});
+        			$("#supplier").on("click", function(){
+        				$(this).autocomplete( "search", "" );
+        			});
+        		if(data){
+        			$("#supplier").val(data[0]);
+        		}
+        	});
+        	
+        	$.post("/invoice/getCalculatedCandidatePhrase", {'type':'description', 'invoice_id':invoice_id}, function(data){
+        		var autocomplete = $("#description").autocomplete( {source: data, minLength: 0
+        		});
+        			$("#description").on("click", function(){
+        				$(this).autocomplete( "search", "" );
+        			});
+        			$("#description").val(data[0]);
+        	});
         
+        	$.post("/invoice/getCalculatedCandidatePhrase", {'type':'amount', 'invoice_id':invoice_id}, function(data){
+        		if(data){
+        			$("#amount").val(data[0]);
+        		}
+        	});
+        	
              jQuery(function() {
              	  var picture = $('#invoice-img')
 

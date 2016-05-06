@@ -105,7 +105,7 @@
 		<property name="url"
 			value="jdbc:mysql://121.40.63.208:3306/rrs?useUnicode=true&amp;characterEncoding=UTF-8"></property>
 		<property name="username" value="root"></property>
-		<property name="password" value="cft67YGV"></property>
+		<property name="password" value="cvb89IKMwepl"></property>
 		<property name="maxIdle" value="30"></property>
 		<property name="defaultAutoCommit" value="true"></property>
 	</bean>
@@ -166,8 +166,19 @@
   <property name="sqlSessionFactory" ref="sqlSessionFactory" />
 </bean>
 
-<bean id="salesMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-  <property name="mapperInterface" value="com.wisdom.common.mapper.SalesMapper" />
+
+<bean id="phraseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+  <property name="mapperInterface" value="com.wisdom.common.mapper.PhraseMapper" />
+  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+
+<bean id="symbolMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+  <property name="mapperInterface" value="com.wisdom.common.mapper.SymbolMapper" />
+  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+</bean>
+
+<bean id="candidateMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+  <property name="mapperInterface" value="com.wisdom.common.mapper.CandidateMapper" />
   <property name="sqlSessionFactory" ref="sqlSessionFactory" />
 </bean>
 
@@ -194,9 +205,13 @@
 		<property name="roleMapper" ref="roleMapper" />
 	</bean>	
 
-	<bean id="salesServiceImpl" class="com.wisdom.sales.service.impl.SalesServiceImpl">
-		<property name="salesMapper" ref="salesMapper" />
+	<bean id="phraseServiceImpl" class="com.wisdom.phrase.service.impl.PhraseServiceImpl">
+		<property name="phraseMapper" ref="phraseMapper" />
+		<property name="symbolMapper" ref="symbolMapper" />
+		<property name="candidateMapper" ref="candidateMapper" />
 	</bean>	
+	
+
 	
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
   <property name="basePackage" value="mapper" />
