@@ -171,6 +171,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 			temp.put("path", invoice.getPath());
 			temp.put("company", invoice.getCompany());
 			temp.put("exported", invoice.getExported().toString());
+			temp.put("invoice_id", String.valueOf(invoice.getInvoice_id()));
 			if(invoice.getUID() == null){
 				uid = "null";
 			}
