@@ -327,7 +327,7 @@ table {
  					   <li>
 					        <a href="#">操作</a>
 					        <ul>
-					            <li><a href="javascript:alert('hello');"　id="increase-priority">导出</a></li>
+					            <li><a href="javascript:reset()"　id="reset">重置</a></li>
 					            <li><a href="#" id="decrease-priority">其它</a></li>
 					            <li><a href="#">其它</a></li>
 					            <li><a href="#">其它</a></li>
@@ -414,6 +414,16 @@ table {
 	$("#container").tabs();
     $('.operation').dropit();
     
+
+    function reset(){
+    	var resetStr = "";
+    	$(".invalid-checkbox:checked").each(function(){
+    		
+    		resetStr += $(this).attr("id") + ",";
+    	});
+    	alert(resetStr);
+    	
+    }
     function increasePriority(){
     	var invoices = [];
     	
@@ -478,7 +488,7 @@ table {
 				priority = "低";
 			}
 			var invoiceBox = '<div class="tooltip invoice" title="&lt;img onerror=&quot;imgError(this); &quot; src=&quot;'+invoices[key]["path"] + '&quot; /&gt;"><img onerror="imgError(this);" class="invoice-img" src="' + invoices[key]["path"] +
-			'" /> <input type="checkbox" class="unrecognized-checkbox" id="' + invoices[key]["id"] + '" /><p>优先级: <b>' + priority + '</b></p></div>';
+			'" /> <input type="checkbox" class="unrecognized-checkbox" id="' + invoices[key]["invoice_id"] + '" /><p>优先级: <b>' + priority + '</b></p></div>';
 			$("#unrecognized").append(invoiceBox);
 		}
 		$('.tooltip').tooltipster({
@@ -508,7 +518,7 @@ table {
 				priority = "低";
 			}
 			var invoiceBox = '<div class="tooltip invoice" title="&lt;img src=&quot;'+invoices[key]["path"] + '&quot; /&gt;"><img class="invoice-img" src="' + invoices[key]["path"] +
-			'" /> <input type="checkbox" class="recognized-checkbox" id="' + invoices[key]["id"] + '" /><p>优先级: <b>' + priority + '</b></p></div>';
+			'" /> <input type="checkbox" class="recognized-checkbox" id="' + invoices[key]["invoice_id"] + '" /><p>优先级: <b>' + priority + '</b></p></div>';
 			$("#recognized").append(invoiceBox);
 		}
 		$('.tooltip').tooltipster({
@@ -538,7 +548,7 @@ table {
 				priority = "低";
 			}
 			var invoiceBox = '<div class="tooltip invoice" title="&lt;img src=&quot;'+invoices[key]["path"] + '&quot; /&gt;"><img class="invoice-img" src="' + invoices[key]["path"] +
-			'" /> <input type="checkbox" class="invalid-checkbox" id="' + invoices[key]["id"] + '" /><p>优先级: <b>' + priority + '</b></p></div>';
+			'" /> <input type="checkbox" class="invalid-checkbox" id="' + invoices[key]["invoice_id"] + '" /><p>优先级: <b>' + priority + '</b></p></div>';
 			$("#invalid").append(invoiceBox);
 		}
 		$('.tooltip').tooltipster({
