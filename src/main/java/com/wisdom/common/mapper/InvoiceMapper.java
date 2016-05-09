@@ -40,5 +40,7 @@ public interface InvoiceMapper {
 	void deleteInvoice(@Param("invoice_id")long invoiceId);
 	
 	Invoice getInvoiceByInvoiceId(@Param("invoice_id") long invoiceId);
+	
+	void updateInvoiceStatusWithInvoiceId(@Param("invoice_id")Integer invoiceId, @Param("status")String status);
 }
 

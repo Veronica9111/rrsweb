@@ -278,6 +278,27 @@ public class InvoiceController {
 		return retMap;
 	}
 	
+	@RequestMapping("/invoice/updateInvoicesStatus")
+	@ResponseBody
+	public Map<String, String>updateInvoicesStatus(HttpSession httpSession, HttpServletRequest request){
+		Map<String, String> retMap = new HashMap<>();
+		Integer uid = (Integer) httpSession.getAttribute(SessionConstant.SESSION_USER_ID);
+		Boolean result = userService.isUserValidForPermission(uid, "manage invoice");
+		if(!result){
+			retMap.put("status", "nok");
+			return retMap;
+		}
+		String[] invoiceIds = request.getParameter("invoiceIds").split(",");
+		String status = request.getParameter("status");
+		for(String invoiceId: invoiceIds){
+			if(!invoiceId.equals("") && invoiceId != null){
+				invoiceService.updateInvoiceStatusWithInvoiceId(Integer.valueOf(invoiceId), status);
+			}
+		}
+		retMap.put("status", "ok");
+		return retMap;
+	}
+	
 	@RequestMapping("/invoice/getCandidatePhrase")
 	@ResponseBody
 	public Map<String, Integer>getCandidatePhrase(HttpSession httpSession, HttpServletRequest request){

@@ -421,7 +421,11 @@ table {
     		
     		resetStr += $(this).attr("id") + ",";
     	});
-    	alert(resetStr);
+    	$.post("/invoice/updateInvoicesStatus", {invoiceIds: resetStr, status: "UNRECOGNIZED"},function(){
+    		alert("发票状态已重置为未识别！");
+    		window.location.href="/views/webviews/invoice/manage.html";
+    	});
+
     	
     }
     function increasePriority(){

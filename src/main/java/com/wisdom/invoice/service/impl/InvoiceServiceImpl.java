@@ -459,6 +459,13 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	public Invoice getInvoiceByInvoiceId(long invoiceId) {
 		return invoiceMapper.getInvoiceByInvoiceId(invoiceId);
 	}
+
+	@Override
+	public Boolean updateInvoiceStatusWithInvoiceId(Integer invoiceId, String status) {
+
+		invoiceMapper.updateInvoiceStatusWithInvoiceId(invoiceId, status);
+		return true;
+	}
 	
 
 }
