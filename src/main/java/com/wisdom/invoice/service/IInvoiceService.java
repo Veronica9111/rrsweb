@@ -41,4 +41,6 @@ public interface IInvoiceService {
 	public Invoice getInvoiceByInvoiceId(long invoiceId);
 	
 	public Boolean updateInvoiceStatusWithInvoiceId(Integer invoiceId, String status);
+	
+	public Boolean storeInvoiceContent(String paht, String data, String FA, String id);
 }

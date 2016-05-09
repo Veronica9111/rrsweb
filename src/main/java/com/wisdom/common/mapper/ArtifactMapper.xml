@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD mapper 3.0//EN'
+'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="com.wisdom.common.mapper.ArtifactMapper">
+<cache />
+<resultMap type="com.wisdom.common.model.Artifact" id="Artifact">  
+<result property="id" column="id"/>  
+<result property="invoice_id" column="invoice_id"/>  
+<result property="supplier_name" column="supplier_name"/>
+<result property="type" column="type"/>
+<result property="tax" column="tax"/>
+<result property="amount" column="amount"/>
+<result property="number" column="number"/>
+<result property="created_time" column="created_time"/>
+<result property="is_fa" column="is_fa"/>
+</resultMap>
+
+  
+
+ <insert id="addArtifact" parameterType="String">
+insert into artifact(invoice_id,supplier_name, type, tax, amount,number,created_time, is_fa)
+values(#{invoice_id}, #{supplier_name}, #{type}, #{tax}, #{amount}, #{number}, now(), #{is_fa})
+</insert>
+</mapper>

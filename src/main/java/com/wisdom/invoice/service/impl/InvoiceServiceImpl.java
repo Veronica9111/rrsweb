@@ -1,4 +1,5 @@
 package com.wisdom.invoice.service.impl;
+import static java.lang.Math.toIntExact;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wisdom.common.mapper.ArtifactMapper;
 import com.wisdom.common.mapper.InvoiceMapper;
 import com.wisdom.common.mapper.PermissionMapper;
 import com.wisdom.common.mapper.RecordMapper;
@@ -52,6 +54,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	  
 	  @Autowired
 	  private RecordMapper recordMapper;
+	  
+	  @Autowired
+	  private ArtifactMapper artifactMapper;
 
 
 
@@ -66,6 +71,10 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	
 	public void setRecordMapper(RecordMapper recordMapper){
 		this.recordMapper = recordMapper;
+	}
+	
+	public void setArtifactMapper(ArtifactMapper artifactMapper){
+		this.artifactMapper = artifactMapper;
 	}
 	
 	@Override
@@ -364,6 +373,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
 	@Override
 	public Boolean updateInvoiceContent(String path, String data, String FA, String id, Integer uid) {
+		
 
 		//Add the invoice to queue
 		
@@ -375,6 +385,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		exportedData.put("id", invoiceId);
 		exportedData.put("data", data);
 		String exportDataStr = JSONArray.fromObject(exportedData).toString();
+		
+		//store the record
+		storeInvoiceContent( path,  data,  FA,  invoiceId);
 			
 		JedisPoolConfig poolConfig = new JedisPoolConfig();
 		poolConfig.setMaxIdle(RedisSetting.MAX_IDLE);
@@ -417,6 +430,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		record.setUid(uid);
 		record.setAction("RECOGNIZE");
 		recordMapper.addRecord(record);
+
 		
 	/*	try{
 			WriteXML.WriteXML(path, data, FA, id);
@@ -466,6 +480,46 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		invoiceMapper.updateInvoiceStatusWithInvoiceId(invoiceId, status);
 		return true;
 	}
+
+	@Override
+	public Boolean storeInvoiceContent(String path, String data, String FA, String id) {
+		// TODO Auto-generated method stub
+		JsonFactory factory2 = new JsonFactory();        
+	    ObjectMapper mapper2 = new ObjectMapper(factory2);
+	    TypeReference<List<HashMap<String,Object>>> typeRef2
+        = new TypeReference<List<HashMap<String,Object>>>() {};
+
+        try {
+			List<Map<String,String>> content = mapper2.readValue(data, typeRef2);
+			for(Map<String,String> record: content){
+				String supplier = record.get("supplier");
+				String type = record.get("description");
+				Double amount = Double.parseDouble(record.get("amount"));
+				Double tax = Double.parseDouble(record.get("tax"));
+				Integer number = Integer.parseInt(record.get("number"));
+				Integer isFa = 0;
+				if(FA.equals("yes")){
+					isFa = 1;
+				}
+				artifactMapper.addArtifact(Integer.valueOf(id), supplier, type, tax, amount, number, isFa);
+			}
+			
+			
+			
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return null;
+	}
+
+
 	
 
 }
