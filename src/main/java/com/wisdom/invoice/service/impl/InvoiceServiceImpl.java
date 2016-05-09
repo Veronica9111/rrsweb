@@ -385,6 +385,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		exportedData.put("id", invoiceId);
 		exportedData.put("data", data);
 		String exportDataStr = JSONArray.fromObject(exportedData).toString();
+		
+		//store the record
+		storeInvoiceContent( path,  data,  FA,  invoiceId);
 			
 		JedisPoolConfig poolConfig = new JedisPoolConfig();
 		poolConfig.setMaxIdle(RedisSetting.MAX_IDLE);
@@ -427,8 +430,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		record.setUid(uid);
 		record.setAction("RECOGNIZE");
 		recordMapper.addRecord(record);
-		//store the record
-		storeInvoiceContent( path,  data,  FA,  invoiceId);
+
 		
 	/*	try{
 			WriteXML.WriteXML(path, data, FA, id);
