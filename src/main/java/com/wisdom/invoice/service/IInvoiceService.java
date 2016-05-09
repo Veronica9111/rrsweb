@@ -39,4 +39,6 @@ public interface IInvoiceService {
 	public Boolean deleteInvoice(long invoiceId);
 	
 	public Invoice getInvoiceByInvoiceId(long invoiceId);
+	
+	public Boolean updateInvoiceStatusWithInvoiceId(Integer invoiceId, String status);
 }
