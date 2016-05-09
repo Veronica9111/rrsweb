@@ -53,7 +53,7 @@ ON DUPLICATE KEY UPDATE
   update invoice set exported=1 where id=#{id}
   </update>
   <update id="updateInvoiceStatus" parameterType="String">
-  update invoice set status=#{status} where id=#{id}
+  update invoice set status=#{status}, modified_time=now() where id=#{id}
   </update>
   <update id="updateInvoiceOwner" parameterType="Integer" >
   update invoice set uid=#{uid} where id=#{id}
