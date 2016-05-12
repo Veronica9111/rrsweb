@@ -304,9 +304,7 @@ public class InvoiceController {
 	public Map<String, Integer>getCandidatePhrase(HttpSession httpSession, HttpServletRequest request){
 		Map<String, Integer> retMap = new HashMap<>();
 		String phrase = request.getParameter("phrase");
-		Integer certainPosition = Integer.valueOf(request.getParameter("certain_pos"));
-		Integer uncertainPosition = Integer.valueOf(request.getParameter("uncertain_pos"));
-		retMap = phraseService.getCandidatePhrases(phrase, certainPosition, uncertainPosition);
+		retMap = phraseService.getCandidatePhrases(phrase);
 		return retMap;
 		
 	}

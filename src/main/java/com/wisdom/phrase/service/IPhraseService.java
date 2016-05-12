@@ -8,7 +8,7 @@ import com.wisdom.common.model.Candidate;
 public interface IPhraseService {
 	
 
-	public Map<String, Integer> getCandidatePhrases(String phrase, Integer position1, Integer position2);
+	public Map<String, Integer> getCandidatePhrases(String phrase);
 	
 	public int addCandidate(String value, String type, Integer confidence, Integer invoiceId);
 	
