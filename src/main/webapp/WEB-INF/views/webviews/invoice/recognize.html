@@ -196,7 +196,7 @@
         var id = "";
         var invoice_id = "";
         var companyName = "";
-        $.post('/invoice/getInvoiceForUser', {"status":"UNRECOGNIZED"}, function(data){
+        $.post('/invoice/getInvoiceForUser', {"status":"PRO_HASPROCESS"}, function(data){
         	console.log("hola");
         	var isImageExisted = true;
         	if(data.status == "nok"){
