@@ -384,11 +384,14 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		String invoiceId = Long.toString(invoice.getInvoice_id());
 		exportedData.put("id", invoiceId);
 		exportedData.put("data", data);
+		logger.debug("exportedData : {}", exportedData.toString());
 		String exportDataStr = JSONArray.fromObject(exportedData).toString();
 		
 		//store the record
+		logger.debug("begin storeInvoiceContent");
 		storeInvoiceContent( path,  data,  FA,  invoiceId);
-			
+		logger.debug("end storeInvoiceContent");
+		
 		JedisPoolConfig poolConfig = new JedisPoolConfig();
 		poolConfig.setMaxIdle(RedisSetting.MAX_IDLE);
 		poolConfig.setMinIdle(RedisSetting.MIN_IDLE);
@@ -416,6 +419,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	                   e.printStackTrace();
 	                } finally {
 	                   jedisPool.returnResource(jedis);
+	                   jedisPool.close();
 	                }
 	            
 
@@ -501,20 +505,22 @@ public class InvoiceServiceImpl implements IInvoiceService {
 				if(FA.equals("yes")){
 					isFa = 1;
 				}
+				logger.debug("begin addArtifact");
 				artifactMapper.addArtifact(Integer.valueOf(id), supplier, type, tax, amount, number, isFa);
+				logger.debug("end addArtifact");
 			}
 			
 			
 			
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.debug(e.toString());
 		} catch (JsonMappingException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.debug(e.toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.debug(e.toString());
 		} 
 		return null;
 	}
