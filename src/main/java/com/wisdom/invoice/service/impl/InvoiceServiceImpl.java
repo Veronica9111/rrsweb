@@ -1,4 +1,5 @@
 package com.wisdom.invoice.service.impl;
+
 import static java.lang.Math.toIntExact;
 
 import java.io.IOException;
@@ -31,6 +32,7 @@ import com.wisdom.common.mapper.ArtifactMapper;
 import com.wisdom.common.mapper.InvoiceMapper;
 import com.wisdom.common.mapper.PermissionMapper;
 import com.wisdom.common.mapper.RecordMapper;
+import com.wisdom.common.model.Artifact;
 import com.wisdom.common.model.Invoice;
 import com.wisdom.common.model.Record;
 import com.wisdom.invoice.service.IInvoiceService;
@@ -48,59 +50,53 @@ import com.wisdom.common.utils.WriteXML;
 @Service("invoiceService")
 public class InvoiceServiceImpl implements IInvoiceService {
 
+	@Autowired
+	private InvoiceMapper invoiceMapper;
 
-	  @Autowired
-	  private	InvoiceMapper invoiceMapper;
-	  
-	  @Autowired
-	  private RecordMapper recordMapper;
-	  
-	  @Autowired
-	  private ArtifactMapper artifactMapper;
+	@Autowired
+	private RecordMapper recordMapper;
 
+	@Autowired
+	private ArtifactMapper artifactMapper;
 
+	private static final Logger logger = LoggerFactory.getLogger(InvoiceServiceImpl.class);
 
-
-	private static final Logger logger = LoggerFactory
-			.getLogger(InvoiceServiceImpl.class);
-	
-	
 	public void setInvoiceMapper(InvoiceMapper invoiceMapper) {
-		    this.invoiceMapper = invoiceMapper;
+		this.invoiceMapper = invoiceMapper;
 	}
-	
-	public void setRecordMapper(RecordMapper recordMapper){
+
+	public void setRecordMapper(RecordMapper recordMapper) {
 		this.recordMapper = recordMapper;
 	}
-	
-	public void setArtifactMapper(ArtifactMapper artifactMapper){
+
+	public void setArtifactMapper(ArtifactMapper artifactMapper) {
 		this.artifactMapper = artifactMapper;
 	}
-	
+
 	@Override
 	public List<Map<String, String>> getAllInvoices() {
 		List<Invoice> invoices = invoiceMapper.getAllInvoices();
 		List<Map<String, String>> retList = new ArrayList<>();
-		for (Invoice invoice: invoices){
+		for (Invoice invoice : invoices) {
 			Map<String, String> temp = new HashMap<>();
 			temp.put(invoice.getId(), invoice.getCreatedTime().toString());
 			retList.add(temp);
-			
+
 		}
-		
+
 		return retList;
 	}
 
 	@Override
-	public Boolean addInvoice(Integer priority, String name, String path, String company, long invoiceId, long companyId) {
-		try{
-			java.util.Date date= new java.util.Date();
+	public Boolean addInvoice(Integer priority, String name, String path, String company, long invoiceId,
+			long companyId) {
+		try {
+			java.util.Date date = new java.util.Date();
 			Timestamp now = new Timestamp(date.getTime());
-			String uuid  =  UUID.randomUUID().toString(); 
+			String uuid = UUID.randomUUID().toString();
 			invoiceMapper.addInvoice(uuid, name, now, priority, path, company, invoiceId, companyId);
 
-
-		}catch(Exception e){
+		} catch (Exception e) {
 			return false;
 		}
 		return true;
@@ -113,33 +109,30 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		String modified_time;
 		String uid;
 		String path;
-		
-		for(Invoice invoice: invoices){
+
+		for (Invoice invoice : invoices) {
 			Map<String, String> temp = new HashMap<>();
 			temp.put("id", invoice.getId());
 			temp.put("name", invoice.getName());
 			temp.put("created_time", invoice.getCreatedTime().toString());
-			if (invoice.getModifiedTime() == null){
+			if (invoice.getModifiedTime() == null) {
 				modified_time = "null";
-			}
-			else{
+			} else {
 				modified_time = invoice.getModifiedTime().toString();
 			}
 			temp.put("modified_time", modified_time);
 			temp.put("priority", invoice.getPriority().toString());
-			if (invoice.getPath()== null){
+			if (invoice.getPath() == null) {
 				path = "null";
-			}
-			else{
+			} else {
 				path = invoice.getPath().toString();
-			}			
+			}
 			temp.put("path", invoice.getPath());
 			temp.put("company", invoice.getCompany());
 			temp.put("exported", invoice.getExported().toString());
-			if(invoice.getUID() == null){
+			if (invoice.getUID() == null) {
 				uid = "null";
-			}
-			else{
+			} else {
 				uid = invoice.getUID().toString();
 			}
 			temp.put("uid", uid);
@@ -157,34 +150,31 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		String modified_time;
 		String uid;
 		String path;
-		
-		for(Invoice invoice: invoices){
+
+		for (Invoice invoice : invoices) {
 			Map<String, String> temp = new HashMap<>();
 			temp.put("id", invoice.getId());
 			temp.put("name", invoice.getName());
 			temp.put("created_time", invoice.getCreatedTime().toString());
-			if (invoice.getModifiedTime() == null){
+			if (invoice.getModifiedTime() == null) {
 				modified_time = "null";
-			}
-			else{
+			} else {
 				modified_time = invoice.getModifiedTime().toString();
 			}
 			temp.put("modified_time", modified_time);
 			temp.put("priority", invoice.getPriority().toString());
-			if (invoice.getPath()== null){
+			if (invoice.getPath() == null) {
 				path = "null";
-			}
-			else{
+			} else {
 				path = invoice.getPath().toString();
-			}			
+			}
 			temp.put("path", invoice.getPath());
 			temp.put("company", invoice.getCompany());
 			temp.put("exported", invoice.getExported().toString());
 			temp.put("invoice_id", String.valueOf(invoice.getInvoice_id()));
-			if(invoice.getUID() == null){
+			if (invoice.getUID() == null) {
 				uid = "null";
-			}
-			else{
+			} else {
 				uid = invoice.getUID().toString();
 			}
 			temp.put("uid", uid);
@@ -202,33 +192,30 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		String modified_time;
 		String uid;
 		String path;
-		
-		for(Invoice invoice: invoices){
+
+		for (Invoice invoice : invoices) {
 			Map<String, String> temp = new HashMap<>();
 			temp.put("id", invoice.getId());
 			temp.put("name", invoice.getName());
 			temp.put("created_time", invoice.getCreatedTime().toString());
-			if (invoice.getModifiedTime() == null){
+			if (invoice.getModifiedTime() == null) {
 				modified_time = "null";
-			}
-			else{
+			} else {
 				modified_time = invoice.getModifiedTime().toString();
 			}
 			temp.put("modified_time", modified_time);
 			temp.put("priority", invoice.getPriority().toString());
-			if (invoice.getPath()== null){
+			if (invoice.getPath() == null) {
 				path = "null";
-			}
-			else{
+			} else {
 				path = invoice.getPath().toString();
-			}			
+			}
 			temp.put("path", invoice.getPath());
 			temp.put("company", invoice.getCompany());
 			temp.put("exported", invoice.getExported().toString());
-			if(invoice.getUID() == null){
+			if (invoice.getUID() == null) {
 				uid = "null";
-			}
-			else{
+			} else {
 				uid = invoice.getUID().toString();
 			}
 			temp.put("uid", uid);
@@ -242,10 +229,10 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	@Override
 	public Boolean setInvoicesExported(String[] invoices) {
 		try {
-			for(String invoice: invoices){
+			for (String invoice : invoices) {
 				invoiceMapper.setInvoiceExported(invoice);
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			return false;
 		}
 		return true;
@@ -253,13 +240,13 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
 	@Override
 	public Boolean updateInvoiceStatus(String id, String status) {
-		try{
+		try {
 			invoiceMapper.updateInvoiceStatus(id, status);
-			//publish message if the invoice is invalid
-			if(status.equals("INVALID")){
+			// publish message if the invoice is invalid
+			if (status.equals("INVALID")) {
 				Invoice invoice = invoiceMapper.getInvoiceById(id);
 				long invoiceId = invoice.getInvoice_id();
-				
+
 				JedisPoolConfig poolConfig = new JedisPoolConfig();
 				poolConfig.setMaxIdle(RedisSetting.MAX_IDLE);
 				poolConfig.setMinIdle(RedisSetting.MIN_IDLE);
@@ -267,33 +254,31 @@ public class InvoiceServiceImpl implements IInvoiceService {
 				poolConfig.setNumTestsPerEvictionRun(RedisSetting.NUM_TESTS_PER_EVICTION_RUN);
 				poolConfig.setTimeBetweenEvictionRunsMillis(RedisSetting.TIME_BETWEEN_EVICTION_RUNS_MILLIS);
 				poolConfig.setMaxWaitMillis(RedisSetting.MAX_WAIT_MILLIS);
-				//poolConfig.setBlockWhenExhausted(org.apache.commons.pool.impl.GenericObjectPool.WHEN_EXHAUSTED_FAIL);
-
+				// poolConfig.setBlockWhenExhausted(org.apache.commons.pool.impl.GenericObjectPool.WHEN_EXHAUSTED_FAIL);
 
 				// Timeout is set larger to the deploy environment
-				JedisPool jedisPool = new JedisPool(poolConfig,RedisSetting.ADDRESS, RedisSetting.PORT, 10000, RedisSetting.PASSWORD);
-				
-			   ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(10);
-			    newFixedThreadPool.submit(new Runnable() {
+				JedisPool jedisPool = new JedisPool(poolConfig, RedisSetting.ADDRESS, RedisSetting.PORT, 10000,
+						RedisSetting.PASSWORD);
 
-			        @Override
-			        public void run() {
+				ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(10);
+				newFixedThreadPool.submit(new Runnable() {
 
-			                
-			                Jedis jedis = jedisPool.getResource();
-			                try {
-			                   jedis.publish("INVALID_INVOICE",Long.toString(invoiceId));
-			                } catch (Exception e) {
-			                   e.printStackTrace();
-			                } finally {
-			                   jedisPool.returnResource(jedis);
-			                }
-			            
+					@Override
+					public void run() {
 
-			        }
-			    });
+						Jedis jedis = jedisPool.getResource();
+						try {
+							jedis.publish("INVALID_INVOICE", Long.toString(invoiceId));
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+							jedisPool.returnResource(jedis);
+						}
+
+					}
+				});
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			return false;
 		}
 		return true;
@@ -301,9 +286,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
 	@Override
 	public Boolean updateInvoiceOwner(String id, Integer uid) {
-		try{
+		try {
 			invoiceMapper.updateInvoiceOwner(id, uid);
-		}catch(Exception e){
+		} catch (Exception e) {
 			return false;
 		}
 		return true;
@@ -311,44 +296,42 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
 	@Override
 	public Boolean addModifyInvoiceRecord(Integer uid, String invoiceId, String action) {
-		java.util.Date date= new java.util.Date();
+		java.util.Date date = new java.util.Date();
 		Timestamp now = new Timestamp(date.getTime());
-		try{
+		try {
 			invoiceMapper.addModifyInvoiceRecord(uid, invoiceId, now, action);
-		}catch(Exception e){
+		} catch (Exception e) {
 			return false;
 		}
 		return true;
 	}
 
-	
 	@Override
 	public Map<String, String> getInvoiceForUserByStatus(Integer uid, String status) {
-		//If the user already have one, then just return it
+		// If the user already have one, then just return it
 		Invoice invoice = invoiceMapper.getInvoiceByUserAndStatus(uid, status);
-		if(invoice == null){
-			//Get an avaiable invoice
+		if (invoice == null) {
+			// Get an avaiable invoice
 			invoice = invoiceMapper.getInvoiceForUserByStatus(status);
-			if(invoice == null){
+			if (invoice == null) {
 				return null;
 			}
-			//Then set the owner
+			// Then set the owner
 			invoiceMapper.updateInvoiceOwner(invoice.getId(), uid);
 		}
 		Map<String, String> temp = new HashMap<>();
 		String modified_time;
 		String path = SystemSetting.INVOICE_IMAGE_PREFIX;
 		String userid;
-		if (invoice == null){
+		if (invoice == null) {
 			return null;
-		}else{
+		} else {
 			temp.put("id", invoice.getId());
 			temp.put("name", invoice.getName());
 			temp.put("created_time", invoice.getCreatedTime().toString());
-			if (invoice.getModifiedTime() == null){
+			if (invoice.getModifiedTime() == null) {
 				modified_time = "null";
-			}
-			else{
+			} else {
 				modified_time = invoice.getModifiedTime().toString();
 			}
 			temp.put("modified_time", modified_time);
@@ -357,10 +340,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
 			temp.put("path", path);
 			temp.put("company", invoice.getCompany());
 			temp.put("exported", invoice.getExported().toString());
-			if(invoice.getUID() == null){
+			if (invoice.getUID() == null) {
 				userid = "null";
-			}
-			else{
+			} else {
 				userid = invoice.getUID().toString();
 			}
 			temp.put("uid", userid);
@@ -373,11 +355,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
 	@Override
 	public Boolean updateInvoiceContent(String path, String data, String FA, String id, Integer uid) {
-		
 
-		//Add the invoice to queue
-		
-		List<Map<String, String>> exportData = new ArrayList<>();
 		Map<String, String> exportedData = new HashMap<>();
 		exportedData.put("fa", FA);
 		Invoice invoice = invoiceMapper.getInvoiceById(id);
@@ -386,12 +364,12 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		exportedData.put("data", data);
 		logger.debug("exportedData : {}", exportedData.toString());
 		String exportDataStr = JSONArray.fromObject(exportedData).toString();
-		
-		//store the record
+		System.out.println(exportDataStr);
+		// store the record
 		logger.debug("begin storeInvoiceContent");
-		storeInvoiceContent( path,  data,  FA,  invoiceId);
+		storeInvoiceContent(path, data, FA, invoiceId);
 		logger.debug("end storeInvoiceContent");
-		
+
 		JedisPoolConfig poolConfig = new JedisPoolConfig();
 		poolConfig.setMaxIdle(RedisSetting.MAX_IDLE);
 		poolConfig.setMinIdle(RedisSetting.MIN_IDLE);
@@ -399,61 +377,54 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		poolConfig.setNumTestsPerEvictionRun(RedisSetting.NUM_TESTS_PER_EVICTION_RUN);
 		poolConfig.setTimeBetweenEvictionRunsMillis(RedisSetting.TIME_BETWEEN_EVICTION_RUNS_MILLIS);
 		poolConfig.setMaxWaitMillis(RedisSetting.MAX_WAIT_MILLIS);
-		//poolConfig.setBlockWhenExhausted(org.apache.commons.pool.impl.GenericObjectPool.WHEN_EXHAUSTED_FAIL);
 
+		JedisPool jedisPool = new JedisPool(poolConfig, RedisSetting.ADDRESS, RedisSetting.PORT, 10000,
+				RedisSetting.PASSWORD);
 
-		// Timeout is set larger to the deploy environment
-		JedisPool jedisPool = new JedisPool(poolConfig,RedisSetting.ADDRESS, RedisSetting.PORT, 10000, RedisSetting.PASSWORD);
-		
-	   ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(10);
-	    newFixedThreadPool.submit(new Runnable() {
+		ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(10);
+		newFixedThreadPool.submit(new Runnable() {
 
-	        @Override
-	        public void run() {
+			@Override
+			public void run() {
 
-	                
-	                Jedis jedis = jedisPool.getResource();
-	                try {
-	                   jedis.publish("RECOGNIZED_INVOICE", exportDataStr);
-	                } catch (Exception e) {
-	                   e.printStackTrace();
-	                } finally {
-	                   jedisPool.returnResource(jedis);
-	                   jedisPool.close();
-	                }
-	            
+				Jedis jedis = jedisPool.getResource();
+				try {
+					jedis.publish("RECOGNIZE_COMPLETE", exportDataStr);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					jedisPool.returnResource(jedis);
+					jedisPool.close();
+				}
 
-	        }
-	    });
+			}
+		});
 
 		updateInvoiceStatus(id, "RECOGNIZED");
 		updateInvoiceOwner(id, 0);
-		//Set the work record
+		// Set the work record
 		Record record = new Record();
 		record.setInvoice_id(id);
 		record.setUid(uid);
 		record.setAction("RECOGNIZE");
 		recordMapper.addRecord(record);
 
-		
-	/*	try{
-			WriteXML.WriteXML(path, data, FA, id);
-		}catch(Exception e){
-			logger.error(e.toString());
-			return false;
-		}*/
+		/*
+		 * try{ WriteXML.WriteXML(path, data, FA, id); }catch(Exception e){
+		 * logger.error(e.toString()); return false; }
+		 */
 		return true;
 	}
 
 	@Override
 	public String readingeXML(String path) {
-		ReadingXML rx=new ReadingXML();
-		return rx.read(path) ;
+		ReadingXML rx = new ReadingXML();
+		return rx.read(path);
 	}
 
 	@Override
 	public Boolean increaseInvoicesPriority(String[] invoices) {
-		for(String id : invoices){
+		for (String id : invoices) {
 			invoiceMapper.increaseInvoicePriority(id);
 		}
 		return true;
@@ -461,7 +432,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
 	@Override
 	public Boolean decreaseInvoicesPriority(String[] invoices) {
-		for(String id: invoices){
+		for (String id : invoices) {
 			invoiceMapper.decreaseInvoicePriority(id);
 		}
 		return true;
@@ -488,30 +459,34 @@ public class InvoiceServiceImpl implements IInvoiceService {
 	@Override
 	public Boolean storeInvoiceContent(String path, String data, String FA, String id) {
 		// TODO Auto-generated method stub
-		JsonFactory factory2 = new JsonFactory();        
-	    ObjectMapper mapper2 = new ObjectMapper(factory2);
-	    TypeReference<List<HashMap<String,Object>>> typeRef2
-        = new TypeReference<List<HashMap<String,Object>>>() {};
+		JsonFactory factory2 = new JsonFactory();
+		ObjectMapper mapper2 = new ObjectMapper(factory2);
+		TypeReference<List<HashMap<String, Object>>> typeRef2 = new TypeReference<List<HashMap<String, Object>>>() {
+		};
 
-        try {
-			List<Map<String,String>> content = mapper2.readValue(data, typeRef2);
-			for(Map<String,String> record: content){
-				String supplier = record.get("supplier");
+		try {
+			List<Map<String, String>> content = mapper2.readValue(data, typeRef2);
+			for (Map<String, String> record : content) {
+				String supplier_name = record.get("supplier");
 				String type = record.get("description");
 				Double amount = Double.parseDouble(record.get("amount"));
 				Double tax = Double.parseDouble(record.get("tax"));
 				Integer number = Integer.parseInt(record.get("number"));
-				Integer isFa = 0;
-				if(FA.equals("yes")){
-					isFa = 1;
+				Integer is_fa = 0;
+				if (FA.equals("yes")) {
+					is_fa = 1;
 				}
-				logger.debug("begin addArtifact");
-				artifactMapper.addArtifact(Integer.valueOf(id), supplier, type, tax, amount, number, isFa);
-				logger.debug("end addArtifact");
+				
+				String artifactId = record.get("id");
+				if (artifactId != null && !artifactId.isEmpty()) {
+					int artifact_id = Integer.parseInt(artifactId);
+					artifactMapper.updateArtifactByArtifactId(artifact_id, supplier_name, type, amount, tax, number,
+							is_fa);
+				} else {
+					artifactMapper.addArtifact(Integer.valueOf(id), supplier_name, type, tax, amount, number, is_fa, 1);
+				}
 			}
-			
-			
-			
+
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			logger.debug(e.toString());
@@ -521,11 +496,15 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			logger.debug(e.toString());
-		} 
+		}
 		return null;
 	}
 
-
-	
+	// 添加方法
+	@Override
+	public List<Artifact> getArtifactByInvoiceId(int invoice_id) {
+		// TODO Auto-generated method stub
+		return artifactMapper.getArtifactByInvoiceId(invoice_id);
+	}
 
 }

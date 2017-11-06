@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import com.wisdom.common.model.Artifact;
 import com.wisdom.common.model.Invoice;
 
 public interface IInvoiceService {
@@ -43,4 +44,8 @@ public interface IInvoiceService {
 	public Boolean updateInvoiceStatusWithInvoiceId(Integer invoiceId, String status);
 	
 	public Boolean storeInvoiceContent(String paht, String data, String FA, String id);
+	
+	
+	//新增方法
+	public List<Artifact> getArtifactByInvoiceId(int invoice_id);
 }

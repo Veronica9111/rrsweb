@@ -28,7 +28,7 @@
   INSERT INTO invoice
   (id, name, created_time, priority, path, company, exported, uid,document, status, invoice_id, company_id)
 VALUES
-  (#{id}, #{name},#{created_time}, #{priority}, #{path}, #{company}, 0, null, null, "UNRECOGNIZED", #{invoice_id}, #{company_id})
+  (#{id}, #{name},#{created_time}, #{priority}, #{path}, #{company}, 0, null, null, "UNRECOGNIZED_INVOICE", #{invoice_id}, #{company_id})
 ON DUPLICATE KEY UPDATE
   created_time     = VALUES(created_time),
   priority = VALUES(priority),

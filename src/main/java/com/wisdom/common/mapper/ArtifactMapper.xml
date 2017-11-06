@@ -18,7 +18,23 @@
   
 
  <insert id="addArtifact" parameterType="String">
-insert into artifact(invoice_id,supplier_name, type, tax, amount,number,created_time, is_fa)
-values(#{invoice_id}, #{supplier_name}, #{type}, #{tax}, #{amount}, #{number}, now(), #{is_fa})
+insert into artifact(invoice_id, supplier_name, type, tax, amount,number,created_time, is_fa, is_accurate)
+values(#{invoice_id}, #{supplier_name}, #{type}, #{tax}, #{amount}, #{number}, now(), #{is_fa}, #{is_accurate})
 </insert>
+
+
+
+<!-- 新增方法实现 -->
+<select id="getArtifactByInvoiceId" parameterType="Integer" resultType="Artifact">
+	select * from artifact where invoice_id=#{invoice_id}
+</select>
+
+<select id="getAtifactByArtifactId" parameterType="Integer" resultType="Artifact">
+	select * from artifact where id=#{artifact_id}
+</select>
+
+<update id="updateArtifactByArtifactId" parameterType="String">
+	update artifact set supplier_name=#{supplier_name}, amount=#{amount}, tax=#{tax}, number=#{number}, type=#{type}, is_fa=#{is_fa}, is_accurate=1 
+		where id=#{artifact_id}
+</update>
 </mapper>

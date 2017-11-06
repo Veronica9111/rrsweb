@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.wisdom.common.model.Artifact;
 import com.wisdom.common.model.Candidate;
 import com.wisdom.common.utils.ReadingXML;
 import com.wisdom.invoice.service.IInvoiceService;
@@ -351,6 +352,22 @@ public class InvoiceController {
 		retMap.put("status", "ok");
 		return retMap;
 		
+	}
+	
+	
+	//添加方法
+	@RequestMapping("/invoice/getArtifactByInvoiceId")
+	@ResponseBody
+	public Map<String, Object> getArtifactByInvoiceId(HttpServletRequest request){
+		Map<String, Object> retMap = new HashMap<>();
+		int invoice_id = Integer.valueOf(request.getParameter("invoice_id"));
+		List<Artifact> artifacts = invoiceService.getArtifactByInvoiceId(invoice_id);
+		String json = JSONArray.fromObject(artifacts).toString();
+		retMap.put("error_code", "");
+		retMap.put("error_msg", "");
+		retMap.put("data", json);
+		
+		return retMap;
 	}
 	
 }

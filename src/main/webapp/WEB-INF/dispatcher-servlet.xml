@@ -1,11 +1,9 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mvc="http://www.springframework.org/schema/mvc" 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:task="http://www.springframework.org/schema/task"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-  xmlns:p="http://www.springframework.org/schema/p"
-  xmlns:redis="http://www.springframework.org/schema/redis"
-  xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:redis="http://www.springframework.org/schema/redis"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
@@ -42,7 +40,7 @@
 		<property name="prefix" value="/WEB-INF/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
-	
+
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="messageConverters">
@@ -59,43 +57,74 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- static resources config begin -->
-	<mvc:resources mapping="/js/webjs/**" location="/WEB-INF/js/webjs/"	cache-period="3600" />
-	<mvc:resources mapping="/js/weixinjs/**" location="/WEB-INF/js/weixinjs/" cache-period="3600" />
-	<mvc:resources mapping="/img/webimg/**" location="/WEB-INF/img/webimg/" cache-period="3600" />
-	<mvc:resources mapping="/img/weixinimg/**" location="/WEB-INF/img/weixinimg/" cache-period="3600" />
-	<mvc:resources mapping="/css/fonts/**" location="/WEB-INF/css/fonts/" cache-period="3600" />
-	<mvc:resources mapping="/css/webcss/**" location="/WEB-INF/css/webcss/" cache-period="3600" />
-	<mvc:resources mapping="/css/weixincss/**" location="/WEB-INF/css/weixincss/" cache-period="3600" />
-	<mvc:resources mapping="/fonts/webfonts/**" location="/WEB-INF/fonts/webfonts/" cache-period="3600" />
-	<mvc:resources mapping="/img/webimg/**" location="/WEB-INF/img/webimg/" cache-period="3600" />
-	<mvc:resources mapping="/img/webimg/team/**" location="/WEB-INF/img/webimg/team/" cache-period="3600" />
-	<mvc:resources mapping="/img/weixinimg/**" location="/WEB-INF/img/weixinimg/" cache-period="3600" />
-	<mvc:resources mapping="/img/billImg/**" location="/WEB-INF/img/billImg/" cache-period="3600" />
-	<mvc:resources mapping="/views/weixinviews/**" location="/WEB-INF/views/weixinviews/" cache-period="3600" />
-	
-	<mvc:resources mapping="/views/webviews/**" location="/WEB-INF/views/webviews/" cache-period="3600" />
-	<mvc:resources mapping="/views/webviews/admin/**" location="/WEB-INF/views/webviews/admin/" cache-period="3600" />
-		<mvc:resources mapping="/views/webviews/sales/**" location="/WEB-INF/views/webviews/sales/" cache-period="3600" />
-	<mvc:resources mapping="/views/webviews/accounter/**" location="/WEB-INF/views/webviews/accounter/" cache-period="3600" />
-	<mvc:resources mapping="/views/webviews/company/**" location="/WEB-INF/views/webviews/company/" cache-period="3600" />
-	<mvc:resources mapping="/views/webviews/companyUser/**" location="/WEB-INF/views/webviews/companyUser/" cache-period="3600" />
-	<mvc:resources mapping="/" location="/WEB-INF/views/frontviews/index.html" cache-period="3600" />
-	<mvc:resources mapping="/views/frontviews/**" location="/WEB-INF/views/frontviews/" cache-period="3600" />
-	<mvc:resources mapping="/views/webviews/error/**" location="/WEB-INF/views/webviews/error/" cache-period="3600" />
-	
-	<mvc:resources mapping="/files/company/**" location="file:/home/files/company/" cache-period="3600" />
-	<mvc:resources mapping="/files/image/**" location="file:/home/files/image/" cache-period="3600" />
-	<mvc:resources mapping="/files/accounter/**" location="/WEB-INF/files/accounter/" cache-period="3600" />
-	
-	<mvc:resources mapping="/other/**" location="/WEB-INF/other/" cache-period="0" />
-	<mvc:resources mapping="/other/bootstrap/js/**" location="/WEB-INF/other/bootstrap/js/" cache-period="3600" />
-	<mvc:resources mapping="/other/bootstrap/css/**" location="/WEB-INF/other/bootstrap/css/" cache-period="3600" />
-	<mvc:resources mapping="/other/bootstrap/fonts/**" location="/WEB-INF/other/bootstrap/fonts/" cache-period="3600" />
-	<mvc:resources mapping="/other/bootstrap/sass/**" location="/WEB-INF/other/bootstrap/sass/" cache-period="3600" />
-	<mvc:resources mapping="/other/bootstrap/stylesheets/**" location="/WEB-INF/other/bootstrap/stylesheets/" cache-period="3600" />
-	<!-- static resources config end -->	
+	<mvc:resources mapping="/js/webjs/**" location="/WEB-INF/js/webjs/"
+		cache-period="3600" />
+	<mvc:resources mapping="/js/weixinjs/**" location="/WEB-INF/js/weixinjs/"
+		cache-period="3600" />
+	<mvc:resources mapping="/img/webimg/**" location="/WEB-INF/img/webimg/"
+		cache-period="3600" />
+	<mvc:resources mapping="/img/weixinimg/**" location="/WEB-INF/img/weixinimg/"
+		cache-period="3600" />
+	<mvc:resources mapping="/css/fonts/**" location="/WEB-INF/css/fonts/"
+		cache-period="3600" />
+	<mvc:resources mapping="/css/webcss/**" location="/WEB-INF/css/webcss/"
+		cache-period="3600" />
+	<mvc:resources mapping="/css/weixincss/**" location="/WEB-INF/css/weixincss/"
+		cache-period="3600" />
+	<mvc:resources mapping="/fonts/webfonts/**" location="/WEB-INF/fonts/webfonts/"
+		cache-period="3600" />
+	<mvc:resources mapping="/img/webimg/**" location="/WEB-INF/img/webimg/"
+		cache-period="3600" />
+	<mvc:resources mapping="/img/webimg/team/**" location="/WEB-INF/img/webimg/team/"
+		cache-period="3600" />
+	<mvc:resources mapping="/img/weixinimg/**" location="/WEB-INF/img/weixinimg/"
+		cache-period="3600" />
+	<mvc:resources mapping="/img/billImg/**" location="/WEB-INF/img/billImg/"
+		cache-period="3600" />
+	<mvc:resources mapping="/views/weixinviews/**" location="/WEB-INF/views/weixinviews/"
+		cache-period="3600" />
+
+	<mvc:resources mapping="/views/webviews/**" location="/WEB-INF/views/webviews/"
+		cache-period="3600" />
+	<mvc:resources mapping="/views/webviews/admin/**"
+		location="/WEB-INF/views/webviews/admin/" cache-period="3600" />
+	<mvc:resources mapping="/views/webviews/sales/**"
+		location="/WEB-INF/views/webviews/sales/" cache-period="3600" />
+	<mvc:resources mapping="/views/webviews/accounter/**"
+		location="/WEB-INF/views/webviews/accounter/" cache-period="3600" />
+	<mvc:resources mapping="/views/webviews/company/**"
+		location="/WEB-INF/views/webviews/company/" cache-period="3600" />
+	<mvc:resources mapping="/views/webviews/companyUser/**"
+		location="/WEB-INF/views/webviews/companyUser/" cache-period="3600" />
+	<mvc:resources mapping="/"
+		location="/WEB-INF/views/frontviews/index.html" cache-period="3600" />
+	<mvc:resources mapping="/views/frontviews/**" location="/WEB-INF/views/frontviews/"
+		cache-period="3600" />
+	<mvc:resources mapping="/views/webviews/error/**"
+		location="/WEB-INF/views/webviews/error/" cache-period="3600" />
+
+	<mvc:resources mapping="/files/company/**" location="file:/home/files/company/"
+		cache-period="3600" />
+	<mvc:resources mapping="/files/image/**" location="file:/home/files/image/"
+		cache-period="3600" />
+	<mvc:resources mapping="/files/accounter/**" location="/WEB-INF/files/accounter/"
+		cache-period="3600" />
+
+	<mvc:resources mapping="/other/**" location="/WEB-INF/other/"
+		cache-period="0" />
+	<mvc:resources mapping="/other/bootstrap/js/**" location="/WEB-INF/other/bootstrap/js/"
+		cache-period="3600" />
+	<mvc:resources mapping="/other/bootstrap/css/**"
+		location="/WEB-INF/other/bootstrap/css/" cache-period="3600" />
+	<mvc:resources mapping="/other/bootstrap/fonts/**"
+		location="/WEB-INF/other/bootstrap/fonts/" cache-period="3600" />
+	<mvc:resources mapping="/other/bootstrap/sass/**"
+		location="/WEB-INF/other/bootstrap/sass/" cache-period="3600" />
+	<mvc:resources mapping="/other/bootstrap/stylesheets/**"
+		location="/WEB-INF/other/bootstrap/stylesheets/" cache-period="3600" />
+	<!-- static resources config end -->
 
 	<!-- database config begin -->
 	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
@@ -113,154 +142,153 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	<!-- database config begin -->
-	
-	<task:executor id="executor" pool-size="1" />  
-    <task:scheduler id="scheduler" pool-size="1" />  
-    <task:annotation-driven executor="executor" scheduler="scheduler" />
-    	<context:component-scan base-package="com.wisdom.web.api.controller" />
-    	<context:component-scan base-package="com.wisdom.user.service" />
-    	<context:component-scan base-package="com.wisdom.permission.service" />
-    	<context:component-scan base-package="com.wisdom.invoice.service" />
-    	<context:component-scan base-package="com.wisdom.role.service" />
-    	<context:component-scan base-package="com.wisdom.common.utils" />
-    	<context:component-scan base-package="com.wisdom.common.queue" />
-    <!-- 事务管理 -->
-    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
-    <!-- (this dependency is defined somewhere else) -->  
-    	<property name="dataSource" ref="dataSource"/>  
- 	 </bean> 
+
+	<task:executor id="executor" pool-size="1" />
+	<task:scheduler id="scheduler" pool-size="1" />
+	<task:annotation-driven executor="executor"
+		scheduler="scheduler" />
+	<context:component-scan base-package="com.wisdom.web.api.controller" />
+	<context:component-scan base-package="com.wisdom.user.service" />
+	<context:component-scan base-package="com.wisdom.permission.service" />
+	<context:component-scan base-package="com.wisdom.invoice.service" />
+	<context:component-scan base-package="com.wisdom.role.service" />
+	<context:component-scan base-package="com.wisdom.common.utils" />
+	<context:component-scan base-package="com.wisdom.common.queue" />
+	<!-- 事务管理 -->
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- (this dependency is defined somewhere else) -->
+		<property name="dataSource" ref="dataSource" />
+	</bean>
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-  		<property name="dataSource" ref="dataSource" />
-  		<property name="configLocation" value="/WEB-INF/mybatis-config.xml" />
-</bean>
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="/WEB-INF/mybatis-config.xml" />
+	</bean>
 
 
-<bean id="testMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-  <property name="mapperInterface" value="com.wisdom.common.mapper.TestMapper" />
-  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-</bean>
- 	 
-<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-  <property name="mapperInterface" value="com.wisdom.common.mapper.UserMapper" />
-  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-</bean>
+	<bean id="testMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.wisdom.common.mapper.TestMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
 
-<bean id="permissionMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-  <property name="mapperInterface" value="com.wisdom.common.mapper.PermissionMapper" />
-  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-</bean>
+	<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.wisdom.common.mapper.UserMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
 
-<bean id="invoiceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-  <property name="mapperInterface" value="com.wisdom.common.mapper.InvoiceMapper" />
-  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-</bean>
+	<bean id="permissionMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.wisdom.common.mapper.PermissionMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
 
-<bean id="recordMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-  <property name="mapperInterface" value="com.wisdom.common.mapper.RecordMapper" />
-  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-</bean>
+	<bean id="invoiceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.wisdom.common.mapper.InvoiceMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
 
-<bean id="roleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-  <property name="mapperInterface" value="com.wisdom.common.mapper.RoleMapper" />
-  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-</bean>
+	<bean id="recordMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.wisdom.common.mapper.RecordMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="roleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.wisdom.common.mapper.RoleMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
 
 
-<bean id="phraseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-  <property name="mapperInterface" value="com.wisdom.common.mapper.PhraseMapper" />
-  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-</bean>
+	<bean id="phraseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.wisdom.common.mapper.PhraseMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
 
-<bean id="symbolMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-  <property name="mapperInterface" value="com.wisdom.common.mapper.SymbolMapper" />
-  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-</bean>
+	<bean id="symbolMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.wisdom.common.mapper.SymbolMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
 
-<bean id="candidateMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-  <property name="mapperInterface" value="com.wisdom.common.mapper.CandidateMapper" />
-  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-</bean>
+	<bean id="candidateMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.wisdom.common.mapper.CandidateMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
 
-<bean id="artifactMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-  <property name="mapperInterface" value="com.wisdom.common.mapper.ArtifactMapper" />
-  <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-</bean>
+	<bean id="artifactMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.wisdom.common.mapper.ArtifactMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
 
 	<bean id="userController" class="com.wisdom.web.api.controller.UserController">
-  		<property name="testMapper" ref="testMapper" />
+		<property name="testMapper" ref="testMapper" />
 
 	</bean>
-	
-	
+
+
 	<bean id="userServiceImpl" class="com.wisdom.user.service.impl.UserServiceImpl">
 		<property name="userMapper" ref="userMapper" />
 	</bean>
-	
-	<bean id="permissionServiceImpl" class="com.wisdom.permission.service.impl.PermissionServiceImpl">
+
+	<bean id="permissionServiceImpl"
+		class="com.wisdom.permission.service.impl.PermissionServiceImpl">
 		<property name="permissionMapper" ref="permissionMapper" />
 	</bean>
-	
+
 	<bean id="invoiceServiceImpl" class="com.wisdom.invoice.service.impl.InvoiceServiceImpl">
 		<property name="invoiceMapper" ref="invoiceMapper" />
 		<property name="recordMapper" ref="recordMapper" />
 		<property name="artifactMapper" ref="artifactMapper" />
-	</bean>	
-	
+	</bean>
+
 	<bean id="roleServiceImpl" class="com.wisdom.role.service.impl.RoleServiceImpl">
 		<property name="roleMapper" ref="roleMapper" />
-	</bean>	
+	</bean>
 
 	<bean id="phraseServiceImpl" class="com.wisdom.phrase.service.impl.PhraseServiceImpl">
 		<property name="phraseMapper" ref="phraseMapper" />
 		<property name="symbolMapper" ref="symbolMapper" />
 		<property name="candidateMapper" ref="candidateMapper" />
-	</bean>	
-	
+	</bean>
 
-	
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-  <property name="basePackage" value="mapper" />
-</bean>
+		<property name="basePackage" value="mapper" />
+	</bean>
 
+	<bean id="srpConnectionFactory"
+		class="org.springframework.data.redis.connection.srp.SrpConnectionFactory"
+		p:host-name="139.196.40.99" p:port="6379" p:password="T4729VT95%XsIvM" />
 
-  <bean id="srpConnectionFactory" class="org.springframework.data.redis.connection.srp.SrpConnectionFactory" p:host-name="139.196.40.99" p:port="6379" p:password="T4729VT95%XsIvM"/>
-  
-  <bean id="messageListener" class="org.springframework.data.redis.listener.adapter.MessageListenerAdapter">
-  <constructor-arg>
-    <bean class="com.wisdom.common.queue.DefaultMessageDelegate"/>
-  </constructor-arg>
-</bean>
+	<bean id="messageListener"
+		class="org.springframework.data.redis.listener.adapter.MessageListenerAdapter">
+		<constructor-arg>
+			<bean class="com.wisdom.common.queue.DefaultMessageDelegate" />
+		</constructor-arg>
+	</bean>
 
-  <bean id="messageListener2" class="org.springframework.data.redis.listener.adapter.MessageListenerAdapter">
-  <constructor-arg>
-    <bean class="com.wisdom.common.queue.DeleteMessageDelegate"/>
-  </constructor-arg>
-</bean>
+	<bean id="messageListener2"
+		class="org.springframework.data.redis.listener.adapter.MessageListenerAdapter">
+		<constructor-arg>
+			<bean class="com.wisdom.common.queue.DeleteMessageDelegate" />
+		</constructor-arg>
+	</bean>
 
-<bean id="redisContainer" class="org.springframework.data.redis.listener.RedisMessageListenerContainer">
-  <property name="connectionFactory" ref="srpConnectionFactory"/>
-  <property name="messageListeners">
-    <map>
-      <entry key-ref="messageListener">
-        <bean class="org.springframework.data.redis.listener.ChannelTopic">
-          <constructor-arg value="UNRECOGNIZED_INVOICE"></constructor-arg>
-        </bean>
-      </entry>
-      <entry key-ref="messageListener2">
-        <bean class="org.springframework.data.redis.listener.ChannelTopic">
-          <constructor-arg value="DELETE_INVOICE"></constructor-arg>
-        </bean>
-      </entry>
-    </map>
-  </property>
-</bean>
-
-
-
-	
- 	 <tx:annotation-driven transaction-manager="txManager"></tx:annotation-driven>
-
-
+	<bean id="redisContainer"
+		class="org.springframework.data.redis.listener.RedisMessageListenerContainer">
+		<property name="connectionFactory" ref="srpConnectionFactory" />
+		<property name="messageListeners">
+			<map>
+				<entry key-ref="messageListener">
+					<bean class="org.springframework.data.redis.listener.ChannelTopic">
+						<constructor-arg value="RAW_RECOGNIZED"></constructor-arg>
+					</bean>
+				</entry>
+				<entry key-ref="messageListener2">
+					<bean class="org.springframework.data.redis.listener.ChannelTopic">
+						<constructor-arg value="DELETE_INVOICE"></constructor-arg>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<tx:annotation-driven transaction-manager="txManager"></tx:annotation-driven>
 
 </beans>

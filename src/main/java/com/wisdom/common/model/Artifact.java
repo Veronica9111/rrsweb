@@ -5,29 +5,29 @@ import java.sql.Timestamp;
 public class Artifact implements java.io.Serializable{
     private static final long serialVersionUID = 1L;
     private Integer id;
-    private Integer invoiceId;
-    private String supplierName;
+    private Integer invoice_id;
+    private String supplier_name;
     private String type;
     private Double tax;
     private Double amount;
     private Integer number;
-    private Timestamp createdTime;
-    private Integer isFa;
+    private Timestamp created_time;
+    private Integer is_fa;
 
     public Artifact() {
         super();
     }
     
-    public Artifact(Integer id, Integer invoiceId, String supplierName, String type, Double tax, Double amount, Integer number, Timestamp createdTime, Integer isFa){
+    public Artifact(Integer id, Integer invoice_id, String supplier_name, String type, Double tax, Double amount, Integer number, Timestamp created_time, Integer is_fa){
     	this.id = id;
-    	this.invoiceId = invoiceId;
-    	this.supplierName = supplierName;
+    	this.invoice_id = invoice_id;
+    	this.supplier_name = supplier_name;
     	this.type = type;
     	this.tax = tax;
     	this.amount = amount;
     	this.number = number;
-    	this.createdTime = createdTime;
-    	this.isFa = isFa;
+    	this.created_time = created_time;
+    	this.is_fa = is_fa;
     }
 
 	public Integer getId() {
@@ -38,20 +38,20 @@ public class Artifact implements java.io.Serializable{
 		this.id = id;
 	}
 
-	public Integer getInvoiceId() {
-		return invoiceId;
+	public Integer getInvoice_id() {
+		return invoice_id;
 	}
 
-	public void setInvoiceId(Integer invoiceId) {
-		this.invoiceId = invoiceId;
+	public void setInvoice_id(Integer invoice_id) {
+		this.invoice_id = invoice_id;
 	}
 
-	public String getSupplierName() {
-		return supplierName;
+	public String getSupplier_name() {
+		return supplier_name;
 	}
 
-	public void setSupplierName(String supplierName) {
-		this.supplierName = supplierName;
+	public void setSupplier_name(String supplier_name) {
+		this.supplier_name = supplier_name;
 	}
 
 	public String getType() {
@@ -86,20 +86,20 @@ public class Artifact implements java.io.Serializable{
 		this.number = number;
 	}
 
-	public Timestamp getCreatedTime() {
-		return createdTime;
+	public Timestamp getCreated_time() {
+		return created_time;
 	}
 
-	public void setCreatedTime(Timestamp createdTime) {
-		this.createdTime = createdTime;
+	public void setCreated_time(Timestamp created_time) {
+		this.created_time = created_time;
 	}
 
-	public Integer getIsFa() {
-		return isFa;
+	public Integer getIs_fa() {
+		return is_fa;
 	}
 
-	public void setIsFa(Integer isFa) {
-		this.isFa = isFa;
+	public void setIs_fa(Integer is_fa) {
+		this.is_fa = is_fa;
 	}
 
 	

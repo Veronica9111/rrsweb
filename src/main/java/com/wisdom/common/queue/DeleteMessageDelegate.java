@@ -26,9 +26,6 @@ public class DeleteMessageDelegate implements MessageDelegate {
 	
 	@Autowired IInvoiceService invoiceService;
 	
-
-
-
 	@Override
 	public synchronized void handleMessage(String message) throws JsonParseException, JsonMappingException, IOException {
 		// TODO Auto-generated method stub
