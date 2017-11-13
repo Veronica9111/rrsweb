@@ -370,7 +370,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		storeInvoiceContent(path, data, FA, invoiceId);
 		logger.debug("end storeInvoiceContent");
 
-		JedisPoolConfig poolConfig = new JedisPoolConfig();
+		/*JedisPoolConfig poolConfig = new JedisPoolConfig();
 		poolConfig.setMaxIdle(RedisSetting.MAX_IDLE);
 		poolConfig.setMinIdle(RedisSetting.MIN_IDLE);
 		poolConfig.setTestOnBorrow(RedisSetting.TEST_ON_BORROW);
@@ -398,7 +398,19 @@ public class InvoiceServiceImpl implements IInvoiceService {
 				}
 
 			}
-		});
+		});*/
+		
+		
+		
+		Jedis jedis = new Jedis("139.196.40.99", 6379);
+		jedis.auth("T4729VT95%XsIvM");
+		logger.debug("begin publish recognizedInvoive");
+		long k_ = jedis.publish("RECOGNIZE_COMPLETE", exportDataStr);
+		logger.debug("end publish recognized invoive, publish return value : {}", k_);
+		jedis.close();
+		
+		
+		
 
 		updateInvoiceStatus(id, "RECOGNIZED");
 		updateInvoiceOwner(id, 0);
