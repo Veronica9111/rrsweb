@@ -348,18 +348,19 @@
         		if(resultList.length == 0) {
         			alert("没有数据，请重新填写！");	
         			window.location.reload();
+        		} else {
+	        		$.post('/invoice/updateInvoiceContent', {"data": JSON.stringify(resultList), 'FA':FA, "id":id}, function(data){
+	        			if(data.status == 'ok'){
+	        				$("body").unmask();
+	        				alert("切换到下一张");
+	        				window.location.reload();
+	        			}
+	        			else{
+	        				$("body").umask();
+	        				alert("提交出错，请稍后再试！");
+	        			}
+	        		});
         		}
-        		$.post('/invoice/updateInvoiceContent', {"data": JSON.stringify(resultList), 'FA':FA, "id":id}, function(data){
-        			if(data.status == 'ok'){
-        				$("body").unmask();
-        				alert("切换到下一张");
-        				window.location.reload();
-        			}
-        			else{
-        				$("body").umask();
-        				alert("提交出错，请稍后再试！");
-        			}
-        		});
         	}
         });
         

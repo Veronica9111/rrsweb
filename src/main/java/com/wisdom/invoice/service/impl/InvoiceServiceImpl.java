@@ -400,8 +400,6 @@ public class InvoiceServiceImpl implements IInvoiceService {
 			}
 		});*/
 		
-		
-		
 		Jedis jedis = new Jedis("139.196.40.99", 6379);
 		jedis.auth("T4729VT95%XsIvM");
 		logger.debug("begin publish recognizedInvoive");
@@ -409,9 +407,6 @@ public class InvoiceServiceImpl implements IInvoiceService {
 		logger.debug("end publish recognized invoive, publish return value : {}", k_);
 		jedis.close();
 		
-		
-		
-
 		updateInvoiceStatus(id, "RECOGNIZED");
 		updateInvoiceOwner(id, 0);
 		// Set the work record
