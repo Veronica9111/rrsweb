@@ -339,7 +339,7 @@
         			var tax = $(this).children().eq(3).find('input');
         			var number = $(this).children().eq(4).find('input');
         			var id = $(this).children().eq(5).find('input');
-        			resultList.push({'supplier': supplier.val(), 'description':description.val(), 'amount':amount.val(), 'tax':tax.val(), 'number':number.val(), 'id':id.attr('id')});
+        			resultList.push({'supplier': supplier.val(), 'description':description.val(), 'amount':amount.val(), 'tax':(tax.val()==null||tax.val()=='')?'0':tax.val(), 'number':*(number.val()==null||number.val()=='')?'1':number.val(), 'id':id.attr('id')});
         		});
         		var FA = "no";
         		if($("#fa").prop("checked")){
